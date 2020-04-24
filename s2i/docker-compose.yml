@@ -1,0 +1,37 @@
+version: '2'
+services:
+  talina-web:
+    container_name: talina-web
+    image: ubuntu-php72-nginx
+    env_file:
+      - ./.env
+    environment:
+      - VIRTUAL_HOST=talina.local
+    ports:
+      - "8080:80"
+    volumes:
+      - ../:/app/src/
+    hostname: talina.local
+    networks:
+      - talina
+  talina-db:
+    container_name: talina-db
+    image: mysql:5.7
+    env_file:
+      - ./.env
+    ports:
+      - 3306
+    volumes:
+      - talina-db-data:/databases
+      - talina-db-data:/var/lib/mysql
+      - ./mysql:/etc/mysql/mysql.conf.d
+    networks:
+      - talina
+
+volumes:
+  talina-db-data:
+    external: true
+
+networks:
+  talina:
+    external: true

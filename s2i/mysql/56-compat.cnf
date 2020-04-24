@@ -1,0 +1,6 @@
+[mysqld]
+sql_mode="ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+show_compatibility_56=ON
+log_error_verbosity=3
+default_time_zone='+08:00'
+max_allowed_packet=16777216
