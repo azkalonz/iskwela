@@ -13,8 +13,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    # - name: Copy .env
+    #   run: php -r "file_exists('s2i/.env') || copy('s2i/.env', '.env');"
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Generate key
