@@ -3,14 +3,10 @@ name: Laravel
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
     - name: Create storage directories
@@ -27,8 +23,21 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
+    - name: Run Migration
+      run: php artisan migrate:fresh
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+
+  slack_notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 8398a7/action-slack@v3
+        with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
+        env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
