@@ -14,7 +14,7 @@ class TestController extends Controller
      */
     public function index()
     {
-       dd(collect([1]));
+       echo phpinfo();
     }
 
     /**
