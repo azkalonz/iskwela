@@ -49,7 +49,7 @@ $app->singleton(
 | Environment file path default is in root directory
 |
 */
-$app->useEnvironmentPath("");
+// $app->useEnvironmentPath("");
 
 /*
 |--------------------------------------------------------------------------
