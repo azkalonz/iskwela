@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassesItemsTable extends Migration
+class CreateClassItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateClassesItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes_items', function (Blueprint $table) {
+        Schema::create('class_items', function (Blueprint $table) {
             // TODO: reconsider if BIG INT is enough for id, this table will get populated really fast because of itemable.
             $table->bigIncrements('id');
             $table->bigInteger('class_id')->unsigned();
