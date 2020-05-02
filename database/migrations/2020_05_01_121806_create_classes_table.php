@@ -16,11 +16,16 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('updated_by')->unsigned();
+            $table->bigInteger('teacher_id')->unsigned();
+            $table->bigInteger('subject_id')->unsigned();
+            $table->bigInteger('year_id')->unsigned();
             $table->timestamps();
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('updated_by')->references('id')->on('users');
             $table->softDeletes();
 
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->foreign('year_id')->references('id')->on('years');

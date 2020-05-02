@@ -16,6 +16,7 @@ class CreateClassesItemsTable extends Migration
         Schema::create('classes_items', function (Blueprint $table) {
             // TODO: reconsider if BIG INT is enough for id, this table will get populated really fast because of itemable.
             $table->bigIncrements('id');
+            $table->bigInteger('class_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('class_id')->references('id')->on('classes');
