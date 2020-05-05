@@ -21,6 +21,10 @@ class CreateClassesTable extends Migration
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('subject_id')->unsigned();
             $table->bigInteger('year_id')->unsigned();
+            $table->char('color', 7); // hex color in #000000 format
+            $table->string('image'); // url of the background image
+            $table->bigInteger('section_id')->unsigned();
+            $table->string('schedule'); // class schedule in cron format
             $table->timestamps();
             $table->softDeletes();
 
@@ -29,6 +33,7 @@ class CreateClassesTable extends Migration
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->foreign('year_id')->references('id')->on('years');
+            $table->foreign('section_id')->references('id')->on('sections');
         });
     }
 
