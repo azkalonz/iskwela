@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassesStudentsTable extends Migration
+class CreateSectionsStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateClassesStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes_students', function (Blueprint $table) {
+        Schema::create('sections_students', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->bigInteger('class_id')->unsigned();
+            $table->bigInteger('section_id')->unsigned();
             $table->bigInteger('student_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('student_id')->references('id')->on('users');
         });
     }

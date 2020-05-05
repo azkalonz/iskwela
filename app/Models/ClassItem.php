@@ -49,4 +49,6 @@ class ClassItem extends Model
     {
         return $this->morphedByMany('Assignment', 'itemable');
     }
+
+    // add lesson plan item
 }
