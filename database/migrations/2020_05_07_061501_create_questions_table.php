@@ -28,7 +28,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('answer_3');
             $table->integer('answer_4');
             $table->integer('answer_5');
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('deleted_at');

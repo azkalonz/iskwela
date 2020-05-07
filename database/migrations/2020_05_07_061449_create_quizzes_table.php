@@ -22,7 +22,7 @@ class CreateQuizzesTable extends Migration
             $table->integer('subject_id');
             $table->integer('school_published')->default(0);
             $table->timestamp('school_published_date')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('created_by');
