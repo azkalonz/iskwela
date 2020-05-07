@@ -13,6 +13,7 @@ class AuthController extends Controller
             [
             'student_id'    => $request->student_id,
             'password'      => $request->password,
+            'name'      => $request->name
             ]
         );
 
