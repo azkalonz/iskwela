@@ -19,7 +19,7 @@ class CreateAssignmentsTable extends Migration
             $table->mediumText('instruction');
             $table->integer('subject_id');
             $table->integer('created_by');
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('created_by');

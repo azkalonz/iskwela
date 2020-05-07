@@ -18,7 +18,7 @@ class CreateAnnouncementsTable extends Migration
             $table->longText('message');
             $table->integer('created_by');
             $table->timestamp('available_from')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('created_by');
