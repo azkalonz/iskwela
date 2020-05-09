@@ -6,7 +6,8 @@ services:
     env_file:
       - ../.env
     environment:
-      - VIRTUAL_HOST=api.schoolhub.local
+      VIRTUAL_HOST: api.schoolhub.local
+      MINIO_ENDPOINT: http://store-minio:9000
     ports:
       - "8080:80"
     volumes:
