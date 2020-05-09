@@ -49,7 +49,7 @@ services:
 
   schoolhub-minio:
     container_name: schoolhub-minio
-    image: hub/minio:latest
+    image: vhenjoseph/minio:latest
     environment:
       VIRTUAL_HOST: minio.schoolhub.local
       VIRTUAL_PORT: 9000
