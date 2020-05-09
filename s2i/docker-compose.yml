@@ -6,12 +6,13 @@ services:
     env_file:
       - ../.env
     environment:
-      - VIRTUAL_HOST=schoolhub.local
+      VIRTUAL_HOST: api.schoolhub.local
+      MINIO_ENDPOINT: http://store-minio:9000
     ports:
       - "8080:80"
     volumes:
       - ../:/app/src/
-    hostname: schoolhub.local
+    hostname: api.schoolhub.local
     networks:
       - schoolhub
   schoolhub-db:
@@ -28,8 +29,47 @@ services:
     networks:
       - schoolhub
 
+  schoolhub-nginx:
+    container_name: schoolhub-nginx
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/ssl:/etc/nginx/certs
+      - ./nginx/nginx.conf:/etc/nginx/proxy.conf:ro
+      - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
+      - ./nginx/dhparam:/etc/nginx/dhparam/
+    networks:
+      schoolhub:
+        aliases:
+          - minio.schoolhub.local
+          - api.schoolhub.local
+
+  schoolhub-minio:
+    container_name: schoolhub-minio
+    image: hub/minio:latest
+    environment:
+      VIRTUAL_HOST: minio.schoolhub.local
+      VIRTUAL_PORT: 9000
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: myminiosecret
+      MINIO_REGION: itmattersnot
+    ports:
+       - "9001:9000"
+    volumes:
+      - schoolhub-minio-data:/minio/data
+      - schoolhub-minio-config:/minio/config
+    networks:
+      - schoolhub
+
 volumes:
   schoolhub-db-data:
+    external: true
+  schoolhub-minio-data:
+    external: true
+  schoolhub-minio-config:
     external: true
 
 networks:
