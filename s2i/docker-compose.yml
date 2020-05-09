@@ -1,37 +1,37 @@
 version: '2'
 services:
-  talina-web:
-    container_name: talina-web
-    image: ubuntu-php72-nginx
+  schoolhub-web:
+    container_name: schoolhub-web
+    image: justckr/ubuntu-nginx-php:php7.2
     env_file:
-      - ./.env
+      - ../.env
     environment:
-      - VIRTUAL_HOST=talina.local
+      - VIRTUAL_HOST=schoolhub.local
     ports:
       - "8080:80"
     volumes:
       - ../:/app/src/
-    hostname: talina.local
+    hostname: schoolhub.local
     networks:
-      - talina
-  talina-db:
-    container_name: talina-db
+      - schoolhub
+  schoolhub-db:
+    container_name: schoolhub-db
     image: mysql:5.7
     env_file:
-      - ./.env
+      - ../.env
     ports:
       - 3306
     volumes:
-      - talina-db-data:/databases
-      - talina-db-data:/var/lib/mysql
+      - schoolhub-db-data:/databases
+      - schoolhub-db-data:/var/lib/mysql
       - ./mysql:/etc/mysql/mysql.conf.d
     networks:
-      - talina
+      - schoolhub
 
 volumes:
-  talina-db-data:
+  schoolhub-db-data:
     external: true
 
 networks:
-  talina:
+  schoolhub:
     external: true
