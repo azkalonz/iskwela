@@ -16,16 +16,18 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->bigInteger('created_by')->unsigned();
-            $table->bigInteger('updated_by')->unsigned();
+            $table->string('description');
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('subject_id')->unsigned();
             $table->bigInteger('year_id')->unsigned();
+            $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('updated_by')->unsigned();
             $table->char('color', 7); // hex color in #000000 format
             $table->string('image'); // url of the background image
             $table->bigInteger('section_id')->unsigned();
             $table->string('schedule'); // class schedule in cron format
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
 
             $table->foreign('created_by')->references('id')->on('users');
