@@ -7,6 +7,7 @@ on:
 jobs:
   test-host:
     services:
+      runs-on: ubuntu-latest
       mysql:
         image: mysql:5.7
         env:
