@@ -3,35 +3,34 @@ name: Laravel
 on:
   push:
     branches: [ master ]
-
+    
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:7.2
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testdb
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v2
     - name: Create storage directories
-      run: mkdir -p storage/framework/{sessions,views,cache}
+      run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage/framework
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
     - name: Run Migration
       run: php artisan migrate:fresh
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
     - uses: 8398a7/action-slack@v3
       with:
