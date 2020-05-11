@@ -48,7 +48,6 @@ jobs:
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
         DB_CONNECTION: mysql
         DB_HOST: mysql
-        DB_PORT: 3306
         DB_DATABASE: testdb
         DB_USERNAME: root
         DB_PASSWORD: 
@@ -57,7 +56,6 @@ jobs:
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
         DB_CONNECTION: mysql
         DB_HOST: mysql
-        DB_PORT: 3306
         DB_DATABASE: testdb
         DB_USERNAME: root
         DB_PASSWORD: 
