@@ -16,16 +16,19 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('subject_id')->unsigned();
-            $table->bigInteger('year_id')->unsigned();
             $table->bigInteger('created_by')->unsigned();
             $table->bigInteger('updated_by')->unsigned();
-            $table->char('color', 7); // hex color in #000000 format
-            $table->string('image'); // url of the background image
+            $table->char('color', 7)->nullable(); // hex color in #000000 format
+            $table->string('image')->nullable(); // url of the background image
             $table->bigInteger('section_id')->unsigned();
-            $table->string('schedule'); // class schedule in cron format
+            $table->date('date_from');
+            $table->date('date_to');
+            $table->time('time_from');
+            $table->time('time_to');
+            $table->string('frequency', 50);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
@@ -34,7 +37,6 @@ class CreateClassesTable extends Migration
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->foreign('year_id')->references('id')->on('years');
             $table->foreign('section_id')->references('id')->on('sections');
         });
     }

@@ -11,4 +11,9 @@ class ClassMaterial extends Model
     use SoftDeletes;
     public $timestamps = false;
     protected $fillable = ['name'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

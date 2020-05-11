@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    protected $fillable = ['name','student_id', 'password'];
+    protected $fillable = ['name','username', 'password', 'user_type'];
 
     public function getJWTIdentifier()
     {
@@ -19,7 +19,8 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'sub' => env('JWT_SUB')
+            'sub' => env('JWT_SUB'),
+            'key' => $this->id
         ];
     }
     

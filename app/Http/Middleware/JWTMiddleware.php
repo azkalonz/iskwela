@@ -7,6 +7,7 @@ use JWTAuth;
 use Auth;
 use Firebase\JWT\JWT;
 use App\Exceptions\InvalidJWTException;
+use App\Models\User;
 
 class JWTMiddleware
 {
@@ -35,7 +36,6 @@ class JWTMiddleware
 
         try {
             $payload = Auth::parseToken()->getPayload();
-
             if ($payload->get('exp') < time()) {
                 throw new InvalidJWTException("Token has expired");
             }
@@ -43,6 +43,8 @@ class JWTMiddleware
             if ($payload->get('sub') != env('JWT_SUB')) {
                 throw new InvalidJWTException("Invalid token signature");
             }
+            // login the user
+            Auth::login(User::find($payload->get('key')));
         } catch (\UnexpectedValueException $e) {
             throw new InvalidJWTException(get_class($e).': '.$e->getMessage());
         } catch (\DomainException $e) {
