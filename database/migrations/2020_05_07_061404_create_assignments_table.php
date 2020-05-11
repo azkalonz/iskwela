@@ -20,6 +20,8 @@ class CreateAssignmentsTable extends Migration
             $table->integer('class_id');
             $table->integer('subject_id');
             $table->integer('created_by');
+            $table->date('available_from');
+            $table->date('available_to');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

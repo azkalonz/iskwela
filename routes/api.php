@@ -22,5 +22,5 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::middleware('jwt')->group(function () {
-    Route::get('/grace', 'Api\\TestController@index');
+    Route::get('/classes', 'Api\\ClassController@index');
 });

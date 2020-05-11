@@ -18,8 +18,7 @@ class Classes extends Model
         'created_by',
         'updated_by',
         'teacher_id',
-        'subject_id',
-        'year_id'
+        'subject_id'
     ];
 
     /**
@@ -31,42 +30,19 @@ class Classes extends Model
     }
 
     /**
-     * This class' subject
-     */
-    public function subject()
+    * @return Relation
+    */
+    public function section()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Section::class);
     }
 
     /**
-     * This class' year level
-     */
-    public function year()
+    * @return Relation
+    */
+    public function schedules()
     {
-        return $this->belongsTo(Year::class);
+        return $this->hasMany(Schedule::class, 'class_id');
     }
 
-    /**
-     * User who created this class
-     */
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * User who updated this class
-     */
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get all of the items for the class.
-     */
-    public function items()
-    {
-        return $this->morphToMany('App\Models\ClassItem', 'itemable');
-    }
 }

@@ -15,9 +15,21 @@ class CreateClassMaterialsTable extends Migration
     {
         Schema::create('class_materials', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('title')->nullable();
+            $table->string('instruction')->nullable();
+            $table->string('description')->nullable();
+            $table->string('filename')->nullable();
+            $table->string('link_url')->nullable();
+            $table->integer('class_id');
+            $table->integer('schedule_id');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->softDeletes();
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+
+            $table->index('class_id');
         });
     }
 

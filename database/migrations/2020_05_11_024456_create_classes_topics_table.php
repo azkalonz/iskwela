@@ -13,7 +13,7 @@ class CreateClassesTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes_topics', function (Blueprint $table) {
+        Schema::create('class_topics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('class_id');
             $table->integer('topic_id');
