@@ -27,7 +27,7 @@ class ClassController extends Controller
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {StringOrNumber} user_id of user. If user is logged id, use `user_id=me`
+     * @apiParam {StringOrNumber} user_id ID of user. If user is logged in, use `user_id=me`
      * @apiParam {String=schedules,students} include Comma separated relations to include. By default, lists don't include relations
      *
      * @apiSuccess {Number} id Unique class id

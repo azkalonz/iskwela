@@ -83,7 +83,7 @@ define({ "api": [
             "type": "StringOrNumber",
             "optional": false,
             "field": "user_id",
-            "description": "<p>of user. If user is logged id, use <code>user_id=me</code></p>"
+            "description": "<p>ID of user. If user is logged in, use <code>user_id=me</code></p>"
           },
           {
             "group": "Parameter",
