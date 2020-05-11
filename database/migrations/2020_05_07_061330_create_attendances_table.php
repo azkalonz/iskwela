@@ -17,7 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->bigIncrements('id');
             $table->date('date');
             $table->integer('user_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->index('user_id');
             $table->index(['date', 'user_id']);

@@ -18,7 +18,8 @@ class CreateSectionsStudentsTable extends Migration
             $table->string('name');
             $table->bigInteger('section_id')->unsigned();
             $table->bigInteger('student_id')->unsigned();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('student_id')->references('id')->on('users');

@@ -19,7 +19,8 @@ class CreateAnnouncementsTable extends Migration
             $table->integer('created_by');
             $table->timestamp('available_from')->nullable();
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->index('created_by');
             $table->index('available_from');

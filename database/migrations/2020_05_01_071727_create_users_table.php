@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('student_id'); //the username
             $table->string('password');
             $table->string('name');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
 
             $table->index('student_id');

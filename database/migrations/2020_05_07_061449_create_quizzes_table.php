@@ -23,7 +23,8 @@ class CreateQuizzesTable extends Migration
             $table->integer('school_published')->default(0);
             $table->timestamp('school_published_date')->nullable();
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->index('created_by');
             $table->index('school_id');
