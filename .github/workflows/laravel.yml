@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create storage directories
-      run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage && chown -R www-data:www-data storage
+      run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage/framework
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
     - name: Install Dependencies
