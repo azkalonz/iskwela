@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call(YearsSeeder::class);
         $this->call(ClassesSeeder::class);
         $this->call(ScheduleSeeder::class);
-        $this->call(ClassesMaterialsSedder::class);
+        $this->call(ClassesMaterialsSeeder::class);
+        $this->call(AssignmentsSeeder::class);
+        $this->call(AssignmentsQuestionsSeeder::class);
+        $this->call(AssignmentsMaterialsSeeder::class);
+        $this->call(AssignmentsViewersSeeder::class);
     }
 }

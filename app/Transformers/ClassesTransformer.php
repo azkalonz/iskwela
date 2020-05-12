@@ -19,6 +19,10 @@ class ClassesTransformer extends TransformerAbstract
             'date_to' => $class->date_to,
             'time_from' => $class->time_from,
             'time_to' => $class->time_to,
+            'subject' => [
+                'id' => $class->subject->id,
+                'name' => $class->subject->name
+            ],
             'teacher' => [
                 'id' => $class->teacher->id,
                 'name' => $class->teacher->name,
