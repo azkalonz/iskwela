@@ -17,10 +17,6 @@ jobs:
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['7.2']
     steps:
     - uses: actions/checkout@v2
     - name: Create storage directories
