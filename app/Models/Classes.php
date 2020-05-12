@@ -45,4 +45,19 @@ class Classes extends Model
         return $this->hasMany(Schedule::class, 'class_id');
     }
 
+        /**
+    * @return Relation
+    */
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+    /**
+    * @return Relation
+    */
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
 }

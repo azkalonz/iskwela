@@ -18,6 +18,7 @@ class CreateAssignmentsTable extends Migration
             $table->string('title', 255);
             $table->mediumText('instruction');
             $table->integer('class_id');
+            $table->integer('schedule_id');
             $table->integer('subject_id');
             $table->integer('created_by');
             $table->date('available_from');
@@ -29,6 +30,7 @@ class CreateAssignmentsTable extends Migration
             $table->index('created_by');
             $table->index('created_at');
             $table->index('deleted_at');
+            $table->index(['class_id', 'schedule_id']);
 
         });
     }

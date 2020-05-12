@@ -16,7 +16,8 @@ class CreateAssignmentsMaterialsTable extends Migration
         Schema::create('assignments_materials', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('assignment_id');
-            $table->string('resource', 255);
+            $table->string('file', 255);
+            $table->string('link_url', 255);
             $table->timestamp('created_at');
 
             $table->index('assignment_id');

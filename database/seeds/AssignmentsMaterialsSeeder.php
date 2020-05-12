@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ClassesMaterialsSedder extends Seeder
+class AssignmentsMaterialsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class ClassesMaterialsSedder extends Seeder
      */
     public function run()
     {
-        $path = __DIR__.'/artifacts/classes_materials.sql';
+        $path = __DIR__.'/artifacts/assignments_materials.sql';
         DB::unprepared(file_get_contents($path));
     }
 }

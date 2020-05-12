@@ -10,4 +10,9 @@ class Schedule extends Model
     {
         return $this->hasMany(ClassMaterial::class);
     }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }
