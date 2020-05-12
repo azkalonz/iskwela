@@ -7,8 +7,6 @@ on:
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:7.2
     services:
       mysql:
         image: mysql:5.7
@@ -19,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create storage directories
-      run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage/framework && chown -R www-data:www-data storage/framework
+      run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage && chown -R www-data:www-data storage
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
     - name: Install Dependencies
@@ -32,7 +30,8 @@ jobs:
       run: php artisan migrate:fresh
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: vendor/bin/phpunit
-    - uses: 8398a7/action-slack@v3
+    - name: Github Action Notification
+      uses: 8398a7/action-slack@v3
       with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
