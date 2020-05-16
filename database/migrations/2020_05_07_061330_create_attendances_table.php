@@ -15,14 +15,14 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date');
             $table->integer('class_id');
+            $table->integer('schedule_id');
             $table->integer('user_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
+            $table->index(['class_id','schedule_id']);
             $table->index('user_id');
-            $table->index(['date', 'user_id']);
         });
     }
 
