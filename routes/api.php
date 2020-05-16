@@ -25,4 +25,5 @@ Route::middleware('jwt')->group(function () {
     Route::get('/classes', 'Api\\ClassController@index');
     Route::get('/class/{id}', 'Api\\ClassController@show');
     Route::post('/class/save', 'Api\\ClassController@save');
+    Route::get('/class/attendance/{id}', 'Api\\ClassController@attendance');
 });
