@@ -18,12 +18,16 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('user_type');
             $table->string('password');
-            $table->string('name');
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('first_name');
+			$table->string('last_name');
+			$table->string('gender', 1); /*m - male, f - female*/
+			$table->string('email')->nullable();
+			$table->integer('phone_number')->nullable();
+            $table->integer('status'); 
+			$table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
             $table->rememberToken();
-
             $table->unique('username');
         });
     }
