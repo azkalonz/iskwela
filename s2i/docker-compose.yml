@@ -8,6 +8,8 @@ services:
     environment:
       VIRTUAL_HOST: api.schoolhub.local
       MINIO_ENDPOINT: http://store-minio:9000
+      APP_URL: http://api.schoolhub.local
+      SCHOOL_CODE: SCHOOL01
     ports:
       - "8080:80"
     volumes:
