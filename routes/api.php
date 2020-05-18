@@ -22,8 +22,13 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::middleware('jwt')->group(function () {
+    //classes
     Route::get('/classes', 'Api\\ClassController@index');
     Route::get('/class/{id}', 'Api\\ClassController@show');
     Route::post('/class/save', 'Api\\ClassController@save');
     Route::get('/class/attendance/{id}', 'Api\\ClassController@attendance');
+
+    //schedules
+    Route::post('/schedule/save', 'Api\\ScheduleController@save');
+    Route::post('/schedule/{id}', 'Api\\ScheduleController@show');
 });
