@@ -16,7 +16,13 @@ class ScheduleTransformer extends TransformerAbstract
     {
         return [
             'id' => $schedule->id,
-            'date' => $schedule->date,
+            'from' => $schedule->date_from,
+            'to' => $schedule->date_from,
+            'teacher' => [
+                'id' => $schedule->teacher->id,
+                'first_name' => $schedule->teacher->first_name,
+                'last_name' => $schedule->teacher->last_name,
+            ],
             'status' => $schedule->status,
         ];
     }
