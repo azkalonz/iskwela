@@ -111,7 +111,7 @@ class ClassController extends Controller
     /**
      * Class Details
      *
-     * @api {get} HOST/api/class/{class_id} Class Details
+     * @api {get} HOST/api/class/{id} Class Details
      * @apiVersion 1.0.0
      * @apiName ClassDetail
      * @apiDescription Returns the details of the class
@@ -119,7 +119,7 @@ class ClassController extends Controller
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {Number} class_id the class ID
+     * @apiParam {Number} id the class ID
      *
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
@@ -134,8 +134,13 @@ class ClassController extends Controller
      * @apiSuccess {String} teacher.name The teacher's name
      * @apiSuccess {Array} schedules The class schedules
      * @apiSuccess {Number} schedules.id Unique schedule id
-     * @apiSuccess {Number} schedules.date Session date
+     * @apiSuccess {Date} schedules.from Session start
+     * @apiSuccess {Date} schedules.to Session end
      * @apiSuccess {Number} schedules.status Session status: done, canceled
+     * @apiSuccess {Number} schedules.teacher teacher handling this session
+     * @apiSuccess {Number} schedules.teacher.id
+     * @apiSuccess {String} schedules.teacher.first_name Teacher name
+     * @apiSuccess {String} schedules.teacher.last_name Teacher name
      * @apiSuccess {Array} schedules.materials Class resources: notes, lessons, etc
      * @apiSuccess {Number} schedules.materials.id Unique material id
      * @apiSuccess {String} schedules.materials.title
