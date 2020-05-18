@@ -15,13 +15,16 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date');
-            $table->integer('class_id');
-            $table->integer('status')->default(0); //0-normal, 1-canceled
+			$table->integer('class_id');
+            $table->datetime('date_from');
+            $table->datetime('date_to');
+			$table->datetime('started_at')->nullable();
+			$table->datetime('ended_at')->nullable();
+			$table->integer('status'); /*0 - canceled, 1 - on going, 2 - not started*/
 
             $table->timestamp('created_at')->useCurrent();
             $table->index('class_id');
-            $table->unique(['date', 'class_id']);
+            $table->unique(['date_from', 'class_id']);
         });
     }
 

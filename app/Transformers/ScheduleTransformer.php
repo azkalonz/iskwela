@@ -18,7 +18,6 @@ class ScheduleTransformer extends TransformerAbstract
             'id' => $schedule->id,
             'date' => $schedule->date,
             'status' => $schedule->status,
-            'is_active' => ($schedule->date == date('Y-m-d')) ? true : false,
         ];
     }
     
