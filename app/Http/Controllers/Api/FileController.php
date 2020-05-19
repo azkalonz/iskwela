@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\File;
 
 use Storage;
 
 class FileController extends Controller
 {
+    use File;
+
     const SUPPORTED_TYPES = [
-        'jpeg',
-        'bmp',
-        'png',
-        'gif',
-        'pdf',
-        'doc',
-        'txt'
+        'image/jpeg',
+        'image/bmp',
+        'image/png',
+        'image/gif',
+        'application/pdf',
+        'application/doc',
+        'text/plain'
     ];
+
+    private function getRootPath() {
+        return env('SCHOOL_CODE');
+    }
 
     public function upload(Request $request)
     {
@@ -25,30 +33,28 @@ class FileController extends Controller
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES)
         ]);
 
-        $filename = $this->formatFileName($request->file("file")) . '.' . $request->file("file")->extension();
-        $filepath = date("Y-m-d"); // for now just use current date
-
-        // setting full path of file
-        $file_url = env('MINIO_URL') . '/'
-            . env('MINIO_BUCKET') . '/'
-            . $filepath . '/'
-            . $filename;
-
-        // upload image to media bucket
-        $fp = fopen($request->file("file"), "r");
-        $isSuccess = Storage::disk('minio')->put($filepath . '/' . $filename, $fp);
+        $full_path = $this->uploadFile($request->file("file"));
 
         $data = [
-            'success' => ($isSuccess) ? true : false,
-            'file' => $file_url,
+            'success' => ($full_path) ? true : false,
+            'file' => $full_path,
         ];
 
         return response()->json($data);
     }
 
+    public function download(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|string'
+        ]);
+
+        return $this->downloadFile( $request->input('file') );
+    }
+
     private function formatFileName($request_file) {
         return $filename_no_ext = date("His") . '-'
-            . str_slug(
+            . Str::slug(
                 rtrim($request_file->getClientOriginalName(), "." . $request_file->extension()),
                 '_'
             );

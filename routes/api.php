@@ -22,6 +22,7 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::post('/file/upload', 'Api\\FileController@upload');
+Route::post('/file/download', 'Api\\FileController@download');
 
 Route::middleware('jwt')->group(function () {
     //classes
