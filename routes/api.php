@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -33,4 +32,7 @@ Route::middleware('jwt')->group(function () {
     //schedules
     Route::post('/schedule/save', 'Api\\ScheduleController@save');
     Route::post('/schedule/{id}', 'Api\\ScheduleController@show');
+
+	//student
+	Route::post('/students/improvement/add', 'Api\\StudentController@addImprovement');
 });
