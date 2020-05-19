@@ -68,11 +68,20 @@ return [
             'driver' => 's3',
             'endpoint' => env('MINIO_ENDPOINT', 'http://127.0.0.1:9000'),
             'use_path_style_endpoint' => true,
-            'key' => env('MINIO_KEY'),
-            'secret' => env('MINIO_SECRET'),
+            'key' => env('MINIO_ACCESS_KEY'),
+            'secret' => env('MINIO_SECRET_KEY'),
             'region' => env('MINIO_REGION'),
             'bucket' => env('SCHOOL_CODE', 'minio_bucket'),
             'public' => true
+        ],
+
+        'do' => [     
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY'),     
+            'secret' => env('DO_SPACES_SECRET'),     
+            'endpoint' => env('DO_SPACES_ENDPOINT'),     
+            'region' => env('DO_SPACES_REGION'),     
+            'bucket' => env('DO_SPACES_BUCKET'), 
         ],
     ],
 
