@@ -144,8 +144,6 @@ class ClassController extends Controller
      * @apiSuccess {Array} schedules.materials Class resources: notes, lessons, etc
      * @apiSuccess {Number} schedules.materials.id Unique material id
      * @apiSuccess {String} schedules.materials.title
-     * @apiSuccess {String} schedules.materials.instruction
-     * @apiSuccess {String} schedules.materials.description
      * @apiSuccess {String} schedules.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} schedules.materials.resource_link Link to materials e.g google doc, website,etc
      * @apiSuccess {Object} schedules.materials.added_by Someone who added the material
@@ -157,9 +155,6 @@ class ClassController extends Controller
      * @apiSuccess {String} schedules.activities.instruction 
      * @apiSuccess {Date} schedules.activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
      * @apiSuccess {Date} schedules.activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Array} schedules.activities.questions List of questions
-     * @apiSuccess {Number} schedules.activities.questions.id The question id
-     * @apiSuccess {String} schedules.activities.questions.question The question text
      * @apiSuccess {Array} schedules.activities.materials Array of reading materials needed for this activity
      * @apiSuccess {Number} schedules.activities.materials.id 
      * @apiSuccess {String} schedules.activities.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
@@ -198,8 +193,6 @@ class ClassController extends Controller
                         {
                             "id": 1,
                             "title": "English Writing Part 1",
-                            "instruction": "read the textbook",
-                            "description": "learn english writing",
                             "uploaded_file": null,
                             "resource_link": "https://sample-lesson-link.com/english-writing-part1",
                             "added_by": {
@@ -210,8 +203,6 @@ class ClassController extends Controller
                         {
                             "id": 2,
                             "title": "English Writing Part 1",
-                            "instruction": "read the textbook",
-                            "description": "learn english writing",
                             "uploaded_file": null,
                             "resource_link": "https://sample-lesson-link.com/english-writing-part2",
                             "added_by": {
@@ -227,20 +218,6 @@ class ClassController extends Controller
                             "instruction": "read it",
                             "available_from": "2020-05-11",
                             "available_to": "2020-05-15",
-                            "questions": [
-                                {
-                                    "id": 1,
-                                    "question": "what is noun?"
-                                },
-                                {
-                                    "id": 2,
-                                    "question": "what is adverb"
-                                },
-                                {
-                                    "id": 3,
-                                    "question": "what is predicate?"
-                                }
-                            ],
                             "materials": [
                                 {
                                     "id": 1,
@@ -260,20 +237,6 @@ class ClassController extends Controller
                             "instruction": "read it",
                             "available_from": "2020-05-20",
                             "available_to": "2020-05-30",
-                            "questions": [
-                                {
-                                    "id": 4,
-                                    "question": "what is pronoun?"
-                                },
-                                {
-                                    "id": 5,
-                                    "question": "what is subject"
-                                },
-                                {
-                                    "id": 6,
-                                    "question": "what is plural?"
-                                }
-                            ],
                             "materials": [
                                 {
                                     "id": 3,
@@ -293,8 +256,6 @@ class ClassController extends Controller
                         {
                             "id": 3,
                             "title": "English Speaking",
-                            "instruction": "read the textbook",
-                            "description": "learn english speaking",
                             "uploaded_file": null,
                             "resource_link": "https://sample-lesson-link.com/english-speaking",
                             "added_by": {
@@ -314,8 +275,6 @@ class ClassController extends Controller
                         {
                             "id": 4,
                             "title": "English Grammar",
-                            "instruction": "read the textbook",
-                            "description": "learn english grammar",
                             "uploaded_file": null,
                             "resource_link": "https://sample-lesson-link.com/english-grammar",
                             "added_by": {
