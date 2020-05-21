@@ -10,7 +10,7 @@ class AssignmentMaterialTransformer extends TransformerAbstract
     {
         return [
             'id' => $assignment_material->id,
-            'uploaded_file' => $assignment_material->file,
+            'uploaded_file' => ($assignment_material->file) ? sprintf('%s/api/download/activity/material/%s', env('APP_URL'), $assignment_material->id) : "",
             'resource_link' => $assignment_material->link_url
         ];
     }

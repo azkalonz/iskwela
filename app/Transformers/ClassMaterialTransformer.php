@@ -13,9 +13,7 @@ class ClassMaterialTransformer extends TransformerAbstract
         return [
             'id' => $class_material->id,
             'title' => $class_material->title,
-            'instruction' => $class_material->instruction,
-            'description' => $class_material->description,
-            'uploaded_file' => $class_material->filename,
+            'uploaded_file' => ($class_material->filename) ? sprintf('%s/api/download/class/material/%s', env('APP_URL'), $class_material->id) : "",
             'resource_link' => $class_material->link_url,
             'added_by' => [
                 'id' => $class_material->user->id,

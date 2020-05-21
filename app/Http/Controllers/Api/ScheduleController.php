@@ -168,8 +168,8 @@ class ScheduleController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {Number} id The ID of schedule to be updated
-     * @apiParam {Date} from New start date/time
-     * @apiParam {Date} to New end date/timein
+     * @apiParam {Date} from New start date/time (YYYY-mm-dd H:i:s)
+     * @apiParam {Date} to New end date/time  (YYYY-mm-dd H:i:s)
      * @apiParam {Number=0:not-started,1:ongoing,2:canceled} status 0 - not started, 1 - ongoing, 2 - cancelled
      *
      * @apiUse ScheduleObject
