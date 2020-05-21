@@ -50,4 +50,5 @@ Route::middleware('jwt')->group(function () {
 
 	//student
 	Route::post('/students/improvement/add', 'Api\\StudentController@addImprovement');
+	Route::get('/students/improvement/', 'Api\\StudentController@studentImprovement');
 });
