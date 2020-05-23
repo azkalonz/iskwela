@@ -29,8 +29,24 @@ class StudentController extends Controller
 		$student_improvement->improvement = $request->improvement;
 
         $student_improvement->save();
+		
+		$classes = Classes::select(['classes.id'
+									, 'classes.name'
+									,'users.id as student_id'
+									,'users.first_name'
+									,'users.last_name'
+									, 'students_improvements.improvement'])
+			->whereClassId($request->class_id)
+			->join('sections_students', 'sections_students.section_id', '=', 'classes.section_id')
+			->join('users', 'users.id', '=', 'sections_students.user_id')
+			->leftJoin('students_improvements', function($join)
+						{
+							$join->on('students_improvements.student_id', '=', 'users.id');
+							$join->on('students_improvements.class_id', '=', 'classes.id');
+						})
+			->where('users.id','=',$request->student_id);
 
-        $fractal = fractal()->item($student_improvement, new StudentImprovementTransformer);
+        $fractal = fractal()->item($classes->first(), new StudentImprovementTransformer);
 
         return response()->json($fractal->toArray());
     }

@@ -30,7 +30,7 @@ Route::middleware('jwt')->group(function () {
     //uploads
     Route::post('/upload/activity/material', 'Api\\FileController@assignmentMaterial');
     Route::post('/upload/activity/answer', 'Api\\FileController@save'); //todo
-    Route::post('/upload/class/lesson-plan', 'Api\\FileController@save'); //todo
+    Route::post('/upload/class/lesson-plan', 'Api\\FileController@lessonPlan'); //todo
     Route::post('/upload/class/material', 'Api\\FileController@classMaterial');
 
     //downloads

@@ -21,7 +21,8 @@ class FileController extends Controller
         'gif',
         'application/pdf',
         'application/doc',
-        'text/plain'
+        'text/plain',
+		'txt'
     ];
 
     /**
@@ -115,6 +116,55 @@ class FileController extends Controller
             $clas_material->schedule_id = $request->schedule_id;
             $clas_material->created_by = $user->id;
             $clas_material->save();
+        }
+        else {
+            return response('Unable to upload file', 500);
+        }
+
+        return response()->json(['success' => $response['success']]);
+    }
+	
+	/**
+     * Upload Class Lesson Plan
+     *
+     * @api {POST} HOST/api/upload/class/lesson_plan Class Lesson Plan
+     * @apiVersion 1.0.0
+     * @apiName UploadClassLessonPlan
+     * @apiDescription Allows adding media to lesson plan
+     * @apiGroup Upload
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+     * @apiParam {Number} schedule_id the schedule id
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+
+    public function lessonPlan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
+            'schedule_id' => 'integer'
+        ]);
+		
+		$user =  Auth::user();
+
+        $response = $this->upload($request->file);
+
+        if($response['success']) {
+            $lesson_plan = new \App\Models\LessonPlan();
+            $lesson_plan->schedule_id = $request->schedule_id;
+            $lesson_plan->file = $response['file'];
+			$lesson_plan->created_by = $user->id;
+            $lesson_plan->save();
         }
         else {
             return response('Unable to upload file', 500);
