@@ -70,6 +70,52 @@ class FileController extends Controller
 
         return response()->json(['success' => $response['success']]);
     }
+	
+	/**
+     * Upload Activity Answer
+     *
+     * @api {POST} HOST/api/upload/activity/answer
+     * @apiVersion 1.0.0
+     * @apiName UploadActivityAnswer
+     * @apiDescription Allows adding answers to activity
+     * @apiGroup Upload
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+     * @apiParam {Number} assignment_id the activity id
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+
+    public function assignmentAnswer(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
+            'assignment_id' => 'integer'			
+        ]);
+
+        $response = $this->upload($request->file);
+
+        if($response['success']) {
+            $activity_answer = new \App\Models\AssignmentAnswer();
+            $activity_answer->assignment_id = $request->assignment_id;
+            $activity_answer->answer_media = $response['file'];
+            $activity_answer->save();
+        }
+        else {
+            return response('Unable to upload file', 500);
+        }
+
+        return response()->json(['success' => $response['success']]);
+    }
 
     /**
      * Upload Class Material
@@ -200,6 +246,34 @@ class FileController extends Controller
 
         $assignment_material = \App\Models\AssignmentMaterial::find($request->id);
         return $this->download($assignment_material->file);
+    }
+	
+	/**
+     * Download Activity Answer
+     *
+     * @api {POST} HOST/api/download/activity/answer/{id} Activity Answer
+     * @apiVersion 1.0.0
+     * @apiName DownloadActivityAnswer
+     * @apiDescription Downloads the activity answer
+     * @apiGroup Download
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id Activity answer ID
+     *
+     * @apiSuccess {BLOB} the attached file
+     *
+     */
+    public function downloadAssignmentAnswer(Request $request)
+    {
+        $user =  Auth::user();
+
+        if(!$user) {
+            return response('Unauthorized access', 401);
+        }
+
+        $assignment_answer = \App\Models\AssignmentAnswer::find($request->id);
+        return $this->download($assignment_answer->file);
     }
 
     /**

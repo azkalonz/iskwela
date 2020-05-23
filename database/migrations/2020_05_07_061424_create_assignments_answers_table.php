@@ -16,14 +16,14 @@ class CreateAssignmentsAnswersTable extends Migration
         Schema::create('assignments_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('assignment_id');
-            $table->integer('assignment_question_id');
-            $table->integer('user_id');
+            $table->integer('assignment_question_id')->default(0);
+            $table->integer('student_id');
             $table->mediumText('answer_text');
             $table->mediumText('answer_media');
             $table->timestamp('created_at');
 
             $table->index('assignment_id');
-            $table->index('user_id');
+            $table->index('student_id');
             $table->index('assignment_question_id');
         });
     }
