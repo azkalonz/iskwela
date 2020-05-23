@@ -164,6 +164,7 @@ class FileController extends Controller
             $lesson_plan->schedule_id = $request->schedule_id;
             $lesson_plan->file = $response['file'];
 			$lesson_plan->created_by = $user->id;
+			$lesson_plan->updated_by = $user->id;
             $lesson_plan->save();
         }
         else {
