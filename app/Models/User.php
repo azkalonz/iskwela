@@ -30,4 +30,9 @@ class User extends Authenticatable implements JWTSubject
             $this->attributes['password'] = bcrypt($password);
         }
     }
+
+    public function classes()
+    {
+        return $this->hasManyThrough(Classes::class, SectionStudent::class, 'user_id', 'section_id', 'id');
+    }
 }

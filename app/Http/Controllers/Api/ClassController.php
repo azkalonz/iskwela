@@ -8,6 +8,7 @@ use App\Models\Classes;
 use App\Transformers\ClassesTransformer;
 use App\Transformers\ScheduleTransformer;
 use App\Transformers\ScheduleAttendanceTransformer;
+use App\Transformers\UserTransformer;
 use Auth;
 use App\Models\User;
 use App\Models\Schedule;
@@ -20,17 +21,17 @@ class ClassController extends Controller
 {
 
     /**
-     * Class List
+     * Teacher Class List
      *
-     * @api {get} HOST/api/classes Class List
+     * @api {get} HOST/api/classes Teacher Class List
      * @apiVersion 1.0.0
-     * @apiName ClassList
-     * @apiDescription Returns list of classes
+     * @apiName TeacherClassList
+     * @apiDescription Returns list of classes handled by teacher
      * @apiGroup Classes
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {StringOrNumber} user_id ID of user. If user is logged in, use `user_id=me`
+     * @apiParam {StringOrNumber} user_id retrieves list of classes of the specified user. If not passed, defaults to currently logged in user: "me"
      * @apiParam {String=schedules,students} include Comma separated relations to include. By default, lists don't include relations
      *
      * @apiSuccess {Number} id Unique class id
@@ -43,7 +44,8 @@ class ClassController extends Controller
      * @apiSuccess {Time} time_to Class duration
      * @apiSuccess {Object} teacher The teacher handling the class
      * @apiSuccess {Number} teacher.id Unique teacher id
-     * @apiSuccess {String} teacher.name The teacher's name
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
      * @apiSuccess {Array} schedules The class schedules. NOT INCLUDED BY DEFAULT. REFER TO Class Details doc for the data.
      * @apiSuccess {Array} students List of students enrolled in the class. NOT INCLUDED BY DEFAULT. REFER TO Class Details doc for the data.
      * 
@@ -64,7 +66,8 @@ class ClassController extends Controller
                 },
                 "teacher": {
                     "id": 8,
-                    "name": "teacher tom"
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
                 }
             },
             {
@@ -82,7 +85,8 @@ class ClassController extends Controller
                 },
                 "teacher": {
                     "id": 8,
-                    "name": "teacher tom"
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
                 }
             }
         ]
@@ -93,16 +97,16 @@ class ClassController extends Controller
 
     public function index(Request $request)
     {
-        $this->validate($request, [
-            'user_id' => 'required'
-        ]);
-
-        $user =  Auth::user();
-        if($request->user_id != 'me') {
-            $user = User::find($request->user_id);
+        //todo: add policy that only a school admin can view classes of other teachers
+        // normal teacher can only view his/her own class or class being temporarily assigned
+        if(!$request->user_id || $request->user_id == 'me') {
+            $user_id = Auth::user()->getKey();
+        }
+        else {
+            $user_id = $request->user_id;
         }
 
-        $class = Classes::whereTeacherId($user->id)->get();
+        $class = Classes::whereTeacherId($user_id)->get();
         $fractal = fractal()->collection($class, new ClassesTransformer);
 
        return response()->json($fractal->toArray());
@@ -315,8 +319,8 @@ class ClassController extends Controller
      */
     public function show(Request $request)
     {
-        $user =  Auth::user();
-        $class = Classes::whereTeacherId($user->id)->whereId($request->id)->first();
+        //todo: add policy that only teacher/student related to class can view
+        $class = Classes::whereId($request->id)->first();
 
         $fractal = fractal()->item($class, new ClassesTransformer);
         $fractal->includeSchedules();
@@ -452,7 +456,102 @@ class ClassController extends Controller
     }
 
 
+        /**
+     * Student Classes List
+     *
+     * @api {get} HOST/api/student/classes Student Classes List
+     * @apiVersion 1.0.0
+     * @apiName StudentClassList
+     * @apiDescription Returns the list of class of logged in student
+     * @apiGroup Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiSuccess {Number} id the student's unique ID
+     * @apiSuccess {String} first_name
+     * @apiSuccess {String} last_name
+     * @apiSuccess {Number} school_id
+     * @apiSuccess {String} user_type
+     * @apiSuccess {Array} classes list of classes
+     * @apiSuccess {Number} classes.id the class ID
+     * @apiSuccess {String} classes.name
+     * @apiSuccess {String} classes.description
+     * @apiSuccess {String} classes.frequency
+     * @apiSuccess {Date} classes.date_from
+     * @apiSuccess {Date} classes.date_to
+     * @apiSuccess {Date} classes.time_from
+     * @apiSuccess {Date} classes.time_to
+     * @apiSuccess {Object} subject
+     * @apiSuccess {Number} subject.id the subject ID
+     * @apiSuccess {String} subject.name
+     * @apiSuccess {Object} teacher
+     * @apiSuccess {Number} teacher.id teacher ID
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 1,
+            "first_name": "jayson",
+            "last_name": "barino",
+            "school_id": 1,
+            "user_type": "s",
+            "classes": [
+                {
+                    "id": 1,
+                    "name": "English 101",
+                    "description": "learn basics",
+                    "frequency": "M,W,F",
+                    "date_from": "2020-05-11",
+                    "date_to": "2020-05-15",
+                    "time_from": "09:00:00",
+                    "time_to": "10:00:00",
+                    "subject": {
+                        "id": 1,
+                        "name": "English"
+                    },
+                    "teacher": {
+                        "id": 8,
+                        "first_name": "teacher tom",
+                        "last_name": "cruz"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "Science 101",
+                    "description": "science experiments",
+                    "frequency": "T,TH",
+                    "date_from": "2020-05-11",
+                    "date_to": "2020-05-15",
+                    "time_from": "11:00:00",
+                    "time_to": "12:00:00",
+                    "subject": {
+                        "id": 4,
+                        "name": "Science"
+                    },
+                    "teacher": {
+                        "id": 8,
+                        "first_name": "teacher tom",
+                        "last_name": "cruz"
+                    }
+                }
+            ]
+        }
+     *
+     * 
+     * 
+     */
+    public function studentClasses(Request $request)
+    {
+        $user_id = Auth::user()->getKey();
 
+        $user = User::whereId($user_id)->with('classes')->first();
+        $fractal = fractal()->item($user, new UserTransformer);
+        $fractal->includeClasses();
+
+        return response()->json($fractal->toArray());
+    }
 
     /**
      * @apiDefine JWTHeader
