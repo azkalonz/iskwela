@@ -25,7 +25,8 @@ class ClassesTransformer extends TransformerAbstract
             ],
             'teacher' => [
                 'id' => $class->teacher->id,
-                'name' => $class->teacher->name,
+                'first_name' => $class->teacher->first_name,
+                'last_name' => $class->teacher->last_name,
             ]
         ];
     }

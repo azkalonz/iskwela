@@ -36,6 +36,7 @@ class FileController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+     * @apiParam {Number} assignment_id the activity id
      *
      * @apiSuccess {Boolean} success true/false
      * @apiSuccessExample {json} Sample Response
