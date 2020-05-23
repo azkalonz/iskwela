@@ -230,7 +230,33 @@ class FileController extends Controller
         return $this->download($class_material->filename);
     }
 
-    
+    /**
+     * Download Lessson Plan
+     *
+     * @api {POST} HOST/api/download/class/lesson-plan/{id} Lesson Plan
+     * @apiVersion 1.0.0
+     * @apiName DownloadLessonPlan
+     * @apiDescription Downloads the lesson plan
+     * @apiGroup Download
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id Lesson Plan ID
+     *
+     * @apiSuccess {BLOB} the attached file
+     *
+     */
+    public function downloadLessonPlan(Request $request)
+    {
+        $user =  Auth::user();
+
+        if(!$user) {
+            return response('Unauthorized access', 401);
+        }
+
+        $lesson_plan = \App\Models\LessonPlan::find($request->id);
+        return $this->download($lesson_plan->file);
+    }    
 
     public function download($filename)
     {
