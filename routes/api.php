@@ -30,13 +30,13 @@ Route::middleware('jwt')->group(function () {
     //uploads
     Route::post('/upload/activity/material', 'Api\\FileController@assignmentMaterial');
     Route::post('/upload/activity/answer', 'Api\\FileController@save'); //todo
-    Route::post('/upload/class/lesson-plan', 'Api\\FileController@lessonPlan'); //todo
+    Route::post('/upload/class/lesson-plan', 'Api\\FileController@lessonPlan');
     Route::post('/upload/class/material', 'Api\\FileController@classMaterial');
 
     //downloads
     Route::post('/download/activity/material/{id}', 'Api\\FileController@downloadAssignmentMaterial');
     Route::post('/download/activity/answer', 'Api\\FileController@save'); //todo
-    Route::post('/download/class/lesson-plan', 'Api\\FileController@save');// todo
+    Route::post('/download/class/lesson-plan', 'Api\\FileController@downloadLessonPlan')
     Route::post('/download/class/material/{id}', 'Api\\FileController@downloadClassMaterial');
 
     //schedules
