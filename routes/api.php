@@ -32,6 +32,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/upload/activity/answer', 'Api\\FileController@assignmentAnswer');
     Route::post('/upload/class/lesson-plan', 'Api\\FileController@lessonPlan');
     Route::post('/upload/class/material', 'Api\\FileController@classMaterial');
+    Route::post('/upload/user/profile-picture', 'Api\\FileController@userProfilePicture');
 
     //downloads
     Route::post('/download/activity/material/{id}', 'Api\\FileController@downloadAssignmentMaterial');
@@ -52,4 +53,9 @@ Route::middleware('jwt')->group(function () {
 	Route::post('/students/improvement/add', 'Api\\StudentController@addImprovement');
 	Route::get('/students/improvement/', 'Api\\StudentController@studentImprovement');
 	Route::get('/student/classes', 'Api\\ClassController@studentClasses');
+	
+	//users
+	Route::get('/user', 'Api\\UserController@show');
+	//Route::post('/user/change-password', 'Api\\UserController@changePassword');
+	
 });

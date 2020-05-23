@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 //use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use App\Models\UserPreference;
+
 class User extends Authenticatable implements JWTSubject
 {
     protected $fillable = ['name','username', 'password', 'user_type'];
@@ -35,4 +37,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasManyThrough(Classes::class, SectionStudent::class, 'user_id', 'section_id', 'id');
     }
+	
+	public function preference()
+	{
+		return $this->hasOne(UserPreference::class, 'user_id', 'id');
+	}
+	
 }

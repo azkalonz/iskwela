@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\File;
+use App\Models\UserPreference;
 
 use Storage;
 use Auth;
@@ -23,6 +24,13 @@ class FileController extends Controller
         'application/doc',
         'text/plain',
 		'txt'
+    ];
+	
+	const SUPPORTED_IMAGE_TYPES = [
+        'jpeg',
+        'bmp',
+        'png',
+        'gif'
     ];
 
     /**
@@ -212,6 +220,54 @@ class FileController extends Controller
 			$lesson_plan->created_by = $user->id;
 			$lesson_plan->updated_by = $user->id;
             $lesson_plan->save();
+        }
+        else {
+            return response('Unable to upload file', 500);
+        }
+
+        return response()->json(['success' => $response['success']]);
+    }
+	
+	
+	/**
+     * Upload User Profile Picture
+     *
+     * @api {POST} HOST/api/upload/user/profile-picture
+     * @apiVersion 1.0.0
+     * @apiName UploadUserProfilePicture
+     * @apiDescription Allows users to upload/change profile picture
+     * @apiGroup Upload
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf} file The file to be uploaded
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+
+    public function userProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|file|mimes:' . implode(',', self::SUPPORTED_IMAGE_TYPES)
+        ]);
+		
+		$user =  Auth::user();
+
+        $response = $this->upload($request->profile_picture);
+
+        if($response['success']) {
+            $user_preference = UserPreference::firstOrNew(['user_id' => $user->id]);
+			$user_preference->profile_picture = $response['profile_picture'];
+			$user_preference->updated_by = $user->id;
+							
+			$user_preference->save();
         }
         else {
             return response('Unable to upload file', 500);

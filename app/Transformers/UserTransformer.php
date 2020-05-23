@@ -15,6 +15,14 @@ class UserTransformer extends TransformerAbstract
 			'last_name' => $user->last_name,
 			'school_id' => $user->school_id,
 			'user_type' => $user->user_type,
+			'user_name' => $user->username,
+			'email' => $user->email,
+			'phone_number' => $user->phone_number,
+			'phone_number' => $user->phone_number,
+			'status' => $user->status,
+			'profile_picture' => $user->preference->profile_picture,
+			'push_notification' => $user->preference->push_notification,
+			'email_subscription' => $user->preference->email_subscription
 		];
 	}
 	
