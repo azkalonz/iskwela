@@ -32,6 +32,7 @@ Route::middleware('jwt')->group(function () {
 
     //classes -students
     Route::get('/student/classes', 'Api\\ClassController@studentClasses');
+    Route::get('/student/class/{id}', 'Api\\ClassController@show');
 
 
 

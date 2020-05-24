@@ -40,7 +40,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName UploadActivityMaterial
      * @apiDescription Allows adding media to activity
-     * @apiGroup Upload
+     * @apiGroup File Upload
      *
      * @apiUse JWTHeader
      *
@@ -86,7 +86,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName UploadActivityAnswer
      * @apiDescription Allows adding answers to activity
-     * @apiGroup Upload
+     * @apiGroup File Upload
      *
      * @apiUse JWTHeader
      *
@@ -132,7 +132,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName UploadClassMaterial
      * @apiDescription Allows adding class instruction materials
-     * @apiGroup Upload
+     * @apiGroup File Upload
      *
      * @apiUse JWTHeader
      *
@@ -185,7 +185,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName UploadClassLessonPlan
      * @apiDescription Allows adding media to lesson plan
-     * @apiGroup Upload
+     * @apiGroup File Upload
      *
      * @apiUse JWTHeader
      *
@@ -239,7 +239,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName UploadUserProfilePicture
      * @apiDescription Allows users to upload/change profile picture
-     * @apiGroup Upload
+     * @apiGroup File Upload
      *
      * @apiUse JWTHeader
      *
@@ -286,7 +286,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName DownloadActivityMaterial
      * @apiDescription Downloads the activity material
-     * @apiGroup Download
+     * @apiGroup File Download
      *
      * @apiUse JWTHeader
      *
@@ -314,7 +314,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName DownloadActivityAnswer
      * @apiDescription Downloads the activity answer
-     * @apiGroup Download
+     * @apiGroup File Download
      *
      * @apiUse JWTHeader
      *
@@ -342,7 +342,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName DownloadClassMaterial
      * @apiDescription Downloads the class material
-     * @apiGroup Download
+     * @apiGroup File Download
      *
      * @apiUse JWTHeader
      *
@@ -370,7 +370,7 @@ class FileController extends Controller
      * @apiVersion 1.0.0
      * @apiName DownloadLessonPlan
      * @apiDescription Downloads the lesson plan
-     * @apiGroup Download
+     * @apiGroup File Download
      *
      * @apiUse JWTHeader
      *
