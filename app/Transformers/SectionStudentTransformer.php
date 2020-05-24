@@ -6,12 +6,15 @@ use League\Fractal\TransformerAbstract;
 
 class SectionStudentTransformer extends TransformerAbstract
 {
+    protected $defaultIncludes = ['user'];
+
     public function transform(\App\Models\SectionStudent $section_student)
     {
-        return [
-            'id' => $section_student->user->id,
-            'name' => $section_student->user->name,
-            'user_type' => $section_student->user->user_type,
-        ];
+        return [];
+    }
+
+    public function includeUser(\App\Models\SectionStudent $section_student)
+    {
+        return $this->item($section_student->user, new \App\Transformers\UserTransformer);
     }
 }

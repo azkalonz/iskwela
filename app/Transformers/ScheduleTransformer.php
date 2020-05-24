@@ -6,7 +6,7 @@ use League\Fractal\TransformerAbstract;
 
 class ScheduleTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['materials', 'activities'];
+    protected $availableIncludes = ['materials', 'activities', 'lessonPlans'];
     /**
      * A Fractal transformer.
      *
@@ -23,7 +23,7 @@ class ScheduleTransformer extends TransformerAbstract
                 'first_name' => $schedule->teacher->first_name,
                 'last_name' => $schedule->teacher->last_name,
             ],
-            'status' => $schedule->status,
+            'status' => config('school_hub.schedule_status')[$schedule->status],
         ];
     }
     
@@ -35,5 +35,10 @@ class ScheduleTransformer extends TransformerAbstract
     public function includeActivities(\App\Models\Schedule $schedule)
     {
         return $this->collection($schedule->assignments, new \App\Transformers\AssignmentTransformer);
+    }
+
+    public function includeLessonPlans(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->lessonPlans, new \App\Transformers\LessonPlanTransformer);
     }
 }
