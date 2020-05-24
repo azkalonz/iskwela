@@ -21,9 +21,20 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::middleware('jwt')->group(function () {
-    //classes
-    Route::get('/classes', 'Api\\ClassController@index');
-    Route::get('/class/{id}', 'Api\\ClassController@show');
+    //classes - teachers
+    Route::get('/teacher/classes', 'Api\\ClassController@teacherClasses');
+    Route::get('/teacher/class/{id}', 'Api\\ClassController@show');
+    Route::get('/teacher/class-students/{id}', 'Api\\ClassController@classStudentList');
+    Route::get('/teacher/class-schedules/{id}', 'Api\\ScheduleController@classSchedules');
+    Route::get('/teacher/class-activities/{id}', 'Api\\ScheduleController@activitiesBySchedule');
+    Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ClassController@lessonPlans');
+    Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@materialsBySchedule');
+
+    //classes -students
+    Route::get('/student/classes', 'Api\\ClassController@studentClasses');
+
+
+
     Route::post('/class/save', 'Api\\ClassController@save');
     Route::get('/class/attendance/{id}', 'Api\\ClassController@attendance');
 
@@ -52,8 +63,7 @@ Route::middleware('jwt')->group(function () {
 	//student
 	Route::post('/students/improvement/add', 'Api\\StudentController@addImprovement');
 	Route::get('/students/improvement/', 'Api\\StudentController@studentImprovement');
-	Route::get('/student/classes', 'Api\\ClassController@studentClasses');
-	
+
 	//users
 	Route::get('/user', 'Api\\UserController@show');
 	//Route::post('/user/change-password', 'Api\\UserController@changePassword');

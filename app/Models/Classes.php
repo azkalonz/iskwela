@@ -60,4 +60,12 @@ class Classes extends Model
         return $this->hasMany(Assignment::class);
     }
 
+    /**
+    * @return Relation
+    */
+    public function sectionStudents()
+    {
+        return $this->hasMany(SectionStudent::class, 'section_id', 'section_id');
+    }
+
 }

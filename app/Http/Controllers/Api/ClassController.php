@@ -9,6 +9,7 @@ use App\Transformers\ClassesTransformer;
 use App\Transformers\ScheduleTransformer;
 use App\Transformers\ScheduleAttendanceTransformer;
 use App\Transformers\UserTransformer;
+use App\Transformers\UserPreferenceTransformer;
 use Auth;
 use App\Models\User;
 use App\Models\Schedule;
@@ -23,16 +24,15 @@ class ClassController extends Controller
     /**
      * Teacher Class List
      *
-     * @api {get} HOST/api/classes Teacher Class List
+     * @api {GET} <HOST>/api/teacher/classes Get class list
      * @apiVersion 1.0.0
      * @apiName TeacherClassList
-     * @apiDescription Returns list of classes handled by teacher
-     * @apiGroup Classes
+     * @apiDescription Returns array of classes handled by teacher
+     * @apiGroup Teacher Classes
      *
      * @apiUse JWTHeader
      *
      * @apiParam {StringOrNumber} user_id retrieves list of classes of the specified user. If not passed, defaults to currently logged in user: "me"
-     * @apiParam {String=schedules,students} include Comma separated relations to include. By default, lists don't include relations
      *
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
@@ -46,8 +46,6 @@ class ClassController extends Controller
      * @apiSuccess {Number} teacher.id Unique teacher id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {Array} schedules The class schedules. NOT INCLUDED BY DEFAULT. REFER TO Class Details doc for the data.
-     * @apiSuccess {Array} students List of students enrolled in the class. NOT INCLUDED BY DEFAULT. REFER TO Class Details doc for the data.
      * 
      * @apiSuccessExample {json} Sample Response
         [
@@ -70,32 +68,15 @@ class ClassController extends Controller
                     "last_name": "cruz"
                 }
             },
-            {
-                "id": 2,
-                "name": "Science 101",
-                "description": "science experiments",
-                "frequency": "T,TH",
-                "date_from": "2020-05-11",
-                "date_to": "2020-05-15",
-                "time_from": "11:00:00",
-                "time_to": "12:00:00",
-                "subject": {
-                    "id": 4,
-                    "name": "Science"
-                },
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                }
-            }
+            {},
+            {}
         ]
      *
      * 
      * 
      */
 
-    public function index(Request $request)
+    public function teacherClasses(Request $request)
     {
         //todo: add policy that only a school admin can view classes of other teachers
         // normal teacher can only view his/her own class or class being temporarily assigned
@@ -115,15 +96,16 @@ class ClassController extends Controller
     /**
      * Class Details
      *
-     * @api {get} HOST/api/class/{id} Class Details
+     * @api <HOST>/api/teacher/class/{id} Get class details
      * @apiVersion 1.0.0
      * @apiName ClassDetail
-     * @apiDescription Returns the details of the class
-     * @apiGroup Classes
+     * @apiDescription Returns a class object of the specified {id}
+     * @apiGroup Teacher Classes
      *
      * @apiUse JWTHeader
      *
      * @apiParam {Number} id the class ID
+     * @apiParam {String=schedules,students} include available relations to include
      *
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
@@ -133,40 +115,31 @@ class ClassController extends Controller
      * @apiSuccess {Date} date_to End of class
      * @apiSuccess {Time} time_from Class duration
      * @apiSuccess {Time} time_to Class duration
+     * @apiSuccess {Object} subject 
+     * @apiSuccess {Number} subject.id 
+     * @apiSuccess {String} subject.name The subject name
      * @apiSuccess {Object} teacher The teacher handling the class
      * @apiSuccess {Number} teacher.id Unique teacher id
      * @apiSuccess {String} teacher.name The teacher's name
-     * @apiSuccess {Array} schedules The class schedules
-     * @apiSuccess {Number} schedules.id Unique schedule id
-     * @apiSuccess {Date} schedules.from Session start
-     * @apiSuccess {Date} schedules.to Session end
-     * @apiSuccess {Number} schedules.status Session status: done, canceled
-     * @apiSuccess {Number} schedules.teacher teacher handling this session
+     * @apiSuccess {Array} schedules array of class schedules; not included by default
+     * @apiSuccess {Number} schedules.id the schedule ID
+     * @apiSuccess {Date} schedules.from date/time start of session
+     * @apiSuccess {Date} schedules.to date/time end of session
+     * @apiSuccess {Object} schedules.teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
      * @apiSuccess {Number} schedules.teacher.id
-     * @apiSuccess {String} schedules.teacher.first_name Teacher name
-     * @apiSuccess {String} schedules.teacher.last_name Teacher name
-     * @apiSuccess {Array} schedules.materials Class resources: notes, lessons, etc
-     * @apiSuccess {Number} schedules.materials.id Unique material id
-     * @apiSuccess {String} schedules.materials.title
-     * @apiSuccess {String} schedules.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
-     * @apiSuccess {String} schedules.materials.resource_link Link to materials e.g google doc, website,etc
-     * @apiSuccess {Object} schedules.materials.added_by Someone who added the material
-     * @apiSuccess {Number} schedules.materials.added_by.id ID of uploader
-     * @apiSuccess {String} schedules.materials.added_by.name Name of uploader
-     * @apiSuccess {Array} schedules.activities List of activities attached to the session
-     * @apiSuccess {Number} schedules.activities.id The activity id
-     * @apiSuccess {String} schedules.activities.title 
-     * @apiSuccess {String} schedules.activities.instruction 
-     * @apiSuccess {Date} schedules.activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Date} schedules.activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Array} schedules.activities.materials Array of reading materials needed for this activity
-     * @apiSuccess {Number} schedules.activities.materials.id 
-     * @apiSuccess {String} schedules.activities.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
-     * @apiSuccess {String} schedules.activities.materials.resource_link Link to materials e.g google doc, website,etc
-     * @apiSuccess {Array} students List of students enrolled in the class
-     * @apiSuccess {Number} students.id ID of student
-     * @apiSuccess {Number} students.name Name of student
-     * @apiSuccess {Number} students.user_type 's' => student by  default
+     * @apiSuccess {String} schedules.teacher.first_name
+     * @apiSuccess {String} schedules.teacher.last_name
+     * @apiSuccess {String} schedules.status "" or CANCELED
+     * @apiSuccess {Array} students array of students enrolled in the class; not included by default
+     * @apiSuccess {Number} students.id
+     * @apiSuccess {String} students.first_name
+     * @apiSuccess {String} students.last_name
+     * @apiSuccess {Number} students.school_id
+     * @apiSuccess {String} students.user_type
+     * @apiSuccess {String} students.username
+     * @apiSuccess {String} students.email
+     * @apiSuccess {Number} students.phone_number
+     * @apiSuccess {Number} students.status 1:active, 0-inactive
      * 
      * 
      * @apiSuccessExample {json} Sample Response
@@ -185,132 +158,38 @@ class ClassController extends Controller
             },
             "teacher": {
                 "id": 8,
-                "name": "teacher tom"
+                "first_name": "teacher tom",
+                "last_name": "cruz"
             },
             "schedules": [
                 {
                     "id": 1,
-                    "date": "2020-05-11",
-                    "status": 0,
-                    "is_active": false,
-                    "materials": [
-                        {
-                            "id": 1,
-                            "title": "English Writing Part 1",
-                            "uploaded_file": null,
-                            "resource_link": "https://sample-lesson-link.com/english-writing-part1",
-                            "added_by": {
-                                "id": 8,
-                                "name": "teacher tom"
-                            }
-                        },
-                        {
-                            "id": 2,
-                            "title": "English Writing Part 1",
-                            "uploaded_file": null,
-                            "resource_link": "https://sample-lesson-link.com/english-writing-part2",
-                            "added_by": {
-                                "id": 8,
-                                "name": "teacher tom"
-                            }
-                        }
-                    ],
-                    "activities": [
-                        {
-                            "id": 1,
-                            "title": "English Assignment 1",
-                            "instruction": "read it",
-                            "available_from": "2020-05-11",
-                            "available_to": "2020-05-15",
-                            "materials": [
-                                {
-                                    "id": 1,
-                                    "uploaded_file": "",
-                                    "resource_link": "http://read-english.com/basics"
-                                },
-                                {
-                                    "id": 2,
-                                    "uploaded_file": "",
-                                    "resource_link": "http://read-english.com/basics2"
-                                }
-                            ]
-                        },
-                        {
-                            "id": 2,
-                            "title": "English Assignment 2",
-                            "instruction": "read it",
-                            "available_from": "2020-05-20",
-                            "available_to": "2020-05-30",
-                            "materials": [
-                                {
-                                    "id": 3,
-                                    "uploaded_file": "",
-                                    "resource_link": "http://read-english.com/basics3"
-                                }
-                            ]
-                        }
-                    ]
+                    "from": "2020-05-15 09:00:00",
+                    "to": "2020-05-15 10:00:00",
+                    "teacher": {
+                        "id": 8,
+                        "first_name": "teacher tom",
+                        "last_name": "cruz"
+                    },
+                    "status": ""
                 },
-                {
-                    "id": 2,
-                    "date": "2020-05-13",
-                    "status": 0,
-                    "is_active": false,
-                    "materials": [
-                        {
-                            "id": 3,
-                            "title": "English Speaking",
-                            "uploaded_file": null,
-                            "resource_link": "https://sample-lesson-link.com/english-speaking",
-                            "added_by": {
-                                "id": 8,
-                                "name": "teacher tom"
-                            }
-                        }
-                    ],
-                    "activities": []
-                },
-                {
-                    "id": 3,
-                    "date": "2020-05-15",
-                    "status": 0,
-                    "is_active": true,
-                    "materials": [
-                        {
-                            "id": 4,
-                            "title": "English Grammar",
-                            "uploaded_file": null,
-                            "resource_link": "https://sample-lesson-link.com/english-grammar",
-                            "added_by": {
-                                "id": 8,
-                                "name": "teacher tom"
-                            }
-                        }
-                    ],
-                    "activities": []
-                }
+                {},
+            {}
             ],
             "students": [
                 {
                     "id": 1,
-                    "name": "jayson",
-                    "user_type": "s"
+                    "first_name": "jayson",
+                    "last_name": "barino",
+                    "school_id": 1,
+                    "user_type": "s",
+                    "username": "jayson",
+                    "email": "barinojayson@gmail.con",
+                    "phone_number": 111,
+                    "status": 1
                 },
-                {
-                    "id": 2,
-                    "name": "grace",
-                    "user_type": "s"
-                },
-                {
-                    "id": 3,
-                    "name": "jen",
-                    "user_type": "s"
-                },
-                {
-                    "id": 4,
-                    "name": "davy",
-                    "user_type": "s"
-                }
+                {},
+                {}
             ]
         }
      *
@@ -323,11 +202,81 @@ class ClassController extends Controller
         $class = Classes::whereId($request->id)->first();
 
         $fractal = fractal()->item($class, new ClassesTransformer);
-        $fractal->includeSchedules();
+        $fractal_arr = $fractal->toArray();
+
+        // hack to re-use the UserTransformer
+        // could be improved in the future
+        if(isset($fractal_arr['students'])) {
+            $stud_list = $this->serializedUserList($fractal_arr['students']);
+            $fractal_arr['students'] = $stud_list;
+        }
+
+       return response()->json($fractal_arr);
+    }
+
+
+    /**
+     * Class Details
+     *
+     * @api <HOST>/api/teacher/class-students/{id} Get list of students
+     * @apiVersion 1.0.0
+     * @apiName ClassStudentList
+     * @apiDescription Returns array of students enrolled in the class
+     * @apiGroup Teacher Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {id} id the student ID
+     * @apiSuccess {String} first_name Defined class name
+     * @apiSuccess {String} last_name Class description
+     * @apiSuccess {Number} school_id
+     * @apiSuccess {String} user_type
+     * @apiSuccess {String} username
+     * @apiSuccess {String} email
+     * @apiSuccess {Number} phone_number
+     * @apiSuccess {Number} status 1:active, 0-inactive
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 1,
+                "first_name": "jayson",
+                "last_name": "barino",
+                "school_id": 1,
+                "user_type": "s",
+                "user_name": "jayson",
+                "email": "barinojayson@gmail.con",
+                "phone_number": 111,
+                "status": 1
+            },
+            {},
+            {}
+        ]
+     * 
+     * 
+     */
+    
+    public function classStudentList(Request $request)
+    {
+        $includes = ['sectionStudents', 'sectionStudents.user'];
+        $student_list = Classes::whereId($request->id)->with($includes)->first();
+
+        $fractal = fractal()->item($student_list, new ClassesTransformer);
         $fractal->includeStudents();
 
-       return response()->json($fractal->toArray());
+        // serialize students list
+        // hack to make use of UserTransformer
+        $fractal_arr = $fractal->toArray();
+        $fractal_arr['students'] = collect($fractal_arr['students'])->map(function($object) {
+            return $object['user'];
+        });
+
+        return response()->json($fractal_arr['students']);
     }
+
 
     /**
      * Class Attendance
@@ -456,7 +405,7 @@ class ClassController extends Controller
     }
 
 
-        /**
+    /**
      * Student Classes List
      *
      * @api {get} HOST/api/student/classes Student Classes List
@@ -551,6 +500,16 @@ class ClassController extends Controller
         $fractal->includeClasses();
 
         return response()->json($fractal->toArray());
+    }
+
+
+    private function serializedUserList(Array $list)
+    {
+        $serialized_list = collect($list)->map(function($object) {
+            return $object['user'];
+        });
+
+        return $serialized_list->toArray();
     }
 
     /**

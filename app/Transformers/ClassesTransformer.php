@@ -38,6 +38,6 @@ class ClassesTransformer extends TransformerAbstract
 
     public function includeStudents(\App\Models\Classes $class)
     {
-        return $this->collection($class->section->students, new \App\Transformers\SectionStudentTransformer);
+        return $this->collection($class->sectionStudents, new \App\Transformers\SectionStudentTransformer);
     }
 }
