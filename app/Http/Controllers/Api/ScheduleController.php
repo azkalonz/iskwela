@@ -240,7 +240,7 @@ class ScheduleController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {Number} id the class ID
-     * @apiParam {String=materials,activities,lessonPlans} include comman separated; available relations to included
+     * @apiParam {String=materials,activities,lessonPlans} include comma separated; available relations to include
      *
      * @apiSuccess {Number} id the schedule ID
      * @apiSuccess {Date} from date/time start of session
@@ -344,10 +344,14 @@ class ScheduleController extends Controller
      */
     
     
-    public function classSchedules(Request $request)
+    public function classTeacherSchedules(Request $request)
     {
-        //todo: add policy that only teacher/student related to class can view
-        $schedules = Schedule::whereClassId($request->id)->get();
+        return $this->getClasSchedules($request->id);
+    }
+
+    private function getClasSchedules($class_id)
+    {
+        $schedules = Schedule::whereClassId($class_id)->get();
         $fractal = fractal()->collection($schedules, new ScheduleTransformer);
 
         return response()->json($fractal->toArray());
@@ -540,13 +544,113 @@ class ScheduleController extends Controller
         ]
      * 
      */
-    public function materialsBySchedule(Request $request)
+    public function classMaterialsTeachersBySchedule(Request $request)
     {
         $this->validate($request, [
             'include' => 'in:""' //not customizable
         ]);
+
+        return $this->getClassMaterials($request->id);
+       
+    }
+
+    /**
+     * Class Materials
+     *
+     * @api <HOST>/api/teacher/class-materials/{id} Get class materials (by schedule)
+     * @apiVersion 1.0.0
+     * @apiName ClassMaterials
+     * @apiDescription Returns list of class materials classified by (array of)schedules
+     * @apiGroup Student Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Date} from date/time start of session
+     * @apiSuccess {Date} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {Array} materials list of materials used in the session (or empty)
+     * @apiSuccess {Number} materials.id the activity ID
+     * @apiSuccess {String} materials.title
+     * @apiSuccess {String} materials.uploaded_file link to uploaded file or
+     * @apiSuccess {String} materials.resource_link a shared reference link (google docs, etc)
+     * @apiSuccess {Object} added_by the teacher/user who added this material
+     * @apiSuccess {Number} added_by.id
+     * @apiSuccess {String} added_by.first_name
+     * @apiSuccess {String} added_by.last_name
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 1,
+                "from": "2020-05-15 09:00:00",
+                "to": "2020-05-15 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "materials": [
+                    {
+                        "id": 1,
+                        "title": "English Writing Part 1",
+                        "uploaded_file": "",
+                        "resource_link": "https://sample-lesson-link.com/english-writing-part1",
+                        "added_by": {
+                            "id": 8,
+                            "first_name": "teacher tom",
+                            "last_name": "cruz"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "title": "English Writing Part 1",
+                        "uploaded_file": "http://link-to-uploaded-file/sample",
+                        "resource_link": "",
+                        "added_by": {
+                            "id": 8,
+                            "first_name": "teacher tom",
+                            "last_name": "cruz"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "materials": []
+            }
+        ]
+     * 
+     */
+    public function classMaterialsStudentsBySchedule(Request $request)
+    {
+        $this->validate($request, [
+            'include' => 'in:""' //not customizable
+        ]);
+        
+        return $this->getClassMaterials($request->id);
+    }
+
+    private function getClassMaterials($class_id)
+    {
         //todo: add policy that only teacher/student related to class can view
-        $schedules = Schedule::with('materials')->whereClassId($request->id)->get();
+        $schedules = Schedule::with('materials')->whereClassId($class_id)->get();
         $fractal = fractal()->collection($schedules, new ScheduleTransformer);
         $fractal->includeMaterials();
 
@@ -676,6 +780,236 @@ class ScheduleController extends Controller
 
         return response()->json($fractal->toArray());
     }
+
+    /**
+     * Class Schedules
+     *
+     * @api <HOST>/api/student/class-schedules/{id} Get class schedules
+     * @apiVersion 1.0.0
+     * @apiName ClassSchedules
+     * @apiDescription Returns array of class schedules
+     * @apiGroup Student Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     * @apiParam {String=materials,activities} include comma separated; available relations to include
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Date} from date/time start of session
+     * @apiSuccess {Date} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {Array} materials list of materials used in the session (or empty)
+     * @apiSuccess {Number} materials.id the activity ID
+     * @apiSuccess {String} materials.title
+     * @apiSuccess {String} materials.uploaded_file link to uploaded file or
+     * @apiSuccess {String} materials.resource_link a shared reference link (google docs, etc)
+     * @apiSuccess {Object} materials.added_by the teacher/user who added this material
+     * @apiSuccess {Number} materials.added_by.id
+     * @apiSuccess {String} materials.added_by.first_name
+     * @apiSuccess {String} materials.added_by.last_name
+     * @apiSuccess {Array} activities the activitiy list of the session (or empty)
+     * @apiSuccess {Number} activities.id the activity ID
+     * @apiSuccess {String} activities.title
+     * @apiSuccess {String} activities.desription
+     * @apiSuccess {String} activities.activit_type "class activity" or "assignment"
+     * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
+     * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
+     * @apiSuccess {String} activities.status "published" or "unpublished"
+     * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
+     * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
+     * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 1,
+                "from": "2020-05-15 09:00:00",
+                "to": "2020-05-15 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "materials": [
+                    {
+                        "id": 1,
+                        "title": "English Writing Part 1",
+                        "uploaded_file": "",
+                        "resource_link": "https://sample-lesson-link.com/english-writing-part1",
+                        "added_by": {
+                            "id": 8,
+                            "first_name": "teacher tom",
+                            "last_name": "cruz"
+                        }
+                    },
+                    {}
+                ],
+                "activities": [
+                    {
+                        "id": 1,
+                        "title": "English Assignment 1",
+                        "description": "read it",
+                        "activity_type": "class activity",
+                        "available_from": "2020-05-11",
+                        "available_to": "2020-05-15",
+                        "status": "unpublished",
+                        "materials": [
+                            {
+                                "id": 1,
+                                "uploaded_file": "http://link-to-uploaded-file/sample",
+                                "resource_link": ""
+                            },
+                            {
+                                "id": 2,
+                                "uploaded_file": "",
+                                "resource_link": "http://read-english.com/basics2"
+                            }
+                        ]
+                    },
+                    {}
+                ]
+            },
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "materials": [],
+                "activities": []
+            },
+            {},
+            {}
+        ]
+     * 
+     */
+    
+    
+    public function classStudentSchedules(Request $request)
+    {
+        //todo:can include lesson and activity only
+        return $this->getClasSchedules($request->id);
+    }
+
+
+    /**
+     * Class Activities
+     *
+     * @api <HOST>/api/student/class-activities/{id} Get class activities (by schedule)
+     * @apiVersion 1.0.0
+     * @apiName ClassActivities
+     * @apiDescription Returns list of class activities classified by (array of)schedules
+     * @apiGroup Student Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Date} from date/time start of session
+     * @apiSuccess {Date} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {Array} activities the activitiy list of the session (or empty)
+     * @apiSuccess {Number} activities.id the activity ID
+     * @apiSuccess {String} activities.title
+     * @apiSuccess {String} activities.desription
+     * @apiSuccess {String} activities.activit_type "class activity" or "assignment"
+     * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
+     * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
+     * @apiSuccess {String} activities.status "published" or "unpublished"
+     * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
+     * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
+     * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 1,
+                "from": "2020-05-15 09:00:00",
+                "to": "2020-05-15 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "activities": [
+                    {
+                        "id": 1,
+                        "title": "English Assignment 1",
+                        "description": "read it",
+                        "activity_type": "class activity",
+                        "available_from": "2020-05-11",
+                        "available_to": "2020-05-15",
+                        "status": "unpublished",
+                        "materials": [
+                            {
+                                "id": 1,
+                                "uploaded_file": "",
+                                "resource_link": "http://read-english.com/basics"
+                            },
+                            {
+                                "id": 1,
+                                "uploaded_file": "http://link-to-uploaded-file.com/sample",
+                                "resource_link": ""
+                            },
+                    {}
+                        ]
+                    },
+                    {}
+                ]
+            },
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz"
+                },
+                "status": "",
+                "activities": []
+            }
+        ]
+     * 
+     * 
+     */
+    
+    public function studentActivitiesBySchedule(Request $request)
+    {
+        $this->validate($request, [
+            'include' => 'in:""' //not customizable
+        ]);
+        //todo: add policy that only teacher/student related to class can view
+        $schedules = Schedule::with('assignments')->whereClassId($request->id)->get();
+        $fractal = fractal()->collection($schedules, new ScheduleTransformer);
+        $fractal->includeActivities();
+
+        return response()->json($fractal->toArray());
+    }
+
+
+
+
 
 
     /**
