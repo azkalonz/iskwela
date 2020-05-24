@@ -10,6 +10,8 @@ class ClassesTransformer extends TransformerAbstract
 
     public function transform(\App\Models\Classes $class)
     {
+
+        $next_schedule = $this->getNextSchedule($class->schedules->toArray());
         return [
             'id' => $class->id,
             'name' => $class->name,
@@ -19,6 +21,7 @@ class ClassesTransformer extends TransformerAbstract
             'date_to' => $class->date_to,
             'time_from' => $class->time_from,
             'time_to' => $class->time_to,
+            'next_schedule' => $next_schedule,
             'subject' => [
                 'id' => $class->subject->id,
                 'name' => $class->subject->name
@@ -39,5 +42,26 @@ class ClassesTransformer extends TransformerAbstract
     public function includeStudents(\App\Models\Classes $class)
     {
         return $this->collection($class->sectionStudents, new \App\Transformers\SectionStudentTransformer);
+    }
+
+    private function getNextSchedule(Array $schedules)
+    {
+        $next = [];
+        foreach($schedules as $sched)
+        {
+            $from = strtotime($sched['date_from']);
+            $now = strtotime('now');
+
+            if($from >= $now) {
+                $next = [
+                    'from' => $sched['date_from'],
+                    'to' => $sched['date_to']
+                ];
+                break;
+
+            }
+            continue;
+        }
+        return $next;
     }
 }
