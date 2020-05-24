@@ -272,7 +272,6 @@ class ClassController extends Controller
      * 
      * 
      */
-    
     public function classStudentList(Request $request)
     {
         $includes = ['sectionStudents', 'sectionStudents.user'];
@@ -293,148 +292,25 @@ class ClassController extends Controller
 
 
     /**
-     * Class Attendance
+     * Student Class List
      *
-     * @api {get} HOST/api/class/attendance/{class_id} Class Attendance
-     * @apiVersion 1.0.0
-     * @apiName Attendance
-     * @apiDescription Returns list of users present in each class session
-     * @apiGroup Classes
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} class_id the class ID
-     *
-     * @apiSuccess {Number} schedule_id class schedule
-     * @apiSuccess {Date} date session date
-     * @apiSuccess {String={"",canceled}} status session status
-     * @apiSuccess {Number} is_active true if session date = current date, false otherwise
-     * @apiSuccess {Array} attendances List of users present in the current session
-     * @apiSuccess {Number} attendances.user_id
-     * @apiSuccess {String} attendances.username
-     * @apiSuccess {String} attendances.name
-     * @apiSuccess {String} attendances.user_type
-     * 
-     * @apiSuccessExample {json} Sample Response
-        [
-            {
-                "schedule_id": 1,
-                "date": "2020-05-11",
-                "status": "",
-                "is_active": false,
-                "attendances": [
-                    {
-                        "user_id": 1,
-                        "username": "jayson",
-                        "name": "jayson",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 2,
-                        "username": "grace",
-                        "name": "grace",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 3,
-                        "username": "jen",
-                        "name": "jen",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 4,
-                        "username": "davy",
-                        "name": "davy",
-                        "user_type": "s"
-                    }
-                ]
-            },
-            {
-                "schedule_id": 2,
-                "date": "2020-05-13",
-                "status": "",
-                "is_active": false,
-                "attendances": [
-                    {
-                        "user_id": 1,
-                        "username": "jayson",
-                        "name": "jayson",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 2,
-                        "username": "grace",
-                        "name": "grace",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 3,
-                        "username": "jen",
-                        "name": "jen",
-                        "user_type": "s"
-                    }
-                ]
-            },
-            {
-                "schedule_id": 3,
-                "date": "2020-05-15",
-                "status": "",
-                "is_active": true,
-                "attendances": [
-                    {
-                        "user_id": 1,
-                        "username": "jayson",
-                        "name": "jayson",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 2,
-                        "username": "grace",
-                        "name": "grace",
-                        "user_type": "s"
-                    },
-                    {
-                        "user_id": 4,
-                        "username": "davy",
-                        "name": "davy",
-                        "user_type": "s"
-                    }
-                ]
-            }
-        ]
-     *
-     * 
-     * 
-     */
-    
-    public function attendance(Request $request)
-    {
-        $user =  Auth::user();
-        $schedule = Schedule::whereClassId($request->id)->get();
-
-        $fractal = fractal()->collection($schedule, new ScheduleAttendanceTransformer);
-
-
-       return response()->json($fractal->toArray());
-    }
-
-
-    /**
-     * Student Classes List
-     *
-     * @api {get} HOST/api/student/classes Student Classes List
+     * @api {get} HOST/api/student/classes get class list
      * @apiVersion 1.0.0
      * @apiName StudentClassList
-     * @apiDescription Returns the list of class of logged in student
-     * @apiGroup Classes
+     * @apiDescription Returns array of classes where the logged in student is currently enrolled
+     * @apiGroup Student Classes
      *
      * @apiUse JWTHeader
      *
-     * @apiSuccess {Number} id the student's unique ID
-     * @apiSuccess {String} first_name
-     * @apiSuccess {String} last_name
+     * @apiSuccess {id} id the student ID
+     * @apiSuccess {String} first_name 
+     * @apiSuccess {String} last_name 
      * @apiSuccess {Number} school_id
      * @apiSuccess {String} user_type
+     * @apiSuccess {String} username
+     * @apiSuccess {String} email
+     * @apiSuccess {Number} phone_number
+     * @apiSuccess {Number} status 1:active, 0-inactive
      * @apiSuccess {Array} classes list of classes
      * @apiSuccess {Number} classes.id the class ID
      * @apiSuccess {String} classes.name
@@ -444,6 +320,9 @@ class ClassController extends Controller
      * @apiSuccess {Date} classes.date_to
      * @apiSuccess {Date} classes.time_from
      * @apiSuccess {Date} classes.time_to
+     * @apiSuccess {Object} next_schedule the next session
+     * @apiSuccess {Timestamp} next_schedule.from
+     * @apiSuccess {Timestamp} next_schedule.to
      * @apiSuccess {Object} subject
      * @apiSuccess {Number} subject.id the subject ID
      * @apiSuccess {String} subject.name
@@ -460,6 +339,10 @@ class ClassController extends Controller
             "last_name": "barino",
             "school_id": 1,
             "user_type": "s",
+            "user_name": "jayson",
+            "email": "barinojayson@gmail.con",
+            "phone_number": 111,
+            "status": 1,
             "classes": [
                 {
                     "id": 1,
@@ -470,6 +353,10 @@ class ClassController extends Controller
                     "date_to": "2020-05-15",
                     "time_from": "09:00:00",
                     "time_to": "10:00:00",
+                    "next_schedule": {
+                        "from": "2020-05-25 09:00:00",
+                        "to": "2020-05-25 10:00:00"
+                    },
                     "subject": {
                         "id": 1,
                         "name": "English"
@@ -480,25 +367,8 @@ class ClassController extends Controller
                         "last_name": "cruz"
                     }
                 },
-                {
-                    "id": 2,
-                    "name": "Science 101",
-                    "description": "science experiments",
-                    "frequency": "T,TH",
-                    "date_from": "2020-05-11",
-                    "date_to": "2020-05-15",
-                    "time_from": "11:00:00",
-                    "time_to": "12:00:00",
-                    "subject": {
-                        "id": 4,
-                        "name": "Science"
-                    },
-                    "teacher": {
-                        "id": 8,
-                        "first_name": "teacher tom",
-                        "last_name": "cruz"
-                    }
-                }
+                {},
+                {}
             ]
         }
      *
@@ -517,6 +387,138 @@ class ClassController extends Controller
     }
 
 
+    /**
+     * Class Details
+     *
+     * @api <HOST>/api/teacher/class/{id} Get class details
+     * @apiVersion 1.0.0
+     * @apiName ClassDetail
+     * @apiDescription Returns a class object of the specified {id}
+     * @apiGroup Student Classes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     * @apiParam {String=schedules} include available relations to include
+     *
+     * @apiSuccess {Number} id Unique class id
+     * @apiSuccess {String} name Defined class name
+     * @apiSuccess {String} description Class description
+     * @apiSuccess {String} frequency The frequency of session
+     * @apiSuccess {Date} date_from Start of class
+     * @apiSuccess {Date} date_to End of class
+     * @apiSuccess {Time} time_from Class duration
+     * @apiSuccess {Time} time_to Class duration
+     * @apiSuccess {Object} next_schedule the next session
+     * @apiSuccess {Timestamp} next_schedule.from
+     * @apiSuccess {Timestamp} next_schedule.to
+     * @apiSuccess {Object} subject 
+     * @apiSuccess {Number} subject.id 
+     * @apiSuccess {String} subject.name The subject name
+     * @apiSuccess {Object} teacher The teacher handling the class
+     * @apiSuccess {Number} teacher.id Unique teacher id
+     * @apiSuccess {String} teacher.name The teacher's name
+     * @apiSuccess {Array} schedules array of class schedules; not included by default
+     * @apiSuccess {Number} schedules.id the schedule ID
+     * @apiSuccess {Date} schedules.from date/time start of session
+     * @apiSuccess {Date} schedules.to date/time end of session
+     * @apiSuccess {Object} schedules.teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} schedules.teacher.id
+     * @apiSuccess {String} schedules.teacher.first_name
+     * @apiSuccess {String} schedules.teacher.last_name
+     * @apiSuccess {String} schedules.status "" or CANCELED
+     * @apiSuccess {Array} students array of students enrolled in the class; not included by default
+     * @apiSuccess {Number} students.id
+     * @apiSuccess {String} students.first_name
+     * @apiSuccess {String} students.last_name
+     * @apiSuccess {Number} students.school_id
+     * @apiSuccess {String} students.user_type
+     * @apiSuccess {String} students.username
+     * @apiSuccess {String} students.email
+     * @apiSuccess {Number} students.phone_number
+     * @apiSuccess {Number} students.status 1:active, 0-inactive
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 1,
+            "name": "English 101",
+            "description": "learn basics",
+            "frequency": "M,W,F",
+            "date_from": "2020-05-11",
+            "date_to": "2020-05-15",
+            "time_from": "09:00:00",
+            "time_to": "10:00:00",
+            "next_schedule": {
+                "from": "2020-05-25 09:00:00",
+                "to": "2020-05-25 10:00:00"
+            },
+            "subject": {
+                "id": 1,
+                "name": "English"
+            },
+            "teacher": {
+                "id": 8,
+                "first_name": "teacher tom",
+                "last_name": "cruz"
+            },
+            "schedules": [
+                {
+                    "id": 1,
+                    "from": "2020-05-15 09:00:00",
+                    "to": "2020-05-15 10:00:00",
+                    "teacher": {
+                        "id": 8,
+                        "first_name": "teacher tom",
+                        "last_name": "cruz"
+                    },
+                    "status": ""
+                },
+                {},
+            {}
+            ],
+            "students": [
+                {
+                    "id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino",
+                    "school_id": 1,
+                    "user_type": "s",
+                    "username": "jayson",
+                    "email": "barinojayson@gmail.con",
+                    "phone_number": 111,
+                    "status": 1
+                },
+                {},
+                {}
+            ]
+        }
+     *
+     * 
+     * 
+     */
+    public function showStudentClass(Request $request)
+    {
+        $this->validate($request, [
+            'include' => 'in:schedules'
+        ]);
+        //todo: add policy that only student related to class can view
+        $class = Classes::whereId($request->id)->first();
+
+        $fractal = fractal()->item($class, new ClassesTransformer);
+        $fractal_arr = $fractal->toArray();
+
+        // hack to re-use the UserTransformer
+        // could be improved in the future
+        if(isset($fractal_arr['students'])) {
+            $stud_list = $this->serializedUserList($fractal_arr['students']);
+            $fractal_arr['students'] = $stud_list;
+        }
+
+       return response()->json($fractal_arr);
+    }
+
+
     private function serializedUserList(Array $list)
     {
         $serialized_list = collect($list)->map(function($object) {
@@ -525,6 +527,8 @@ class ClassController extends Controller
 
         return $serialized_list->toArray();
     }
+
+    
 
     /**
      * @apiDefine JWTHeader

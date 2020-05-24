@@ -25,14 +25,17 @@ Route::middleware('jwt')->group(function () {
     Route::get('/teacher/classes', 'Api\\ClassController@teacherClasses');
     Route::get('/teacher/class/{id}', 'Api\\ClassController@show');
     Route::get('/teacher/class-students/{id}', 'Api\\ClassController@classStudentList');
-    Route::get('/teacher/class-schedules/{id}', 'Api\\ScheduleController@classSchedules');
+    Route::get('/teacher/class-schedules/{id}', 'Api\\ScheduleController@classTeacherSchedules');
     Route::get('/teacher/class-activities/{id}', 'Api\\ScheduleController@activitiesBySchedule');
     Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ScheduleController@lessonPlansBySchedule');
-    Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@materialsBySchedule');
+    Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@classMaterialsTeachersBySchedule');
 
     //classes -students
     Route::get('/student/classes', 'Api\\ClassController@studentClasses');
-    Route::get('/student/class/{id}', 'Api\\ClassController@show');
+    Route::get('/student/class/{id}', 'Api\\ClassController@showStudentClass');
+    Route::get('/student/class-activities/{id}', 'Api\\ScheduleController@studentActivitiesBySchedule');
+    Route::get('/student/class-schedules/{id}', 'Api\\ScheduleController@classStudentSchedules');
+    Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
 
 
 
