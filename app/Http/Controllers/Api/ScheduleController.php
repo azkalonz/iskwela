@@ -574,12 +574,12 @@ class ScheduleController extends Controller
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
      * @apiSuccess {String} status "" or CANCELED
-     * @apiSuccess {Array} materials list of materials used in the session (or empty)
-     * @apiSuccess {Number} materials.id the activity ID
-     * @apiSuccess {String} materials.title
-     * @apiSuccess {String} materials.uploaded_file link to uploaded file or
-     * @apiSuccess {String} materials.resource_link a shared reference link (google docs, etc)
-     * @apiSuccess {Object} added_by the teacher/user who added this material
+     * @apiSuccess {Array} lesson plan list of lesson plans used in the session (or empty)
+     * @apiSuccess {Number} lessonPlans.id the Lesson Plan ID
+     * @apiSuccess {String} lessonPlans.title
+     * @apiSuccess {String} lessonPlans.uploaded_file link to uploaded file or
+     * @apiSuccess {String} lessonPlans.resource_link a shared reference link (google docs, etc)
+     * @apiSuccess {Object} added_by the teacher/user who added this lesson plan
      * @apiSuccess {Number} added_by.id
      * @apiSuccess {String} added_by.first_name
      * @apiSuccess {String} added_by.last_name
@@ -587,54 +587,79 @@ class ScheduleController extends Controller
      * 
      * @apiSuccessExample {json} Sample Response
         [
-            {
-                "id": 1,
-                "from": "2020-05-15 09:00:00",
-                "to": "2020-05-15 10:00:00",
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                },
-                "status": "",
-                "materials": [
-                    {
-                        "id": 1,
-                        "title": "English Writing Part 1",
-                        "uploaded_file": "",
-                        "resource_link": "https://sample-lesson-link.com/english-writing-part1",
-                        "added_by": {
-                            "id": 8,
-                            "first_name": "teacher tom",
-                            "last_name": "cruz"
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "title": "English Writing Part 1",
-                        "uploaded_file": "http://link-to-uploaded-file/sample",
-                        "resource_link": "",
-                        "added_by": {
-                            "id": 8,
-                            "first_name": "teacher tom",
-                            "last_name": "cruz"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "from": "2020-05-18 09:00:00",
-                "to": "2020-05-18 10:00:00",
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                },
-                "status": "",
-                "materials": []
-            }
-        ]
+			{
+				"id": 6,
+				"from": "2020-05-22 09:00:00",
+				"to": "2020-05-22 10:00:00",
+				"teacher": {
+					"id": 9,
+					"first_name": "teacher jayson",
+					"last_name": "barino"
+				},
+				"status": "",
+				"lessonPlans": [
+					{
+						"id": 1,
+						"title": "Hello Lesson Plan",
+						"uploaded_file": "",
+						"resource_link": "http://sample-lesson-plan-link.com",
+						"added_by": {
+							"id": 9,
+							"first_name": "teacher jayson",
+							"last_name": "barino"
+						}
+					}
+				]
+			},
+			{
+				"id": 7,
+				"from": "2020-05-25 09:00:00",
+				"to": "2020-05-25 10:00:00",
+				"teacher": {
+					"id": 9,
+					"first_name": "teacher jayson",
+					"last_name": "barino"
+				},
+				"status": "",
+				"lessonPlans": []
+			},
+			{
+				"id": 8,
+				"from": "2020-05-26 09:00:00",
+				"to": "2020-05-26 10:00:00",
+				"teacher": {
+					"id": 9,
+					"first_name": "teacher jayson",
+					"last_name": "barino"
+				},
+				"status": "",
+				"lessonPlans": []
+			},
+			{
+				"id": 9,
+				"from": "2020-05-27 09:00:00",
+				"to": "2020-05-27 10:00:00",
+				"teacher": {
+					"id": 9,
+					"first_name": "teacher jayson",
+					"last_name": "barino"
+				},
+				"status": "",
+				"lessonPlans": []
+			},
+			{
+				"id": 10,
+				"from": "2020-05-28 09:00:00",
+				"to": "2020-05-28 10:00:00",
+				"teacher": {
+					"id": 9,
+					"first_name": "teacher jayson",
+					"last_name": "barino"
+				},
+				"status": "",
+				"lessonPlans": []
+			}
+		]
      * 
      */
     public function lessonPlansBySchedule(Request $request)
@@ -642,8 +667,10 @@ class ScheduleController extends Controller
         $this->validate($request, [
             'include' => 'in:""' //not customizable
         ]);
+		
         //todo: add policy that only teacher/student related to class can view
-        $schedules = Schedule::with('lessonPlans')->whereClassId($request->id)->get();
+        
+		$schedules = Schedule::with('lessonPlans')->whereClassId($request->id)->get();
         $fractal = fractal()->collection($schedules, new ScheduleTransformer);
         $fractal->includeLessonPlans();
 

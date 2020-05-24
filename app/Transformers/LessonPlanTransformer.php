@@ -6,12 +6,12 @@ use League\Fractal\TransformerAbstract;
 
 class LessonPlanTransformer extends TransformerAbstract
 {
-    public function transform(\App\Models\ClassMaterial $lesson_plan)
+    public function transform(\App\Models\LessonPlan $lesson_plan)
     {
         return [
             'id' => $lesson_plan->id,
             'title' => $lesson_plan->title,
-            'uploaded_file' => ($lesson_plan->filename) ? sprintf('%s/api/download/class/material/%s', env('APP_URL'), $lesson_plan->id) : "",
+            'uploaded_file' => ($lesson_plan->file) ? sprintf('%s/api/download/class/material/%s', env('APP_URL'), $lesson_plan->id) : "",
             'resource_link' => $lesson_plan->link_url,
             'added_by' => [
                 'id' => $lesson_plan->user->id,

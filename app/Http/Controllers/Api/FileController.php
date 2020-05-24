@@ -191,6 +191,7 @@ class FileController extends Controller
      *
      * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
      * @apiParam {Number} schedule_id the schedule id
+     * @apiParam {String} title title of the Lesson Plan
      *
      * @apiSuccess {Boolean} success true/false
      * @apiSuccessExample {json} Sample Response
@@ -206,7 +207,8 @@ class FileController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
-            'schedule_id' => 'integer'
+            'schedule_id' => 'integer|required',
+			'title' => 'required'
         ]);
 		
 		$user =  Auth::user();
@@ -217,6 +219,7 @@ class FileController extends Controller
             $lesson_plan = new \App\Models\LessonPlan();
             $lesson_plan->schedule_id = $request->schedule_id;
             $lesson_plan->file = $response['file'];
+            $lesson_plan->title = $response['title'];
 			$lesson_plan->created_by = $user->id;
 			$lesson_plan->updated_by = $user->id;
             $lesson_plan->save();
@@ -257,7 +260,7 @@ class FileController extends Controller
         $request->validate([
             'profile_picture' => 'required|file|mimes:' . implode(',', self::SUPPORTED_IMAGE_TYPES)
         ]);
-		
+
 		$user =  Auth::user();
 
         $response = $this->upload($request->profile_picture);
@@ -266,7 +269,7 @@ class FileController extends Controller
             $user_preference = UserPreference::firstOrNew(['user_id' => $user->id]);
 			$user_preference->profile_picture = $response['file'];
 			$user_preference->updated_by = $user->id;
-							
+
 			$user_preference->save();
         }
         else {

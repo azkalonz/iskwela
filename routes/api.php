@@ -27,7 +27,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/teacher/class-students/{id}', 'Api\\ClassController@classStudentList');
     Route::get('/teacher/class-schedules/{id}', 'Api\\ScheduleController@classSchedules');
     Route::get('/teacher/class-activities/{id}', 'Api\\ScheduleController@activitiesBySchedule');
-    Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ClassController@lessonPlans');
+    Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ScheduleController@lessonPlansBySchedule');
     Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@materialsBySchedule');
 
     //classes -students
@@ -67,5 +67,8 @@ Route::middleware('jwt')->group(function () {
 	//users
 	Route::get('/user', 'Api\\UserController@show');
 	//Route::post('/user/change-password', 'Api\\UserController@changePassword');
+	
+	//lesson_plans
+	Route::get('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
 	
 });

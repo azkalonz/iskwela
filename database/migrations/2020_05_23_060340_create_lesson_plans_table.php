@@ -15,8 +15,11 @@ class CreateLessonPlansTable extends Migration
     {
         Schema::create('lesson_plans', function (Blueprint $table) {
             $table->bigIncrements('id');
+			$table->bigInteger('class_id');
 			$table->bigInteger('schedule_id');
-			$table->string('file');
+			$table->string('title');
+			$table->string('link_url')->nullable();
+			$table->string('file')->nullable();
 			$table->bigInteger('created_by')->unsigned();
             $table->bigInteger('updated_by')->unsigned();
             $table->timestamp('created_at')->useCurrent();
