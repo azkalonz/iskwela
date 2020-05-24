@@ -264,7 +264,7 @@ class FileController extends Controller
 
         if($response['success']) {
             $user_preference = UserPreference::firstOrNew(['user_id' => $user->id]);
-			$user_preference->profile_picture = $response['profile_picture'];
+			$user_preference->profile_picture = $response['file'];
 			$user_preference->updated_by = $user->id;
 							
 			$user_preference->save();
