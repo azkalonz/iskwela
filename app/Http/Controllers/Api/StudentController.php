@@ -16,6 +16,41 @@ use League\Fractal\Serializer\ArraySerializer;
 
 class StudentController extends Controller
 {
+	
+	/**
+     * Add/Edit Student Improvement
+     *
+     * @api {POST} HOST/students/improvement/save Add/Edit Student Improvement
+     * @apiVersion 1.0.0
+     * @apiName AddEditStudentImprovement
+     * @apiDescription Add or edit student improvement
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} student_id Student ID
+     * @apiParam {Number} class_id Class ID
+     * @apiParam {String} improvement Improvement notes
+     *
+     * @apiSuccess {Number} class_id Class ID
+     * @apiSuccess {String} class_name Name of Class
+     * @apiSuccess {Number} student_id Student ID
+     * @apiSuccess {String} student_first_name First name of student
+     * @apiSuccess {String} student_last_name Last name of student
+     * @apiSuccess {String} improvement Improvement notes
+     * @apiSuccessExample {json} Sample Response
+		{
+			"class_id": 4,
+			"class_name": "MAPEH 201",
+			"student_id": 7,
+			"student_first_name": "vhen",
+			"student_last_name": "fernandez",
+			"improvement": "testing improvement"
+		}
+     *
+     * 
+     * 
+     */
     public function addImprovement(Request $request)
     {
 		$this->validate($request, [
@@ -41,7 +76,7 @@ class StudentController extends Controller
 			->join('users', 'users.id', '=', 'sections_students.user_id')
 			->leftJoin('students_improvements', function($join)
 						{
-							$join->on('students_improvements.student_id', '=', 'users.id');
+							$join->on('students_improve	ments.student_id', '=', 'users.id');
 							$join->on('students_improvements.class_id', '=', 'classes.id');
 						})
 			->where('users.id','=',$request->student_id);
@@ -51,6 +86,48 @@ class StudentController extends Controller
         return response()->json($fractal->toArray());
     }
 	
+	/**
+     * Student Improvements
+     *
+     * @api {POST} HOST/students/improvement Student Improvements
+     * @apiVersion 1.0.0
+     * @apiName StudentImprovements
+     * @apiDescription Returns list of class and student's improvement of a teacher (from auth)
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} class_id Class ID; if not supplied, will return all classes of a teacher
+     *
+     * @apiSuccess {Number} class_id Class ID
+     * @apiSuccess {String} class_name Name of Class
+     * @apiSuccess {Number} student_id Student ID
+     * @apiSuccess {String} student_first_name First name of student
+     * @apiSuccess {String} student_last_name Last name of student
+     * @apiSuccess {String} improvement Improvement notes
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"class_id": 4,
+				"class_name": "MAPEH 201",
+				"student_id": 7,
+				"student_first_name": "vhen",
+				"student_last_name": "fernandez",
+				"improvement": "testing improvement"
+			},
+			{
+				"class_id": 3,
+				"class_name": "English 201",
+				"student_id": 5,
+				"student_first_name": "jacque",
+				"student_last_name": "amaya",
+				"improvement": null
+			}
+		]
+     *
+     * 
+     * 
+     */
 	public function studentImprovement(Request $request)
     {
         $this->validate($request, [
