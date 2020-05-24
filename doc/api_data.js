@@ -750,7 +750,7 @@ define({ "api": [
     "version": "1.0.0",
     "name": "DownloadActivityAnswer",
     "description": "<p>Downloads the activity answer</p>",
-    "group": "Download",
+    "group": "File_Download",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -778,7 +778,7 @@ define({ "api": [
       }
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Download",
+    "groupTitle": "File_Download",
     "header": {
       "fields": {
         "Header": [
@@ -800,7 +800,7 @@ define({ "api": [
     "version": "1.0.0",
     "name": "DownloadActivityMaterial",
     "description": "<p>Downloads the activity material</p>",
-    "group": "Download",
+    "group": "File_Download",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -828,7 +828,7 @@ define({ "api": [
       }
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Download",
+    "groupTitle": "File_Download",
     "header": {
       "fields": {
         "Header": [
@@ -850,7 +850,7 @@ define({ "api": [
     "version": "1.0.0",
     "name": "DownloadClassMaterial",
     "description": "<p>Downloads the class material</p>",
-    "group": "Download",
+    "group": "File_Download",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -878,7 +878,7 @@ define({ "api": [
       }
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Download",
+    "groupTitle": "File_Download",
     "header": {
       "fields": {
         "Header": [
@@ -900,7 +900,7 @@ define({ "api": [
     "version": "1.0.0",
     "name": "DownloadLessonPlan",
     "description": "<p>Downloads the lesson plan</p>",
-    "group": "Download",
+    "group": "File_Download",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -928,7 +928,377 @@ define({ "api": [
       }
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Download",
+    "groupTitle": "File_Download",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/upload/activity/answer",
+    "title": "",
+    "version": "1.0.0",
+    "name": "UploadActivityAnswer",
+    "description": "<p>Allows adding answers to activity</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif",
+              "*.pdf",
+              "*.doc",
+              "*.txt"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "assignment_id",
+            "description": "<p>the activity id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/upload/activity/material",
+    "title": "Activity Material",
+    "version": "1.0.0",
+    "name": "UploadActivityMaterial",
+    "description": "<p>Allows adding media to activity</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif",
+              "*.pdf",
+              "*.doc",
+              "*.txt"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "assignment_id",
+            "description": "<p>the activity id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/upload/class/lesson_plan",
+    "title": "Class Lesson Plan",
+    "version": "1.0.0",
+    "name": "UploadClassLessonPlan",
+    "description": "<p>Allows adding media to lesson plan</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif",
+              "*.pdf",
+              "*.doc",
+              "*.txt"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/upload/class/material",
+    "title": "Class Instruction Material",
+    "version": "1.0.0",
+    "name": "UploadClassMaterial",
+    "description": "<p>Allows adding class instruction materials</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif",
+              "*.pdf",
+              "*.doc",
+              "*.txt"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>The session ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>File title</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/upload/user/profile-picture",
+    "title": "",
+    "version": "1.0.0",
+    "name": "UploadUserProfilePicture",
+    "description": "<p>Allows users to upload/change profile picture</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif",
+              "*.pdf"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
     "header": {
       "fields": {
         "Header": [
@@ -1788,6 +2158,27 @@ define({ "api": [
             "group": "Success 200",
             "type": "Object",
             "optional": false,
+            "field": "next_schedule",
+            "description": "<p>the next session</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Timestamp",
+            "optional": false,
+            "field": "next_schedule.from",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Timestamp",
+            "optional": false,
+            "field": "next_schedule.to",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
             "field": "subject",
             "description": ""
           },
@@ -1964,7 +2355,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -2785,6 +3176,27 @@ define({ "api": [
             "group": "Success 200",
             "type": "Object",
             "optional": false,
+            "field": "next_schedule",
+            "description": "<p>the next session</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Timestamp",
+            "optional": false,
+            "field": "next_schedule.from",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Timestamp",
+            "optional": false,
+            "field": "next_schedule.to",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
             "field": "teacher",
             "description": "<p>The teacher handling the class</p>"
           },
@@ -2814,383 +3226,13 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"frequency\": \"M,W,F\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"frequency\": \"M,W,F\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
     },
     "filename": "app/Http/Controllers/Api/ClassController.php",
     "groupTitle": "Teacher_Classes",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "POST",
-    "url": "HOST/api/upload/activity/answer",
-    "title": "",
-    "version": "1.0.0",
-    "name": "UploadActivityAnswer",
-    "description": "<p>Allows adding answers to activity</p>",
-    "group": "Upload",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "File",
-            "allowedValues": [
-              "*.jpeg",
-              "*.bmp",
-              "*.png",
-              "*.gif",
-              "*.pdf",
-              "*.doc",
-              "*.txt"
-            ],
-            "optional": false,
-            "field": "file",
-            "description": "<p>The file to be uploaded</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "assignment_id",
-            "description": "<p>the activity id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Upload",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "POST",
-    "url": "HOST/api/upload/activity/material",
-    "title": "Activity Material",
-    "version": "1.0.0",
-    "name": "UploadActivityMaterial",
-    "description": "<p>Allows adding media to activity</p>",
-    "group": "Upload",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "File",
-            "allowedValues": [
-              "*.jpeg",
-              "*.bmp",
-              "*.png",
-              "*.gif",
-              "*.pdf",
-              "*.doc",
-              "*.txt"
-            ],
-            "optional": false,
-            "field": "file",
-            "description": "<p>The file to be uploaded</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "assignment_id",
-            "description": "<p>the activity id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Upload",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "POST",
-    "url": "HOST/api/upload/class/lesson_plan",
-    "title": "Class Lesson Plan",
-    "version": "1.0.0",
-    "name": "UploadClassLessonPlan",
-    "description": "<p>Allows adding media to lesson plan</p>",
-    "group": "Upload",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "File",
-            "allowedValues": [
-              "*.jpeg",
-              "*.bmp",
-              "*.png",
-              "*.gif",
-              "*.pdf",
-              "*.doc",
-              "*.txt"
-            ],
-            "optional": false,
-            "field": "file",
-            "description": "<p>The file to be uploaded</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "schedule_id",
-            "description": "<p>the schedule id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Upload",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "POST",
-    "url": "HOST/api/upload/class/material",
-    "title": "Class Instruction Material",
-    "version": "1.0.0",
-    "name": "UploadClassMaterial",
-    "description": "<p>Allows adding class instruction materials</p>",
-    "group": "Upload",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "File",
-            "allowedValues": [
-              "*.jpeg",
-              "*.bmp",
-              "*.png",
-              "*.gif",
-              "*.pdf",
-              "*.doc",
-              "*.txt"
-            ],
-            "optional": false,
-            "field": "file",
-            "description": "<p>The file to be uploaded</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "class_id",
-            "description": ""
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "schedule_id",
-            "description": "<p>The session ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>File title</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Upload",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "POST",
-    "url": "HOST/api/upload/user/profile-picture",
-    "title": "",
-    "version": "1.0.0",
-    "name": "UploadUserProfilePicture",
-    "description": "<p>Allows users to upload/change profile picture</p>",
-    "group": "Upload",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "File",
-            "allowedValues": [
-              "*.jpeg",
-              "*.bmp",
-              "*.png",
-              "*.gif",
-              "*.pdf"
-            ],
-            "optional": false,
-            "field": "file",
-            "description": "<p>The file to be uploaded</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/FileController.php",
-    "groupTitle": "Upload",
     "header": {
       "fields": {
         "Header": [

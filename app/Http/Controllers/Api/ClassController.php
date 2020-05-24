@@ -42,6 +42,9 @@ class ClassController extends Controller
      * @apiSuccess {Date} date_to End of class
      * @apiSuccess {Time} time_from Class duration
      * @apiSuccess {Time} time_to Class duration
+     * @apiSuccess {Object} next_schedule the next session
+     * @apiSuccess {Timestamp} next_schedule.from
+     * @apiSuccess {Timestamp} next_schedule.to
      * @apiSuccess {Object} teacher The teacher handling the class
      * @apiSuccess {Number} teacher.id Unique teacher id
      * @apiSuccess {String} teacher.first_name
@@ -58,6 +61,10 @@ class ClassController extends Controller
                 "date_to": "2020-05-15",
                 "time_from": "09:00:00",
                 "time_to": "10:00:00",
+                "next_schedule": {
+                    "from": "2020-05-25 09:00:00",
+                    "to": "2020-05-25 10:00:00"
+                },
                 "subject": {
                     "id": 1,
                     "name": "English"
@@ -115,6 +122,9 @@ class ClassController extends Controller
      * @apiSuccess {Date} date_to End of class
      * @apiSuccess {Time} time_from Class duration
      * @apiSuccess {Time} time_to Class duration
+     * @apiSuccess {Object} next_schedule the next session
+     * @apiSuccess {Timestamp} next_schedule.from
+     * @apiSuccess {Timestamp} next_schedule.to
      * @apiSuccess {Object} subject 
      * @apiSuccess {Number} subject.id 
      * @apiSuccess {String} subject.name The subject name
@@ -152,6 +162,10 @@ class ClassController extends Controller
             "date_to": "2020-05-15",
             "time_from": "09:00:00",
             "time_to": "10:00:00",
+            "next_schedule": {
+                "from": "2020-05-25 09:00:00",
+                "to": "2020-05-25 10:00:00"
+            },
             "subject": {
                 "id": 1,
                 "name": "English"
@@ -216,7 +230,7 @@ class ClassController extends Controller
 
 
     /**
-     * Class Details
+     * Class Student list
      *
      * @api <HOST>/api/teacher/class-students/{id} Get list of students
      * @apiVersion 1.0.0
