@@ -69,13 +69,9 @@ class UserController extends Controller
 		
 		if($request->id)
 		{
-			$user_id = $request->id;
-		}else
-		{
-			$user_id = $user->id;
+			$user = User::find($request->id);
 		}
-
-		$user = User::find($user_id);
+		
         $fractal = fractal()->item($user, new UserTransformer);
 
         return response()->json($fractal->toArray());
