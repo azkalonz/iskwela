@@ -37,6 +37,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
      * @apiSuccess {String} description Class description
+     * @apiSuccess {Number} room_number
      * @apiSuccess {String} frequency The frequency of session
      * @apiSuccess {Date} date_from Start of class
      * @apiSuccess {Date} date_to End of class
@@ -45,6 +46,7 @@ class ClassController extends Controller
      * @apiSuccess {Object} next_schedule the next session
      * @apiSuccess {Timestamp} next_schedule.from
      * @apiSuccess {Timestamp} next_schedule.to
+     * @apiSuccess {String} next_schedule.status
      * @apiSuccess {Object} teacher The teacher handling the class
      * @apiSuccess {Number} teacher.id Unique teacher id
      * @apiSuccess {String} teacher.first_name
@@ -56,6 +58,7 @@ class ClassController extends Controller
                 "id": 1,
                 "name": "English 101",
                 "description": "learn basics",
+                "room_number": 123455,
                 "frequency": "M,W,F",
                 "date_from": "2020-05-11",
                 "date_to": "2020-05-15",
@@ -64,6 +67,7 @@ class ClassController extends Controller
                 "next_schedule": {
                     "from": "2020-05-25 09:00:00",
                     "to": "2020-05-25 10:00:00"
+                    "status": "DONE"
                 },
                 "subject": {
                     "id": 1,

@@ -170,7 +170,7 @@ class ScheduleController extends Controller
      * @apiParam {Number} id The ID of schedule to be updated
      * @apiParam {Date} from New start date/time (YYYY-mm-dd H:i:s)
      * @apiParam {Date} to New end date/time  (YYYY-mm-dd H:i:s)
-     * @apiParam {Number=0:not-started,1:ongoing,2:canceled} status 0 - not started, 1 - ongoing, 2 - cancelled
+     * @apiParam {Number=PENDING,DONE,ONGOING,CANCELED} status
      *
      * @apiUse ScheduleObject
      * @apiUse ScheduleSampleResponse
@@ -180,10 +180,12 @@ class ScheduleController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
-            'date_from' => 'integer',
-            'date_to' => 'integer',
-            'teacher_id' => 'integer'
+            'date_from' => 'string',
+            'date_to' => 'string',
+            'teacher_id' => 'integer',
+            'status' => 'string|in:PENDING,DONE,ONGOING,CANCELED'
         ]);
+
 
         $user =  Auth::user();
 
@@ -191,7 +193,9 @@ class ScheduleController extends Controller
         $schedule->date_from = $request->date_from ?? $request->date_from;
         $schedule->date_to = $request->date_to ?? $schedule->date_to;
         $schedule->teacher_id = $request->teacher_id ?? $schedule->teacher_id;
-        $schedule->status = $request->status ?? $schedule->status;
+
+        $status = $request->status ?? $schedule->status;
+        $schedule->status = array_search($status, config('school_hub.schedule_status'));
         $schedule->save();
 
         $fractal = fractal()->item($schedule, new ScheduleTransformer);
@@ -249,7 +253,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -377,7 +381,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} activities the activitiy list of the session (or empty)
      * @apiSuccess {Number} activities.id the activity ID
      * @apiSuccess {String} activities.title
@@ -480,7 +484,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -574,7 +578,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -677,7 +681,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} lesson plan list of lesson plans used in the session (or empty)
      * @apiSuccess {Number} lessonPlans.id the Lesson Plan ID
      * @apiSuccess {String} lessonPlans.title
@@ -802,7 +806,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -924,8 +928,8 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
-     * @apiSuccess {Array} activities the published activity list of the session (or empty)
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
+     * @apiSuccess {Array} activities the activitiy list of the session (or empty)
      * @apiSuccess {Number} activities.id the activity ID
      * @apiSuccess {String} activities.title
      * @apiSuccess {String} activities.desription
@@ -1006,8 +1010,6 @@ class ScheduleController extends Controller
 
         return response()->json($fractal->toArray());
     }
-
-
 
     /**
      * @apiDefine JWTHeader

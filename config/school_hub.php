@@ -2,8 +2,10 @@
 
 return [
     'schedule_status' => [
-        0 => '',
-        1 => 'CANCELED'
+        0 => 'PENDING',
+        1 => 'CANCELED',
+        2 => 'ONGOING',
+        3 => 'DONE'
     ],
     'file_types' => [
         'image/jpeg',
