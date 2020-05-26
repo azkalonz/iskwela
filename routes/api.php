@@ -70,7 +70,7 @@ Route::middleware('jwt')->group(function () {
 
 	//users
 	Route::get('/user', 'Api\\UserController@show');
-	//Route::post('/user/change-password', 'Api\\UserController@changePassword');
+	Route::post('/change-password', 'AuthController@changePassword');
 	
 	//lesson_plans
 	Route::get('/class/lesson-plan/save', 'Api\\LessonPlanController@save');

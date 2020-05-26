@@ -135,8 +135,6 @@ class ScheduleController extends Controller
      * @apiSuccess {Array} materials Class resources: notes, lessons, etc
      * @apiSuccess {Number} materials.id Unique material id
      * @apiSuccess {String} materials.title
-     * @apiSuccess {String} materials.instruction
-     * @apiSuccess {String} materials.description
      * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
      * @apiSuccess {Object} materials.added_by Someone who added the material
@@ -145,12 +143,11 @@ class ScheduleController extends Controller
      * @apiSuccess {Array} activities List of activities attached to the session
      * @apiSuccess {Number} activities.id The activity id
      * @apiSuccess {String} activities.title 
-     * @apiSuccess {String} activities.instruction 
+     * @apiSuccess {String} activities.description 
+     * @apiSuccess {String} activities.activity_type 
      * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
      * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Array} activities.questions List of questions
-     * @apiSuccess {Number} activities.questions.id The question id
-     * @apiSuccess {String} activities.questions.question The question text
+     * @apiSuccess {String} activities.status published/unpublished
      * @apiSuccess {Array} activities.materials Array of reading materials needed for this activity
      * @apiSuccess {Number} activities.materials.id 
      * @apiSuccess {String} activities.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
@@ -170,20 +167,42 @@ class ScheduleController extends Controller
      * @apiParam {Number} id The ID of schedule to be updated
      * @apiParam {Date} from New start date/time (YYYY-mm-dd H:i:s)
      * @apiParam {Date} to New end date/time  (YYYY-mm-dd H:i:s)
-     * @apiParam {Number=0:not-started,1:ongoing,2:canceled} status 0 - not started, 1 - ongoing, 2 - cancelled
+     * @apiParam {Number} teacher_id User ID of new assigned teacher
+     * @apiParam {Number=PENDING,DONE,ONGOING,CANCELED} status
      *
-     * @apiUse ScheduleObject
-     * @apiUse ScheduleSampleResponse
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {DateTime} from session start time
+     * @apiSuccess {DateTime} to schedule end time
+     * @apiSuccess {Object} teacher
+     * @apiSuccess {Number} teacher.id the teacher ID
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String=PENDING,DONE,ONGOING,CANCELED} status schedule status
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 1,
+            "from": "2020-05-21 10:00:00",
+            "to": "2020-05-21 11:00:00",
+            "teacher": {
+                "id": 9,
+                "first_name": "teacher jayson",
+                "last_name": "barino"
+            },
+            "status": "DONE"
+        }
      *
     */
     public function save(Request $request)
     {
         $this->validate($request, [
             'id' => 'required',
-            'date_from' => 'integer',
-            'date_to' => 'integer',
-            'teacher_id' => 'integer'
+            'date_from' => 'string',
+            'date_to' => 'string',
+            'teacher_id' => 'integer',
+            'status' => 'string|in:PENDING,DONE,ONGOING,CANCELED'
         ]);
+
 
         $user =  Auth::user();
 
@@ -191,7 +210,9 @@ class ScheduleController extends Controller
         $schedule->date_from = $request->date_from ?? $request->date_from;
         $schedule->date_to = $request->date_to ?? $schedule->date_to;
         $schedule->teacher_id = $request->teacher_id ?? $schedule->teacher_id;
-        $schedule->status = $request->status ?? $schedule->status;
+
+        $status = $request->status ?? $schedule->status;
+        $schedule->status = array_search($status, config('school_hub.schedule_status'));
         $schedule->save();
 
         $fractal = fractal()->item($schedule, new ScheduleTransformer);
@@ -249,7 +270,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -377,7 +398,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} activities the activitiy list of the session (or empty)
      * @apiSuccess {Number} activities.id the activity ID
      * @apiSuccess {String} activities.title
@@ -480,7 +501,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -574,7 +595,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -677,7 +698,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} lesson plan list of lesson plans used in the session (or empty)
      * @apiSuccess {Number} lessonPlans.id the Lesson Plan ID
      * @apiSuccess {String} lessonPlans.title
@@ -802,7 +823,7 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} materials list of materials used in the session (or empty)
      * @apiSuccess {Number} materials.id the activity ID
      * @apiSuccess {String} materials.title
@@ -924,15 +945,15 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String} status "" or CANCELED
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
      * @apiSuccess {Array} activities the activitiy list of the session (or empty)
      * @apiSuccess {Number} activities.id the activity ID
      * @apiSuccess {String} activities.title
      * @apiSuccess {String} activities.desription
-     * @apiSuccess {String} activities.activit_type "class activity" or "assignment"
+     * @apiSuccess {String} activities.activity_type "class activity" or "assignment"
      * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
      * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {String} activities.status "published" or "unpublished"
+     * @apiSuccess {String} activities.status "published"
      * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
      * @apiSuccess {Number} activities.materials.id the material ID
      * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
@@ -951,7 +972,7 @@ class ScheduleController extends Controller
                     "last_name": "cruz"
                 },
                 "status": "",
-                "activities": [
+                "publishedActivities": [
                     {
                         "id": 1,
                         "title": "English Assignment 1",
@@ -959,7 +980,7 @@ class ScheduleController extends Controller
                         "activity_type": "class activity",
                         "available_from": "2020-05-11",
                         "available_to": "2020-05-15",
-                        "status": "unpublished",
+                        "status": "published",
                         "materials": [
                             {
                                 "id": 1,
@@ -1000,17 +1021,12 @@ class ScheduleController extends Controller
             'include' => 'in:""' //not customizable
         ]);
         //todo: add policy that only teacher/student related to class can view
-        $schedules = Schedule::with('assignments')->whereClassId($request->id)->get();
+        $schedules = Schedule::where('class_id', $request->id)->get();
         $fractal = fractal()->collection($schedules, new ScheduleTransformer);
-        $fractal->includeActivities();
+        $fractal->includePublishedActivities();
 
         return response()->json($fractal->toArray());
     }
-
-
-
-
-
 
     /**
      * @apiDefine JWTHeader
