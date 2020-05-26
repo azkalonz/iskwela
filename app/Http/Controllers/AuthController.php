@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    use ResetsPasswords;
+
     public function register(Request $request)
     {
         $user = User::create(
@@ -32,7 +37,7 @@ class AuthController extends Controller
      * @apiGroup Auth
      *
      * @apiParam {String} username Username/student ID
-     * @apiParam {String} password Hashed password (WIP)
+     * @apiParam {String} password password entered by user.
      *
      * @apiSuccess {String} access_token The auth token
      * @apiSuccess {String=Bearer} token_type Defined class name
@@ -71,13 +76,67 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
+    /**
+     * User Change Password
+     *
+     * @api {post} HOST/api/changePassword User Change Password
+     * @apiVersion 1.0.0
+     * @apiName ChangePassword
+     * @apiDescription Changes password for a given user ID. Returns HTTP error code 401 if supplied credentials is invalid
+     * @apiGroup Auth
+     *
+     * @apiParam {String} username username/student ID
+     * @apiParam {String} password new password 
+     * @apiParam {String} current_password old password
+     *
+     * @apiSuccess {String} success returns true if change password is successful
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+       {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    /**
+     * @apiDefine JWTHeader
+     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
+     */
+    public function changePassword(Request $request)
+    {
+
+        $this->validate($request, [
+            'username' => 'required',
+            'current_password' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::whereUsername($request->username);
+        $user = $user->first();
+        
+        if (Hash::check($request->current_password, $user->password)) 
+        {
+            $user->password = $request->password;
+            $user->save();
+
+            return response()->json(['success' => true]);
+        }
+        else
+        {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+    }
+
     protected function respondWithToken($token)
     {
         return response()->json(
             [
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
-                'expires_in'   => auth()->factory()->getTTL() * 60
+                'expires_in'   => auth()->factory()->getTTL()
             ]
         );
     }
