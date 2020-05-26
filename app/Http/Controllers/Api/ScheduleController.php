@@ -135,8 +135,6 @@ class ScheduleController extends Controller
      * @apiSuccess {Array} materials Class resources: notes, lessons, etc
      * @apiSuccess {Number} materials.id Unique material id
      * @apiSuccess {String} materials.title
-     * @apiSuccess {String} materials.instruction
-     * @apiSuccess {String} materials.description
      * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
      * @apiSuccess {Object} materials.added_by Someone who added the material
@@ -145,12 +143,11 @@ class ScheduleController extends Controller
      * @apiSuccess {Array} activities List of activities attached to the session
      * @apiSuccess {Number} activities.id The activity id
      * @apiSuccess {String} activities.title 
-     * @apiSuccess {String} activities.instruction 
+     * @apiSuccess {String} activities.description 
+     * @apiSuccess {String} activities.activity_type 
      * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
      * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Array} activities.questions List of questions
-     * @apiSuccess {Number} activities.questions.id The question id
-     * @apiSuccess {String} activities.questions.question The question text
+     * @apiSuccess {String} activities.status published/unpublished
      * @apiSuccess {Array} activities.materials Array of reading materials needed for this activity
      * @apiSuccess {Number} activities.materials.id 
      * @apiSuccess {String} activities.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
@@ -170,10 +167,30 @@ class ScheduleController extends Controller
      * @apiParam {Number} id The ID of schedule to be updated
      * @apiParam {Date} from New start date/time (YYYY-mm-dd H:i:s)
      * @apiParam {Date} to New end date/time  (YYYY-mm-dd H:i:s)
+     * @apiParam {Number} teacher_id User ID of new assigned teacher
      * @apiParam {Number=PENDING,DONE,ONGOING,CANCELED} status
      *
-     * @apiUse ScheduleObject
-     * @apiUse ScheduleSampleResponse
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {DateTime} from session start time
+     * @apiSuccess {DateTime} to schedule end time
+     * @apiSuccess {Object} teacher
+     * @apiSuccess {Number} teacher.id the teacher ID
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String=PENDING,DONE,ONGOING,CANCELED} status schedule status
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 1,
+            "from": "2020-05-21 10:00:00",
+            "to": "2020-05-21 11:00:00",
+            "teacher": {
+                "id": 9,
+                "first_name": "teacher jayson",
+                "last_name": "barino"
+            },
+            "status": "DONE"
+        }
      *
     */
     public function save(Request $request)
