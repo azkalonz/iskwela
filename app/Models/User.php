@@ -11,7 +11,16 @@ use App\Models\UserPreference;
 
 class User extends Authenticatable implements JWTSubject
 {
-    protected $fillable = ['name','username', 'password', 'user_type'];
+    protected $fillable = [
+        'first_name',
+        'middle_name',
+        'last_name',
+        'phone_number',
+        'username',
+        'gender',
+        'password',
+        'user_type'
+    ];
 
     public function getJWTIdentifier()
     {
