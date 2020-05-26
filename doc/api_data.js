@@ -376,6 +376,64 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "HOST/api/changePassword",
+    "title": "User Change Password",
+    "version": "1.0.0",
+    "name": "ChangePassword",
+    "description": "<p>Changes password for a given user ID. Returns HTTP error code 401 if supplied credentials is invalid</p>",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>username/student ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>new password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "current_password",
+            "description": "<p>old password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if change password is successful</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n     \"success\": true\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
     "url": "HOST/api/login",
     "title": "User login",
     "version": "1.0.0",
@@ -397,7 +455,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "password",
-            "description": "<p>Hashed password (WIP)</p>"
+            "description": "<p>password entered by user.</p>"
           }
         ]
       }
@@ -821,6 +879,13 @@ define({ "api": [
             "optional": false,
             "field": "schedule_id",
             "description": "<p>the schedule id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>title of the Lesson Plan</p>"
           }
         ]
       }
@@ -998,6 +1063,338 @@ define({ "api": [
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
     "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "",
+    "url": "<HOST>/class/lesson-plan/save",
+    "title": "Save class lesson plan",
+    "version": "1.0.0",
+    "name": "SaveLessonPlan",
+    "description": "<p>Saves lesson plan URL and title</p>",
+    "group": "Lesson_Plan",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "URL",
+            "description": "<p>web link of the lesson plan.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Title of the lesson plan.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the Class ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Lesson Plan ID; If given, API will update the lesson plan ID, otherwise, will add new lesson plan.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "lessonPlans.id",
+            "description": "<p>the Lesson Plan ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lessonPlans.title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lessonPlans.uploaded_file",
+            "description": "<p>link to uploaded file or</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lessonPlans.resource_link",
+            "description": "<p>a shared reference link (google docs, etc)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "added_by",
+            "description": "<p>the teacher/user who added this lesson plan</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "        {\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Hello Lesson Plan\",\n\t\t\t\"uploaded_file\": \"\",\n\t\t\t\"resource_link\": \"http://sample-lessson-plan-link.com\",\n\t\t\t\"added_by\": {\n\t\t\t\t\"id\": 9,\n\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\"last_name\": \"barino\"\n\t\t\t}\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/LessonPlanController.php",
+    "groupTitle": "Lesson_Plan",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/students/improvement/save",
+    "title": "Add/Edit Student Improvement",
+    "version": "1.0.0",
+    "name": "AddEditStudentImprovement",
+    "description": "<p>Add or edit student improvement</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>Student ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "improvement",
+            "description": "<p>Improvement notes</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "class_name",
+            "description": "<p>Name of Class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>Student ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "student_first_name",
+            "description": "<p>First name of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "student_last_name",
+            "description": "<p>Last name of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "improvement",
+            "description": "<p>Improvement notes</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"class_id\": 4,\n\t\"class_name\": \"MAPEH 201\",\n\t\"student_id\": 7,\n\t\"student_first_name\": \"vhen\",\n\t\"student_last_name\": \"fernandez\",\n\t\"improvement\": \"testing improvement\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/students/improvement",
+    "title": "Student Improvements",
+    "version": "1.0.0",
+    "name": "StudentImprovements",
+    "description": "<p>Returns list of class and student's improvement of a teacher (from auth)</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID; if not supplied, will return all classes of a teacher</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "class_name",
+            "description": "<p>Name of Class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>Student ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "student_first_name",
+            "description": "<p>First name of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "student_last_name",
+            "description": "<p>Last name of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "improvement",
+            "description": "<p>Improvement notes</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"class_id\": 4,\n\t\t\"class_name\": \"MAPEH 201\",\n\t\t\"student_id\": 7,\n\t\t\"student_first_name\": \"vhen\",\n\t\t\"student_last_name\": \"fernandez\",\n\t\t\"improvement\": \"testing improvement\"\n\t},\n\t{\n\t\t\"class_id\": 3,\n\t\t\"class_name\": \"English 201\",\n\t\t\"student_id\": 5,\n\t\t\"student_first_name\": \"jacque\",\n\t\t\"student_last_name\": \"amaya\",\n\t\t\"improvement\": null\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentController.php",
+    "groupTitle": "Reports",
     "header": {
       "fields": {
         "Header": [
@@ -1315,13 +1712,14 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "allowedValues": [
-              "0:not-started",
-              "1:ongoing",
-              "2:canceled"
+              "PENDING",
+              "DONE",
+              "ONGOING",
+              "CANCELED"
             ],
             "optional": false,
             "field": "status",
-            "description": "<p>0 - not started, 1 - ongoing, 2 - cancelled</p>"
+            "description": ""
           }
         ]
       }
@@ -1648,9 +2046,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -2150,9 +2554,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -2330,9 +2740,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -2816,9 +3232,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -3319,43 +3741,49 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "materials",
-            "description": "<p>list of materials used in the session (or empty)</p>"
+            "field": "lesson",
+            "description": "<p>plan list of lesson plans used in the session (or empty)</p>"
           },
           {
             "group": "Success 200",
             "type": "Number",
             "optional": false,
-            "field": "materials.id",
-            "description": "<p>the activity ID</p>"
+            "field": "lessonPlans.id",
+            "description": "<p>the Lesson Plan ID</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "materials.title",
+            "field": "lessonPlans.title",
             "description": ""
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "materials.uploaded_file",
+            "field": "lessonPlans.uploaded_file",
             "description": "<p>link to uploaded file or</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "materials.resource_link",
+            "field": "lessonPlans.resource_link",
             "description": "<p>a shared reference link (google docs, etc)</p>"
           },
           {
@@ -3363,7 +3791,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "added_by",
-            "description": "<p>the teacher/user who added this material</p>"
+            "description": "<p>the teacher/user who added this lesson plan</p>"
           },
           {
             "group": "Success 200",
@@ -3391,7 +3819,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"\",\n                \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            },\n            {\n                \"id\": 2,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"http://link-to-uploaded-file/sample\",\n                \"resource_link\": \"\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            }\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": []\n    }\n]",
+          "content": "        [\n\t\t\t{\n\t\t\t\t\"id\": 6,\n\t\t\t\t\"from\": \"2020-05-22 09:00:00\",\n\t\t\t\t\"to\": \"2020-05-22 10:00:00\",\n\t\t\t\t\"teacher\": {\n\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t},\n\t\t\t\t\"status\": \"\",\n\t\t\t\t\"lessonPlans\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 1,\n\t\t\t\t\t\t\"title\": \"Hello Lesson Plan\",\n\t\t\t\t\t\t\"uploaded_file\": \"\",\n\t\t\t\t\t\t\"resource_link\": \"http://sample-lesson-plan-link.com\",\n\t\t\t\t\t\t\"added_by\": {\n\t\t\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": 7,\n\t\t\t\t\"from\": \"2020-05-25 09:00:00\",\n\t\t\t\t\"to\": \"2020-05-25 10:00:00\",\n\t\t\t\t\"teacher\": {\n\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t},\n\t\t\t\t\"status\": \"\",\n\t\t\t\t\"lessonPlans\": []\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"from\": \"2020-05-26 09:00:00\",\n\t\t\t\t\"to\": \"2020-05-26 10:00:00\",\n\t\t\t\t\"teacher\": {\n\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t},\n\t\t\t\t\"status\": \"\",\n\t\t\t\t\"lessonPlans\": []\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": 9,\n\t\t\t\t\"from\": \"2020-05-27 09:00:00\",\n\t\t\t\t\"to\": \"2020-05-27 10:00:00\",\n\t\t\t\t\"teacher\": {\n\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t},\n\t\t\t\t\"status\": \"\",\n\t\t\t\t\"lessonPlans\": []\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": 10,\n\t\t\t\t\"from\": \"2020-05-28 09:00:00\",\n\t\t\t\t\"to\": \"2020-05-28 10:00:00\",\n\t\t\t\t\"teacher\": {\n\t\t\t\t\t\"id\": 9,\n\t\t\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\t\t\"last_name\": \"barino\"\n\t\t\t\t},\n\t\t\t\t\"status\": \"\",\n\t\t\t\t\"lessonPlans\": []\n\t\t\t}\n\t\t]",
           "type": "json"
         }
       ]
@@ -3488,9 +3916,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -3669,9 +4103,15 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "String",
+            "allowedValues": [
+              "PENDING",
+              "ONGOING",
+              "DONE",
+              "CANCELED"
+            ],
             "optional": false,
             "field": "status",
-            "description": "<p>&quot;&quot; or CANCELED</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -4006,6 +4446,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "room_number",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "frequency",
@@ -4062,6 +4509,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "next_schedule.status",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "teacher",
@@ -4093,7 +4547,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"frequency\": \"M,W,F\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
