@@ -12,14 +12,18 @@ trait File
      * Uploading file to storage disk
      * 
      * @param UploadedFile $file 
+     * @param string @root_path usually it's the School Code
      * @return string|false complete path of file 
      */
-    public function uploadFile(UploadedFile $file)
+    public function uploadFile(UploadedFile $file, $root_path = null)
     {
         $filename = $this->formatFileName($file) . '.' . $file->extension();
-
+        
         // setting full path of file
-        $full_path =  $this->getRootPath() . '/' . date("Y-m-d") . '/' . $filename;
+        if(!$root_path) {
+            $root_path = $this->getRootPath();
+        }
+        $full_path =  $root_path . '/' . date("Y-m-d") . '/' . $filename;
 
         // upload image to media bucket
         $fp = fopen($file, "r");
