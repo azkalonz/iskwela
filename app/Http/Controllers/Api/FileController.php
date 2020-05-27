@@ -107,14 +107,16 @@ class FileController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
-            'assignment_id' => 'integer'			
+            'assignment_id' => 'integer'
         ]);
 
         $response = $this->upload($request->file);
 
+        $user = Auth::user();
         if($response['success']) {
             $activity_answer = new \App\Models\AssignmentAnswer();
             $activity_answer->assignment_id = $request->assignment_id;
+            $activity_answer->student_id = $user->getKey();
             $activity_answer->answer_media = $response['file'];
             $activity_answer->save();
         }
@@ -192,6 +194,7 @@ class FileController extends Controller
      * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
      * @apiParam {Number} schedule_id the schedule id
      * @apiParam {String} title title of the Lesson Plan
+     * @apiParam {Number} class_id the class ID
      *
      * @apiSuccess {Boolean} success true/false
      * @apiSuccessExample {json} Sample Response
@@ -208,7 +211,8 @@ class FileController extends Controller
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
             'schedule_id' => 'integer|required',
-			'title' => 'required'
+			'title' => 'required|string',
+			'class_id' => 'required|integer',
         ]);
 		
 		$user =  Auth::user();
@@ -219,7 +223,8 @@ class FileController extends Controller
             $lesson_plan = new \App\Models\LessonPlan();
             $lesson_plan->schedule_id = $request->schedule_id;
             $lesson_plan->file = $response['file'];
-            $lesson_plan->title = $response['title'];
+            $lesson_plan->title = $request['title'];
+            $lesson_plan->class_id = $request['class_id'];
 			$lesson_plan->created_by = $user->id;
 			$lesson_plan->updated_by = $user->id;
             $lesson_plan->save();
@@ -332,7 +337,7 @@ class FileController extends Controller
         }
 
         $assignment_answer = \App\Models\AssignmentAnswer::find($request->id);
-        return $this->download($assignment_answer->file);
+        return $this->download($assignment_answer->answer_media);
     }
 
     /**
@@ -389,6 +394,33 @@ class FileController extends Controller
 
         $lesson_plan = \App\Models\LessonPlan::find($request->id);
         return $this->download($lesson_plan->file);
+    }
+
+    /**
+     * Download Profile Picture
+     *
+     * @api {POST} HOST/api/download/user/profile-picture Profile Picture
+     * @apiVersion 1.0.0
+     * @apiName DownloadProfilePicture
+     * @apiDescription Returns the url of auth user's profile picture
+     * @apiGroup File Download
+     *
+     * @apiUse JWTHeader
+     *
+     *
+     * @apiSuccess {BLOB} the attached file
+     *
+     */
+    public function downloadProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+
+        if(!$user) {
+            return response('Unauthorized access', 401);
+        }
+
+        $user_pref = \App\Models\UserPreference::whereUserId($user->getKey())->first();
+        return $this->download($user_pref->profile_picture);
     }    
 
     public function download($filename)

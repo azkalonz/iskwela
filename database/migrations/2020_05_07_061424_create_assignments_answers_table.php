@@ -18,7 +18,7 @@ class CreateAssignmentsAnswersTable extends Migration
             $table->integer('assignment_id');
             $table->integer('assignment_question_id')->default(0);
             $table->integer('student_id');
-            $table->mediumText('answer_text');
+            $table->mediumText('answer_text')->nullable();
             $table->mediumText('answer_media');
             $table->timestamp('created_at');
 
