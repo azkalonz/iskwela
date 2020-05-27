@@ -54,13 +54,14 @@ Route::middleware('jwt')->group(function () {
 
     //downloads
     Route::post('/download/activity/material/{id}', 'Api\\FileController@downloadAssignmentMaterial');
-    Route::post('/download/activity/answer', 'Api\\FileController@downloadAssignmentAnswer');
-    Route::post('/download/class/lesson-plan', 'Api\\FileController@downloadLessonPlan');
+    Route::post('/download/activity/answer/{id}', 'Api\\FileController@downloadAssignmentAnswer');
+    Route::post('/download/class/lesson-plan/{id}', 'Api\\FileController@downloadLessonPlan');
     Route::post('/download/class/material/{id}', 'Api\\FileController@downloadClassMaterial');
+    Route::post('/download/user/profile-picture', 'Api\\FileController@downloadProfilePicture');
 
     //schedules
     Route::post('/schedule/save', 'Api\\ScheduleController@save');
-    Route::post('/schedule/{id}', 'Api\\ScheduleController@show');
+    Route::get('/schedule/{id}', 'Api\\ScheduleController@show');
 
     //activities
     Route::post('/class/activity/save', 'Api\\AssignmentController@save');

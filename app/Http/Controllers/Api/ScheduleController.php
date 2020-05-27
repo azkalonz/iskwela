@@ -237,10 +237,6 @@ class ScheduleController extends Controller
    */
     public function show(Request $request)
     {
-        $this->validate($request, [
-            'id' => 'required'
-        ]);
-
         $user =  Auth::user();
 
         $schedule = Schedule::whereId($request->id)->first();
