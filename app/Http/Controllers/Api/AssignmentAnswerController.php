@@ -23,7 +23,7 @@ class AssignmentAnswerController extends Controller
      * @apiVersion 1.0.0
      * @apiName ShowActivityAnswer
      * @apiDescription Get student's activity answers.
-     * @apiGroup Student
+     * @apiGroup Student Classes
      *
      * @apiParam {Number} id Activity ID
      *
