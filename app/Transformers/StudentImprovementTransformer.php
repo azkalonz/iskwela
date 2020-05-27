@@ -9,6 +9,7 @@ class StudentImprovementTransformer extends TransformerAbstract
     public function transform(\App\Models\classes $classes)
     {
 		return [
+			'id' => $classes->si_id,
 			'class_id' => $classes->id,
 			'class_name' => $classes->name,
 			'student_id' => $classes->student_id,
