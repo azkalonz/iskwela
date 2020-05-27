@@ -32,6 +32,7 @@ class StudentController extends Controller
      * @apiParam {Number} class_id Class ID
      * @apiParam {String} improvement Improvement notes
      *
+     * @apiSuccess {Number} id student improvement ID
      * @apiSuccess {Number} class_id Class ID
      * @apiSuccess {String} class_name Name of Class
      * @apiSuccess {Number} student_id Student ID
@@ -100,6 +101,7 @@ class StudentController extends Controller
      *
      * @apiParam {Number} class_id Class ID; if not supplied, will return all classes of a teacher
      *
+     * @apiSuccess {Number} id student improvement ID
      * @apiSuccess {Number} class_id Class ID
      * @apiSuccess {String} class_name Name of Class
      * @apiSuccess {Number} student_id Student ID
@@ -142,6 +144,7 @@ class StudentController extends Controller
 									,'users.id as student_id'
 									,'users.first_name'
 									,'users.last_name'
+									,'students_improvements.id as si_id'
 									, 'students_improvements.improvement'])
 			->whereTeacherId($user->id)
 			->join('sections_students', 'sections_students.section_id', '=', 'classes.section_id')
