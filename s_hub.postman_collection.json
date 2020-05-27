@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5bd85f6e-5a96-46b6-bb55-8136b27a0624",
+		"_postman_id": "75b45cd7-c9f5-4605-b8cf-1c967abf1fbf",
 		"name": "s_hub",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1085,6 +1085,69 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get activity answers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/activity-answers/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"activity-answers",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules,students",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1547,7 +1610,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc050bcd-2e7c-4387-9419-3324c0cd9452",
+								"id": "ed3ab58e-51c9-40b2-b548-14be81395721",
 								"exec": [
 									""
 								],
@@ -1589,7 +1652,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "96fe5cbf-6525-4c0b-9149-f647d19bf7e4",
+								"id": "d3ab4c6a-6043-44f8-8f9d-e9391df4ee70",
 								"exec": [
 									""
 								],
@@ -1770,7 +1833,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b7a2d421-60d4-4c95-85c6-9d55ebce4df3",
+						"id": "3f05178c-1bee-4f7e-a31a-861afaf70d29",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
