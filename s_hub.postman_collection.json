@@ -1,0 +1,1842 @@
+{
+	"info": {
+		"_postman_id": "5bd85f6e-5a96-46b6-bb55-8136b27a0624",
+		"name": "s_hub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "schedule",
+			"item": [
+				{
+					"name": "edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1,\n\t\"date_from\": \"2020-05-31 15:00:00\",\n\t\"date_to\": \"2020-05-31 16:00:00\",\n\t\"teacher_id\" : 9,\n\t\"status\": \"ONGOING\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/schedule/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"schedule",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/schedule/1?include=materials, activities, lessonPlans",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"schedule",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "materials, activities, lessonPlans"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "upload",
+			"item": [
+				{
+					"name": "class-material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "class_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/grace/Pictures/image (2).jpg"
+								},
+								{
+									"key": "schedule_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "instruction materials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/upload/class/material",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"class",
+								"material"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activity-material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "assignment_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/grace/Pictures/bargram.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/upload/activity/material",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"activity",
+								"material"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile picture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_picture",
+									"type": "file",
+									"src": "/home/grace/Pictures/bargram.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/upload/user/profile-picture",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"user",
+								"profile-picture"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class-lesson plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "schedule_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/grace/Pictures/bargram.png"
+								},
+								{
+									"key": "title",
+									"value": "lesson 1",
+									"type": "text"
+								},
+								{
+									"key": "class_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/upload/class/lesson-plan",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"class",
+								"lesson-plan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activity-answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "assignment_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/grace/Pictures/bargram.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/upload/activity/answer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"activity",
+								"answer"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Activity",
+			"item": [
+				{
+					"name": "add/edit activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\" : 7,\n\t\"title\": \"class a\",\n\t\"description\" : \"dfdf\",\n\t\"activity_type\" : 1,\n\t\"available_from\" : null,\n\t\"available_to\" : null,\n\t\"published\" : 1,\n\t\"subject_id\" : 1,\n\t\"schedule_id\" : 1,\n\t\"class_id\" : 1\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/class/activity/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"activity",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "publish activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/class/activity/publish/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"activity",
+								"publish",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activity detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/class/activity/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"activity",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "download",
+			"item": [
+				{
+					"name": "activity-material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/download/activity/material/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"download",
+								"activity",
+								"material",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class-material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/api/download/class/material/15",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"download",
+								"class",
+								"material",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class-lesson-plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/api/download/class/lesson-plan/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"download",
+								"class",
+								"lesson-plan",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activity-answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/api/download/activity/answer/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"download",
+								"activity",
+								"answer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile-picture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "assignment_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/grace/Pictures/bargram.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/download/user/profile-picture",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"download",
+								"user",
+								"profile-picture"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "class -student",
+			"item": [
+				{
+					"name": "get class list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/classes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"classes"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/class/1?include=schedules",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"class",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules"
+								},
+								{
+									"key": "",
+									"value": "materials",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class activities",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/class-activities/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"class-activities",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "activities, materials",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class schedules",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/class-schedules/1?include=materials, activities",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"class-schedules",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "materials, activities"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class attendance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/class/attendance/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"attendance",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class materials",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/student/class-materials/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"class-materials",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules,students",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "classes - teacher",
+			"item": [
+				{
+					"name": "get class list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/classes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"classes"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "include",
+									"value": "students, schedules",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class/1?include=schedules,students",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules,students"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class activities",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class-activities/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class-activities",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "activities, materials",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class materials",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class-materials/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class-materials",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules,students",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class students",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class-students/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class-students",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "preferences",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class lesson plans",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class-lesson-plans/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class-lesson-plans",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "schedules,students",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get class schedules",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "student_id",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jayson",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/teacher/class-schedules/1?include=materials, activities",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"teacher",
+								"class-schedules",
+								"1"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "materials, activities"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "user details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc050bcd-2e7c-4387-9419-3324c0cd9452",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user?include=preferences",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "preferences"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "96fe5cbf-6525-4c0b-9149-f647d19bf7e4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\" : \"ttom\",\n    \"current_password\": \"ttom\",\n    \"password\" : \"tom\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/change-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Lesson Plan",
+			"item": [
+				{
+					"name": "add/edit lesson plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 2,\n\t\"url\" : \"http://the-lesson-plan-link\",\n\t\"schedule_id\": 1,\n\t\"class_id\" : 1,\n\t\"title\" : \"test lesson\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/class/lesson-plan/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"lesson-plan",
+								"save"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "add/edit student improvement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 3,\n\t\"student_id\": 1,\n\t\"class_id\" : 1,\n\t\"improvement\": \"reading and reading  sdfsdfsdf2\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/students/improvement/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"improvement",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list of students improvement in the class",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 3,\n\t\"student_id\": 1,\n\t\"class_id\" : 1,\n\t\"improvement\": \"reading and reading  sdfsdfsdf2\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/students/improvement/save",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"students",
+								"improvement",
+								"save"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7a2d421-60d4-4c95-85c6-9d55ebce4df3",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/login?username=ttom&password=ttom",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "ttom"
+						},
+						{
+							"key": "password",
+							"value": "ttom"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/register?student_id=jacque&password=jacque&name=jacque",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					],
+					"query": [
+						{
+							"key": "student_id",
+							"value": "jacque"
+						},
+						{
+							"key": "password",
+							"value": "jacque"
+						},
+						{
+							"key": "name",
+							"value": "jacque"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
