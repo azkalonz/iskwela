@@ -18,7 +18,7 @@ class LessonPlanController extends Controller
 /**
      * Class Lesson Plan Save
      *
-     * @api <HOST>/class/lesson-plan/save Save class lesson plan
+     * @api <HOST>/class/lesson-plan/save Add/Edit Lesson Plan
      * @apiVersion 1.0.0
      * @apiName SaveLessonPlan
      * @apiDescription Saves lesson plan URL and title
@@ -27,8 +27,7 @@ class LessonPlanController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {Number} schedule_id the schedule ID
-     * @apiParam {String} URL web link of the lesson plan.
-     * @apiParam {String} title Title of the lesson plan.
+     * @apiParam {String} url web link of the lesson plan.
      * @apiParam {String} title Title of the lesson plan.
      * @apiParam {Number} class_id the Class ID.
      * @apiParam {Number} id Lesson Plan ID; If given, API will update the lesson plan ID, otherwise, will add new lesson plan.
@@ -60,7 +59,8 @@ class LessonPlanController extends Controller
     public function save(Request $request)
     {
         $request->validate([
-            'URL' => 'required',
+            'id' => 'integer',
+            'url' => 'string',
             'schedule_id' => 'integer|required',
 			'class_id' => 'integer|required',
 			'title' => 'required'
@@ -75,7 +75,7 @@ class LessonPlanController extends Controller
 			$lesson_plan->created_by = $user->id;
 		}
 
-		$lesson_plan->link_url = $request->URL;
+		$lesson_plan->link_url = $request->url;
 		$lesson_plan->schedule_id = $request->schedule_id;
 		$lesson_plan->class_id = $request->class_id;
 		$lesson_plan->title = $request->title;
