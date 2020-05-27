@@ -39,6 +39,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/student/class-activities/{id}', 'Api\\ScheduleController@studentActivitiesBySchedule');
     Route::get('/student/class-schedules/{id}', 'Api\\ScheduleController@classStudentSchedules');
     Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
+    Route::get('/student/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
 
 
 
