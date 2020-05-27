@@ -702,6 +702,43 @@ define({ "api": [
   },
   {
     "type": "POST",
+    "url": "HOST/api/download/user/profile-picture",
+    "title": "Profile Picture",
+    "version": "1.0.0",
+    "name": "DownloadProfilePicture",
+    "description": "<p>Returns the url of auth user's profile picture</p>",
+    "group": "File_Download",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "BLOB",
+            "optional": false,
+            "field": "the",
+            "description": "<p>attached file</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Download",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
     "url": "HOST/api/upload/activity/answer",
     "title": "",
     "version": "1.0.0",
@@ -886,6 +923,13 @@ define({ "api": [
             "optional": false,
             "field": "title",
             "description": "<p>title of the Lesson Plan</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
           }
         ]
       }
@@ -1080,7 +1124,7 @@ define({ "api": [
   {
     "type": "",
     "url": "<HOST>/class/lesson-plan/save",
-    "title": "Save class lesson plan",
+    "title": "Add/Edit Lesson Plan",
     "version": "1.0.0",
     "name": "SaveLessonPlan",
     "description": "<p>Saves lesson plan URL and title</p>",
@@ -1099,7 +1143,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "URL",
+            "field": "url",
             "description": "<p>web link of the lesson plan.</p>"
           },
           {
@@ -1253,6 +1297,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "Number",
             "optional": false,
+            "field": "id",
+            "description": "<p>student improvement ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
             "field": "class_id",
             "description": "<p>Class ID</p>"
           },
@@ -1341,6 +1392,13 @@ define({ "api": [
     "success": {
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>student improvement ID</p>"
+          },
           {
             "group": "Success 200",
             "type": "Number",
