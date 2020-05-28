@@ -17,7 +17,7 @@ class CreateClassesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('room_number');
+            $table->string('room_number'); // video conference info here
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('subject_id')->unsigned();
             $table->bigInteger('created_by')->unsigned();
