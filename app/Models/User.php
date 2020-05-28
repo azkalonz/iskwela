@@ -19,7 +19,8 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'gender',
         'password',
-        'user_type'
+        'user_type',
+        'school_id'
     ];
 
     public function getJWTIdentifier()
