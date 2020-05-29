@@ -19,7 +19,7 @@ class CreateAssignmentsMaterialsTable extends Migration
             $table->string('file', 255)->nullable();
             $table->string('link_url', 255)->nullable();
             $table->timestamp('created_at');
-
+            $table->softDeletes();
             $table->index('assignment_id');
         });
     }

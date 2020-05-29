@@ -11,6 +11,7 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
 use \App\Models\Assignment;
+use \App\Models\AssignmentMaterial;
 use \App\Transformers\AssignmentTransformer;
 
 class AssignmentController extends Controller
@@ -207,6 +208,36 @@ class AssignmentController extends Controller
         return response()->json($fractal->toArray());    
     }
 
+    /**
+     * Remove Activity Material
+     *
+     * @api {post} HOST/api/teacher/remove/class-activity-material/{id} Remove Activity Material
+     * @apiVersion 1.0.0
+     * @apiName RemoveActivityMaterial
+     * @apiDescription SRemove Material of an Activity
+     * @apiGroup Teacher Classes
+     *
+     * @apiParam {Number} id Activity Material ID.
+     *
+     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function removeAssignmentMaterial(Request $request)
+    {
+		$assignment_material = AssignmentMaterial::findOrFail($request->id);
+
+        $assignment_material->delete();
+        
+        return response()->json(['success' => true]);
+    }
 
     /**
      * @apiDefine JWTHeader

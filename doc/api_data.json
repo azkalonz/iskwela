@@ -4561,6 +4561,138 @@
     }
   },
   {
+    "type": "post",
+    "url": "HOST/api/teacher/remove/class-activity-material/{id}",
+    "title": "Remove Activity Material",
+    "version": "1.0.0",
+    "name": "RemoveActivityMaterial",
+    "description": "<p>SRemove Material of an Activity</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Material ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if ID is found. Otherwise, returns error code 404.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/teacher/remove/class-material/{id}",
+    "title": "Remove Class Material",
+    "version": "1.0.0",
+    "name": "RemoveClassMaterial",
+    "description": "<p>Removes a Class Material</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Class Material</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if ID is found. Otherwise, returns error code 404.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/teacher/remove/class-lesson-plan/{id}",
+    "title": "Remove Lesson Plan",
+    "version": "1.0.0",
+    "name": "RemoveLessonPlan",
+    "description": "<p>Removes Lesson Plan</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Lesson Plan ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if ID is found. Otherwise, returns error code 404.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/LessonPlanController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
     "type": "GET",
     "url": "<HOST>/api/teacher/classes",
     "title": "Get class list",
