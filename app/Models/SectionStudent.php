@@ -12,4 +12,9 @@ class SectionStudent extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'user_id', 'user_id');
+    }
 }

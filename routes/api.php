@@ -33,17 +33,18 @@ Route::middleware('jwt')->group(function () {
     Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ScheduleController@lessonPlansBySchedule');
     Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@classMaterialsTeachersBySchedule');
 
+
     //classes -students
     Route::get('/student/classes', 'Api\\ClassController@studentClasses');
     Route::get('/student/class/{id}', 'Api\\ClassController@showStudentClass');
     Route::get('/student/class-activities/{id}', 'Api\\ScheduleController@studentActivitiesBySchedule');
     Route::get('/student/class-schedules/{id}', 'Api\\ScheduleController@classStudentSchedules');
     Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
+    Route::post('/class/attendance/save', 'Api\\AttendanceController@record');
+    Route::get('/class/attendance/{id}', 'Api\\AttendanceController@attendance');
 
-
-
+    // todo
     Route::post('/class/save', 'Api\\ClassController@save');
-    Route::get('/class/attendance/{id}', 'Api\\ClassController@attendance');
 
     //uploads
     Route::post('/upload/activity/material', 'Api\\FileController@assignmentMaterial');
@@ -77,6 +78,6 @@ Route::middleware('jwt')->group(function () {
 	Route::post('/user/change-password', 'AuthController@changePassword');
 	
 	//lesson_plans
-	Route::post('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
+    Route::post('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
 	
 });

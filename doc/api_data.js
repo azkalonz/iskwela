@@ -1369,6 +1369,220 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "HOST/api/class/attendance/{id}",
+    "title": "Attendance Report",
+    "version": "1.0.0",
+    "name": "ClassAttendance",
+    "description": "<p>Returns the attendance report of all users in the class</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the class ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_attendance_count",
+            "description": "<p>the &quot;perfect&quot; attendance of the class</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "students",
+            "description": "<p>list of students with attendance info</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "students.id",
+            "description": "<p>the student ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "students.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "students.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "students.attendance",
+            "description": "<p>user attendance count</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "students.absence",
+            "description": "<p>user absence count</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"class_id\": 1,\n    \"class_attendance_count\": 3,\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"attendance\": 3,\n            \"absence\": 0\n        },\n        {\n            \"id\": 2,\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\",\n            \"attendance\": 3,\n            \"absence\": 0\n        },\n        {\n            \"id\": 3,\n            \"first_name\": \"jen\",\n            \"last_name\": \"castillo\",\n            \"attendance\": 2,\n            \"absence\": 1\n        },\n        {\n            \"id\": 4,\n            \"first_name\": \"davy\",\n            \"last_name\": \"castillo\",\n            \"attendance\": 2,\n            \"absence\": 1\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AttendanceController.php",
+    "groupTitle": "Reports"
+  },
+  {
+    "type": "get",
+    "url": "HOST/api/class/attendance/save",
+    "title": "Record Attendance",
+    "version": "1.0.0",
+    "name": "RecordAttendance",
+    "description": "<p>Records the user's class attendance</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>the student ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_type",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "schedule",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule.id",
+            "description": "<p>the schedule ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "schedule.date_from",
+            "description": "<p>session start date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "schedule.date_to",
+            "description": "<p>session end date/time</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"student_id\": 1,\n    \"username\": \"jayson\",\n    \"first_name\": \"jayson\",\n    \"last_name\": \"barino\",\n    \"user_type\": \"s\",\n    \"class_id\": 1,\n    \"schedule\": {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AttendanceController.php",
+    "groupTitle": "Reports"
+  },
+  {
     "type": "POST",
     "url": "HOST/students/improvement",
     "title": "Student Improvements",
