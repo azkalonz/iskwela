@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     /**
      * Record Attendance
      *
-     * @api {get} HOST/api/class/attendance/save Record Attendance
+     * @api {post} HOST/api/class/attendance/save Record Attendance
      * @apiVersion 1.0.0
      * @apiName RecordAttendance
      * @apiDescription Records the user's class attendance

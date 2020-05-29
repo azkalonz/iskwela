@@ -1462,7 +1462,7 @@
     "groupTitle": "Reports"
   },
   {
-    "type": "get",
+    "type": "post",
     "url": "HOST/api/class/attendance/save",
     "title": "Record Attendance",
     "version": "1.0.0",
