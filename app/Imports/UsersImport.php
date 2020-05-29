@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use App\Models\School;
 
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -17,6 +18,13 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
         'Female' => 'f',
         ' ' => null
     ];
+
+    var $school = null;
+
+    public function __construct(School $school)
+    {
+        $this->school = $school;
+    }
 
     /**
      * @return int
@@ -33,7 +41,6 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
      */
     public function model(array $row)
     {
-        info($row);
         return new User([
             'username'      => $this->generateUsername($row[0], $row[2]),
             'first_name'    => $row[0],
@@ -44,6 +51,7 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
             'email'         => $row[5],
             'user_type'     => $this::USER_TYPE,
             'password'      => Hash::make($row[2]),
+            'school_id'     => $this->school->id
         ]);
     }
 
@@ -63,7 +71,7 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
 
         $username = $shorthand.str_replace(' ', '', strtolower($lastname));
 
-        // check username exist
+        // check username exist and increment counter
         $i = User::whereUsername($username)->count();
         while (User::whereUsername($username)->exists()) {
             $i++;

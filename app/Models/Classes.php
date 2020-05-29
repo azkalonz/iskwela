@@ -15,10 +15,17 @@ class Classes extends Model
     public $timestamps = false;
     protected $fillable = [
         'name',
-        'created_by',
-        'updated_by',
+        'description',
+        'room_number',
         'teacher_id',
-        'subject_id'
+        'subject_id',
+        'section_id',
+        'date_from',
+        'date_to',
+        'time_from',
+        'time_to',
+        'frequency',
+        'color'
     ];
 
     /**

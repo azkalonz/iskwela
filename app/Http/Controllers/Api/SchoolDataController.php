@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Excel;
 
 use App\Imports\SchoolDataImport;
-use App\Imports\UsersImport;
 use App\Models\School;
 
 class SchoolDataController extends Controller
@@ -20,16 +19,21 @@ class SchoolDataController extends Controller
         ]);
 
         // create new or update school
-        $school = new School();
-        $school->firstOrCreate([
+        $school = School::firstOrCreate([
             'school_name' => strtoupper($request->school_name)
         ]);
 
-        $schoolimport = new SchoolDataImport();
-        $schoolimport->onlySheets('Teachers', 'Students');
+        $schoolimport = new SchoolDataImport($school);
+        $schoolimport->onlySheets(
+            'Year Levels',
+            'Subjects',
+            'Teachers'
+            // 'Class Schedule'
+            // 'Students'
+        );
 
         $results = Excel::import($schoolimport, $request->file);
 
-        dd(get_class_methods($results));
+        return response()->json($results);
     }
 }

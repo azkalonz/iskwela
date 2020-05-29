@@ -40,8 +40,12 @@ Route::middleware('jwt')->group(function () {
     Route::get('/student/class-activities/{id}', 'Api\\ScheduleController@studentActivitiesBySchedule');
     Route::get('/student/class-schedules/{id}', 'Api\\ScheduleController@classStudentSchedules');
     Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
+<<<<<<< HEAD
     Route::post('/class/attendance/save', 'Api\\AttendanceController@record');
     Route::get('/class/attendance/{id}', 'Api\\AttendanceController@attendance');
+=======
+    Route::get('/student/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
+>>>>>>> 190bea946a814a8b20211c00fd587ecffc5deb83
 
     // todo
     Route::post('/class/save', 'Api\\ClassController@save');
