@@ -9,10 +9,17 @@ class AttendanceTransformer extends TransformerAbstract
     public function transform(\App\Models\Attendance $attendance)
     {
         return [
-            'user_id' => $attendance->users->id,
+            'student_id' => $attendance->users->id,
             'username' => $attendance->users->username,
-            'name' => $attendance->users->name,
-            'user_type' => $attendance->users->user_type
+            'first_name' => $attendance->users->first_name,
+            'last_name' => $attendance->users->last_name,
+            'user_type' => $attendance->users->user_type,
+            'class_id' => $attendance->class_id,
+            'schedule' => [
+                'id' => $attendance->schedule_id,
+                'from' => $attendance->schedule->date_from,
+                'to' => $attendance->schedule->date_to,
+            ]
         ];
     }
 }
