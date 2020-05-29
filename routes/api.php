@@ -32,6 +32,9 @@ Route::middleware('jwt')->group(function () {
     Route::get('/teacher/class-activities/{id}', 'Api\\ScheduleController@activitiesBySchedule');
     Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ScheduleController@lessonPlansBySchedule');
     Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@classMaterialsTeachersBySchedule');
+    Route::post('/teacher/remove/class-lesson-plan/{id}', 'Api\\LessonPlanController@remove');
+    Route::post('/teacher/remove/class-material/{id}', 'Api\\ClassController@removeClassMaterial');
+    Route::post('/teacher/remove/class-activity-material/{id}', 'Api\\AssignmentController@removeAssignmentMaterial');
 
 
     //classes -students

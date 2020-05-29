@@ -70,10 +70,7 @@ class LessonPlanController extends Controller
 
 		$lesson_plan = LessonPlan::findOrNew($request->id);
 
-		if(!isset($request->id))
-		{
-			$lesson_plan->created_by = $user->id;
-		}
+		$lesson_plan->created_by = $user->id;
 
 		$lesson_plan->link_url = $request->url;
 		$lesson_plan->schedule_id = $request->schedule_id;
@@ -85,6 +82,40 @@ class LessonPlanController extends Controller
         $fractal = fractal()->item($lesson_plan, new LessonPlanTransformer);
 
         return response()->json($fractal->toArray());
+    }
+
+    /**
+     * Remove Lesson Plan
+     *
+     * @api {post} HOST/api/teacher/remove/class-lesson-plan/{id} Remove Lesson Plan
+     * @apiVersion 1.0.0
+     * @apiName RemoveLessonPlan
+     * @apiDescription Removes Lesson Plan
+     * @apiGroup Teacher Classes
+     *
+     * @apiParam {Number} id Lesson Plan ID
+     *
+     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function remove(Request $request)
+    {
+        $user =  Auth::user();
+
+		$lesson_plan = LessonPlan::findOrFail($request->id);
+
+        $lesson_plan->updated_by = $user->id;
+        $lesson_plan->delete();
+        
+        return response()->json(['success' => true]);
     }
 
     /**

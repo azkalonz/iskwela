@@ -13,6 +13,7 @@ use App\Transformers\UserPreferenceTransformer;
 use Auth;
 use App\Models\User;
 use App\Models\Schedule;
+use App\Models\ClassMaterial;
 
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -520,6 +521,38 @@ class ClassController extends Controller
         }
 
        return response()->json($fractal_arr);
+    }
+
+
+    /**
+     * Remove Class Material
+     *
+     * @api {post} HOST/api/teacher/remove/class-material/{id} Remove Class Material
+     * @apiVersion 1.0.0
+     * @apiName RemoveClassMaterial
+     * @apiDescription Removes a Class Material
+     * @apiGroup Teacher Classes
+     *
+     * @apiParam {Number} id ID of Class Material
+     *
+     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function removeClassMaterial(Request $request)
+    {
+        //to do: policy on who can remove
+		$class_material = ClassMaterial::findOrFail($request->id);
+        $class_material->delete();
+        
+        return response()->json(['success' => true]);
     }
 
 
