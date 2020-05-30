@@ -11,6 +11,7 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
 use \App\Models\Assignment;
+use \App\Models\AssignmentAnswer;
 use \App\Models\AssignmentMaterial;
 use \App\Transformers\AssignmentTransformer;
 use \App\Transformers\AssignmentMaterialTransformer;
@@ -168,30 +169,56 @@ class AssignmentController extends Controller
      * @apiSuccess {Number} materials.id any uploaded materials
      * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
+     * @apiSuccess {Array} submissions list of students and submission status - AVAILABLE IN TEACHERS PROFILE ONLY
+     * @apiSuccess {String} submissions.first_name
+     * @apiSuccess {String} submissions.last_name
+     * @apiSuccess {String} submissions.status
+     * @apiSuccess {DateTime} submissions.date_submitted
+     * 
      * @apiSuccessExample {json} Sample Response
         {
             "id": 1,
             "title": "English Assignment 1",
-            "instruction": "read it",
+            "description": "read it",
             "activity_type": "class activity",
             "available_from": "2020-05-11",
             "available_to": "2020-05-15",
-            "status": "unpublished",
+            "status": "published",
             "materials": [
                 {
                     "id": 1,
-                    "uploaded_file": "http://talina.local:8080/api/download/1",
+                    "uploaded_file": "",
                     "resource_link": "http://read-english.com/basics"
                 },
                 {
                     "id": 2,
-                    "uploaded_file": "http://talina.local:8080/api/download/2",
-                    "resource_link": "http://read-english.com/basics2"
+                    "uploaded_file": "http://link-to-uploaded-file/sample"
+                }
+            ],
+            "submissions": [
+                {
+                    "first_name": "jayson",
+                    "last_name": "barino",
+                    "status": "DONE",
+                    "date_submitted": "2020-05-30 16:17:15"
                 },
                 {
-                    "id": 5,
-                    "uploaded_file": "http://talina.local:8080/api/download/5",
-                    "resource_link": null
+                    "first_name": "grace",
+                    "last_name": "ungui",
+                    "status": "PENDING",
+                    "date_submitted": null
+                },
+                {
+                    "first_name": "jen",
+                    "last_name": "castillo",
+                    "status": "PENDING",
+                    "date_submitted": null
+                },
+                {
+                    "first_name": "davy",
+                    "last_name": "castillo",
+                    "status": "PENDING",
+                    "date_submitted": null
                 }
             ]
         }
@@ -201,10 +228,33 @@ class AssignmentController extends Controller
      */
     public function show(Request $request)
     {
-        $user =  Auth::user();
-        $activity = Assignment::find($request->id)->whereCreatedBy($user->id)->first();
         
+        $user =  Auth::user();
+
+        if($request->include == 'submissions' && $user->user_type != 't')
+        {
+            return response('Unauthorized access to included data', 403);
+        }
+
+        $activity = Assignment::with([
+            'viewers' => function($student){
+                $student->with([
+                    'submittedActivity' => function($answer){
+                        $answer->where('assignment_id', 1);
+                    }
+                ]);
+            }
+        ])
+        ->whereId($request->id)->first();
+
+        $activity->viewers = \App\TransferObjects\AssignmentSubmissions::create([
+            'submissions' => $activity->viewers
+        ]);
+
         $fractal = fractal()->item($activity, new AssignmentTransformer);
+        if($user->user_type == 't') {
+            $fractal->includeSubmissions();
+        }
 
         return response()->json($fractal->toArray());    
     }

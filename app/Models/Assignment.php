@@ -36,4 +36,9 @@ class Assignment extends Model
     {
         return $this->hasMany(AssignmentMaterial::class);
     }
+
+    public function viewers()
+    {
+        return $this->hasManyThrough(SectionStudent::class, Classes::class, 'id', 'section_id');
+    }
 }

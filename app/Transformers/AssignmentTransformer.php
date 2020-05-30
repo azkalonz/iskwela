@@ -7,6 +7,7 @@ use League\Fractal\TransformerAbstract;
 class AssignmentTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = ['materials'];
+    protected $availableIncludes = ['submissions'];
 
     public function transform(\App\Models\Assignment $assignment)
     {
@@ -35,4 +36,9 @@ class AssignmentTransformer extends TransformerAbstract
     {
         return $this->collection($assignment->quizzes, new \App\Transformers\AssignmentQuizTransformer);
     } */
+
+    public function includeSubmissions(\App\Models\Assignment $assignment)
+    {
+        return $this->item($assignment->viewers, new \App\Transformers\AssignmentSubmissionsTransformer);
+    }
 }

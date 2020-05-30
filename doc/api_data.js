@@ -99,13 +99,48 @@ define({ "api": [
             "optional": false,
             "field": "materials.resource_link",
             "description": "<p>Link to materials e.g google doc, website,etc</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "submissions",
+            "description": "<p>list of students and submission status - AVAILABLE IN TEACHERS PROFILE ONLY</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.status",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "submissions.date_submitted",
+            "description": ""
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"title\": \"English Assignment 1\",\n    \"instruction\": \"read it\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": \"2020-05-11\",\n    \"available_to\": \"2020-05-15\",\n    \"status\": \"unpublished\",\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/1\",\n            \"resource_link\": \"http://read-english.com/basics\"\n        },\n        {\n            \"id\": 2,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/2\",\n            \"resource_link\": \"http://read-english.com/basics2\"\n        },\n        {\n            \"id\": 5,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/5\",\n            \"resource_link\": null\n        }\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"title\": \"English Assignment 1\",\n    \"description\": \"read it\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": \"2020-05-11\",\n    \"available_to\": \"2020-05-15\",\n    \"status\": \"published\",\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"uploaded_file\": \"\",\n            \"resource_link\": \"http://read-english.com/basics\"\n        },\n        {\n            \"id\": 2,\n            \"uploaded_file\": \"http://link-to-uploaded-file/sample\"\n        }\n    ],\n    \"submissions\": [\n        {\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"status\": \"DONE\",\n            \"date_submitted\": \"2020-05-30 16:17:15\"\n        },\n        {\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        },\n        {\n            \"first_name\": \"jen\",\n            \"last_name\": \"castillo\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        },\n        {\n            \"first_name\": \"davy\",\n            \"last_name\": \"castillo\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        }\n    ]\n}",
           "type": "json"
         }
       ]
