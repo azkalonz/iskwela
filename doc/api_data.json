@@ -376,6 +376,122 @@
   },
   {
     "type": "post",
+    "url": "HOST/api/teacher/remove/class-activity/{id}",
+    "title": "Remove Class Activity",
+    "version": "1.0.0",
+    "name": "RemoveClassActivity",
+    "description": "<p>Remove Class Activity</p>",
+    "group": "Activity",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Class Activity ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if ID is found. Otherwise, returns error code 404.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Activity"
+  },
+  {
+    "type": "post",
+    "url": "HOST/class/activity-material/save",
+    "title": "Save Activity Material",
+    "version": "1.0.0",
+    "name": "SaveActivityMaterial",
+    "description": "<p>Save Activity Material</p>",
+    "group": "Activity",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Material ID, if supplied, will update the activity material. Otherwise, will create new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>Resource Link</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>ID of the Activity</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Material ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uploaded_file",
+            "description": "<p>Uploaded file if exists.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "resource_link",
+            "description": "<p>URL of the activity material.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 3,\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-activity-material-link-2.com\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Activity"
+  },
+  {
+    "type": "post",
     "url": "HOST/api/changePassword",
     "title": "User Change Password",
     "version": "1.0.0",

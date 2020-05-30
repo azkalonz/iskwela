@@ -13,6 +13,7 @@ use League\Fractal\Serializer\ArraySerializer;
 use \App\Models\Assignment;
 use \App\Models\AssignmentMaterial;
 use \App\Transformers\AssignmentTransformer;
+use \App\Transformers\AssignmentMaterialTransformer;
 
 class AssignmentController extends Controller
 {
@@ -236,6 +237,86 @@ class AssignmentController extends Controller
 
         $assignment_material->delete();
         
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Save Activity Material
+     *
+     * @api {post} HOST/class/activity-material/save Save Activity Material
+     * @apiVersion 1.0.0
+     * @apiName SaveActivityMaterial
+     * @apiDescription Save Activity Material
+     * @apiGroup Activity
+     *
+     * @apiParam {Number} id Activity Material ID, if supplied, will update the activity material. Otherwise, will create new.
+     * @apiParam {String} url Resource Link
+     * @apiParam {Number} activity_id ID of the Activity
+     * 
+     * @apiSuccess {Number} id Activity Material ID.
+     * @apiSuccess {String} uploaded_file Uploaded file if exists.
+     * @apiSuccess {String} resource_link URL of the activity material.
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 3,
+            "uploaded_file": "",
+            "resource_link": "sample-activity-material-link-2.com"
+        }
+     *
+     * 
+     * 
+     */
+    public function saveActivityMaterial(Request $request)
+    {
+        $request->validate([
+            'id' => 'integer',
+            'url' => 'string',
+            'activity_id' => 'integer|required'
+        ]);
+
+        $user =  Auth::user();
+
+		$assignment_material = AssignmentMaterial::findOrNew($request->id);
+        $assignment_material->link_url = $request->url;
+        $assignment_material->assignment_id = $request->activity_id;
+		$assignment_material->save();
+
+        $fractal = fractal()->item($assignment_material, new AssignmentMaterialTransformer);
+
+        return response()->json($fractal->toArray());
+    }
+
+
+    /**
+     * Remove Class Activity
+     *
+     * @api {post} HOST/api/teacher/remove/class-activity/{id} Remove Class Activity
+     * @apiVersion 1.0.0
+     * @apiName RemoveClassActivity
+     * @apiDescription Remove Class Activity
+     * @apiGroup Activity
+     *
+     * @apiParam {Number} id Class Activity ID.
+     *
+     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
+     *
+     *
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     *
+     *
+     */
+    public function remove(Request $request)
+    {
+        $user =  Auth::user();
+
+		$assignment = Assignment::findOrFail($request->id);
+        $assignment->delete();
+
         return response()->json(['success' => true]);
     }
 
