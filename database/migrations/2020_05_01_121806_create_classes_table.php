@@ -20,25 +20,22 @@ class CreateClassesTable extends Migration
             $table->string('room_number'); // video conference info here
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('subject_id')->unsigned();
-            $table->bigInteger('created_by')->unsigned();
-            $table->bigInteger('updated_by')->unsigned();
+            $table->bigInteger('year_id')->unsigned();
+            $table->bigInteger('section_id')->unsigned();
             $table->char('color', 7)->nullable(); // hex color in #000000 format
             $table->string('image')->nullable(); // url of the background image
-            $table->bigInteger('section_id')->unsigned();
-            $table->date('date_from');
-            $table->date('date_to');
+            $table->date('date_from')->nullable();
+            $table->date('date_to')->nullable();
             $table->time('time_from');
             $table->time('time_to');
-            $table->string('frequency', 50);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
 
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->foreign('section_id')->references('id')->on('sections');
+            $table->foreign('year_id')->references('id')->on('years');
         });
     }
 

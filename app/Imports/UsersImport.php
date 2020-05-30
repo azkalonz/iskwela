@@ -41,7 +41,7 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
      */
     public function model(array $row)
     {
-        return new User([
+        return User::firstOrCreate([
             'username'      => $this->generateUsername($row[0], $row[2]),
             'first_name'    => $row[0],
             'middle_name'   => $row[1],
@@ -50,7 +50,7 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
             'phone_number'  => $row[4],
             'email'         => $row[5],
             'user_type'     => $this::USER_TYPE,
-            'password'      => Hash::make($row[2]),
+            'password'      => Hash::make(str_replace(' ', '', strtolower($row[2]))),
             'school_id'     => $this->school->id
         ]);
     }

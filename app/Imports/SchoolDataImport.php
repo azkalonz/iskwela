@@ -12,7 +12,7 @@ use App\Imports\TeachersImport;
 use App\Imports\SectionsImport;
 use App\Imports\ClassSchedulesImport;
 use App\Imports\StudentsImport;
-
+use App\Models\AcademicYear;
 use App\Models\School;
 
 class SchoolDataImport implements WithMultipleSheets, SkipsUnknownSheets
@@ -20,10 +20,12 @@ class SchoolDataImport implements WithMultipleSheets, SkipsUnknownSheets
     use WithConditionalSheets;
 
     var $school = null;
+    var $ay = null;
 
-    public function __construct(School $school)
+    public function __construct(School $school, AcademicYear $ay)
     {
         $this->school = $school;
+        $this->ay = $ay;
     }
 
     public function conditionalSheets(): array
@@ -32,8 +34,8 @@ class SchoolDataImport implements WithMultipleSheets, SkipsUnknownSheets
             'Year Levels'       => new YearsImport(),
             'Subjects'          => new SubjectsImport(),
             'Teachers'          => new TeachersImport($this->school),
-            'Sections/Groups'   => new SectionsImport(),
-            'Class Schedule'    => new ClassSchedulesImport(),
+            'SectionsGroups'    => new SectionsImport(),
+            'Class Schedule'    => new ClassSchedulesImport($this->ay),
             'Students'          => new StudentsImport($this->school),
         ];
     }

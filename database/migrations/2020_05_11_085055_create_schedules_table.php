@@ -19,9 +19,9 @@ class CreateSchedulesTable extends Migration
 			$table->integer('teacher_id');
             $table->datetime('date_from');
             $table->datetime('date_to');
-			$table->datetime('started_at')->nullable();
-			$table->datetime('ended_at')->nullable();
-			$table->integer('status'); /*0 - canceled, 1 - on going, 2 - not started*/
+			$table->time('started_at');
+			$table->time('ended_at');
+			$table->integer('status')->default(2); /*0 - canceled, 1 - on going, 2 - not started*/
 
             $table->timestamp('created_at')->useCurrent();
             $table->index('class_id');

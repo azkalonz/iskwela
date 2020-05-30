@@ -8,6 +8,8 @@ class SectionStudent extends Model
 {
     protected $table = 'sections_students';
 
+    protected $fillable = ['section_id', 'user_id'];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

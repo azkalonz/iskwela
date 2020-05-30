@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    protected $fillable = [
+        'name',
+        'class_id',
+        'teacher_id',
+        'date_from',
+        'date_to',
+        'started_at',
+        'ended_at',
+    ];
+
     public $timestamps = false;
     public function materials()
     {

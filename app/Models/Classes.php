@@ -20,11 +20,11 @@ class Classes extends Model
         'teacher_id',
         'subject_id',
         'section_id',
+        'year_id',
         'date_from',
         'date_to',
         'time_from',
         'time_to',
-        'frequency',
         'color'
     ];
 
