@@ -4809,6 +4809,127 @@ define({ "api": [
     "groupTitle": "Teacher_Classes"
   },
   {
+    "type": "post",
+    "url": "HOST/api/class/material/save",
+    "title": "Save Class Material",
+    "version": "1.0.0",
+    "name": "SaveClassMaterial",
+    "description": "<p>Saves a Class Material</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Class Material. if exists, updates the specified class Material ID, otherwise, creates new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>Schedule ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>Link to class material</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Title of the Class Material</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Class Material ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Class Material Title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uploaded_file",
+            "description": "<p>file uploaded if exits.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "resource_link",
+            "description": "<p>link to class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "added_by",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>teacher ID who added the class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the teacher</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the teacher</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 16,\n    \"title\": \"Sample Title2\",\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-class-material-link2.com\",\n    \"added_by\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
     "type": "GET",
     "url": "<HOST>/api/teacher/classes",
     "title": "Get class list",
