@@ -19,7 +19,7 @@ class CreateAcademicYearsTable extends Migration
             $table->bigInteger('school_id')->unsigned();
             $table->date('date_from');
             $table->date('date_to');
-        }
+        });
     }
 
     /**
