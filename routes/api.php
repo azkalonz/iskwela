@@ -35,6 +35,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/teacher/remove/class-lesson-plan/{id}', 'Api\\LessonPlanController@remove');
     Route::post('/teacher/remove/class-material/{id}', 'Api\\ClassController@removeClassMaterial');
     Route::post('/teacher/remove/class-activity-material/{id}', 'Api\\AssignmentController@removeAssignmentMaterial');
+    Route::post('/teacher/remove/class-activity/{id}', 'Api\\AssignmentController@remove');
 
 
     //classes -students
@@ -72,6 +73,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/class/activity/save', 'Api\\AssignmentController@save');
     Route::post('/class/activity/publish/{id}', 'Api\\AssignmentController@publish');
     Route::get('/class/activity/{id}', 'Api\\AssignmentController@show');
+    Route::post('/class/activity-material/save', 'Api\\AssignmentController@saveActivityMaterial');
 
 	//student
 	Route::post('/students/improvement/save', 'Api\\StudentController@addImprovement');
@@ -83,5 +85,4 @@ Route::middleware('jwt')->group(function () {
 	
 	//lesson_plans
     Route::post('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
-	
 });

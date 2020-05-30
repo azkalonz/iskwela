@@ -15,7 +15,7 @@ use League\Fractal\Serializer\ArraySerializer;
 
 class LessonPlanController extends Controller
 {
-/**
+    /**
      * Class Lesson Plan Save
      *
      * @api <HOST>/class/lesson-plan/save Add/Edit Lesson Plan
