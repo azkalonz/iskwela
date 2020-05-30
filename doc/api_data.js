@@ -99,13 +99,48 @@ define({ "api": [
             "optional": false,
             "field": "materials.resource_link",
             "description": "<p>Link to materials e.g google doc, website,etc</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "submissions",
+            "description": "<p>list of students and submission status - AVAILABLE IN TEACHERS PROFILE ONLY</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submissions.status",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "submissions.date_submitted",
+            "description": ""
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"title\": \"English Assignment 1\",\n    \"instruction\": \"read it\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": \"2020-05-11\",\n    \"available_to\": \"2020-05-15\",\n    \"status\": \"unpublished\",\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/1\",\n            \"resource_link\": \"http://read-english.com/basics\"\n        },\n        {\n            \"id\": 2,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/2\",\n            \"resource_link\": \"http://read-english.com/basics2\"\n        },\n        {\n            \"id\": 5,\n            \"uploaded_file\": \"http://talina.local:8080/api/download/5\",\n            \"resource_link\": null\n        }\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"title\": \"English Assignment 1\",\n    \"description\": \"read it\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": \"2020-05-11\",\n    \"available_to\": \"2020-05-15\",\n    \"status\": \"published\",\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"uploaded_file\": \"\",\n            \"resource_link\": \"http://read-english.com/basics\"\n        },\n        {\n            \"id\": 2,\n            \"uploaded_file\": \"http://link-to-uploaded-file/sample\"\n        }\n    ],\n    \"submissions\": [\n        {\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"status\": \"DONE\",\n            \"date_submitted\": \"2020-05-30 16:17:15\"\n        },\n        {\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        },\n        {\n            \"first_name\": \"jen\",\n            \"last_name\": \"castillo\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        },\n        {\n            \"first_name\": \"davy\",\n            \"last_name\": \"castillo\",\n            \"status\": \"PENDING\",\n            \"date_submitted\": null\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -4806,6 +4841,127 @@ define({ "api": [
       ]
     },
     "filename": "app/Http/Controllers/Api/LessonPlanController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/class/material/save",
+    "title": "Save Class Material",
+    "version": "1.0.0",
+    "name": "SaveClassMaterial",
+    "description": "<p>Saves a Class Material</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Class Material. if exists, updates the specified class Material ID, otherwise, creates new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>Schedule ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>Link to class material</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Title of the Class Material</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Class Material ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Class Material Title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uploaded_file",
+            "description": "<p>file uploaded if exits.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "resource_link",
+            "description": "<p>link to class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "added_by",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>teacher ID who added the class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the teacher</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the teacher</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 16,\n    \"title\": \"Sample Title2\",\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-class-material-link2.com\",\n    \"added_by\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassController.php",
     "groupTitle": "Teacher_Classes"
   },
   {

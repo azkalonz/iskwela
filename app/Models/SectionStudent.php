@@ -19,4 +19,9 @@ class SectionStudent extends Model
     {
         return $this->hasMany(Attendance::class, 'user_id', 'user_id');
     }
+
+    public function submittedActivity()
+    {
+        return $this->hasMany(AssignmentAnswer::class, 'student_id', 'user_id');
+    }
 }
