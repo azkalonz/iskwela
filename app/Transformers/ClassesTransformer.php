@@ -55,6 +55,7 @@ class ClassesTransformer extends TransformerAbstract
 
             if($from >= $now) {
                 $next = [
+                    'id' => $sched['id'],
                     'from' => $sched['date_from'],
                     'to' => $sched['date_to'],
                     'status' => config('school_hub.schedule_status')[$sched['status']]
