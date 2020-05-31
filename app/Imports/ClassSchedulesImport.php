@@ -10,6 +10,7 @@ use App\Models\Year;
 use App\Models\User;
 use App\Models\Section;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -51,8 +52,8 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             'teacher_id' => $teacher->id,
             'subject_id' => $subject->id,
             'section_id' => $section->id,
-            'time_from' => $row[6],
-            'time_to' => $row[7],
+            'time_from' => Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s'),
+            'time_to' => Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s'),
             'color' => $this->generateRandomColor(),
             'room_number' => $this->generateRoom()
         ]);
