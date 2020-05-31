@@ -45,7 +45,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function classes()
     {
-        return $this->hasManyThrough(Classes::class, SectionStudent::class, 'user_id', 'section_id', 'id');
+        return $this->hasManyThrough(Classes::class, SectionStudent::class, 'user_id', 'section_id', 'id', 'section_id');
     }
 	
 	public function preference()
