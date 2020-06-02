@@ -20,7 +20,7 @@ return [
         1 => 'class activity',
         2 => 'assignment'
     ],
-    'activity_status' => [
+    'file_status' => [
         0 => 'unpublished',
         1 => 'published'
     ],

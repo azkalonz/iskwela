@@ -667,8 +667,22 @@ class ScheduleController extends Controller
     private function getClassMaterials($class_id)
     {
         //todo: add policy that only teacher/student related to class can view
-        $schedules = Schedule::with('materials')->whereClassId($class_id)->get();
-        $fractal = fractal()->collection($schedules, new ScheduleTransformer);
+        $schedules = Schedule::whereClassId($class_id);
+
+        $user = Auth::user();
+
+        if($user->user_type == 's') {
+            $schedules->with([
+                'materials' => function($material) {
+                    $material->where('published', 1);
+                }
+            ]);
+        }
+        else {
+            $schedules->with('materials');
+        }
+
+        $fractal = fractal()->collection($schedules->get(), new ScheduleTransformer);
         $fractal->includeMaterials();
 
         return response()->json($fractal->toArray());

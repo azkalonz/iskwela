@@ -86,4 +86,9 @@ Route::middleware('jwt')->group(function () {
 	
 	//lesson_plans
     Route::post('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
+
+    //class material
+    Route::post('/class/material/publish/{id}', 'Api\\ClassMaterialController@publish');
+    Route::post('/class/material/unpublish/{id}', 'Api\\ClassMaterialController@unpublish');
+
 });
