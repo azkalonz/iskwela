@@ -17,7 +17,8 @@ class ClassMaterialTransformer extends TransformerAbstract
                 'id' => $class_material->user->id,
                 'first_name' => $class_material->user->first_name,
                 'last_name' => $class_material->user->last_name,
-            ]
+            ],
+            'status' => config('school_hub.file_status')[$class_material->published]
         ];
     }
 }
