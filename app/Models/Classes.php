@@ -18,6 +18,8 @@ class Classes extends Model
         'description',
         'room_number',
         'teacher_id',
+        'created_by',
+        'updated_by',
         'subject_id',
         'section_id',
         'year_id',
@@ -25,6 +27,7 @@ class Classes extends Model
         'date_to',
         'time_from',
         'time_to',
+        'frequency',
         'color'
     ];
 
