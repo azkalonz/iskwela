@@ -48,6 +48,7 @@ class AssignmentController extends Controller
      * @apiSuccess {String} status published/unpublished 
      * @apiSuccess {Array} materials
      * @apiSuccess {Number} materials.id any uploaded materials
+     * @apiSuccess {String} materials.title Title of the Activity Material
      * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
      * 
@@ -64,6 +65,7 @@ class AssignmentController extends Controller
             "materials": [
                 {
                     "id": 4,
+                    "title":"Sample Title",
                     "uploaded_file": "SCHOOL01/2020-05-21/121026-bargram.png",
                     "resource_link": null
                 }
@@ -310,6 +312,7 @@ class AssignmentController extends Controller
      * @apiSuccessExample {json} Sample Response
         {
             "id": 3,
+            "title": "Sample Title",
             "uploaded_file": "",
             "resource_link": "sample-activity-material-link-2.com"
         }
@@ -322,7 +325,8 @@ class AssignmentController extends Controller
         $request->validate([
             'id' => 'integer',
             'url' => 'string',
-            'activity_id' => 'integer|required'
+            'activity_id' => 'integer|required',
+            'title' => 'string'
         ]);
 
         $user =  Auth::user();
@@ -330,6 +334,7 @@ class AssignmentController extends Controller
 		$assignment_material = AssignmentMaterial::findOrNew($request->id);
         $assignment_material->link_url = $request->url;
         $assignment_material->assignment_id = $request->activity_id;
+        $assignment_material->title = $request->title;
 		$assignment_material->save();
 
         $fractal = fractal()->item($assignment_material, new AssignmentMaterialTransformer);

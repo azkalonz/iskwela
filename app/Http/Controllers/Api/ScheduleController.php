@@ -62,28 +62,16 @@ class ScheduleController extends Controller
                     "instruction": "read it",
                     "available_from": "2020-05-11",
                     "available_to": "2020-05-15",
-                    "questions": [
-                        {
-                            "id": 1,
-                            "question": "what is noun?"
-                        },
-                        {
-                            "id": 2,
-                            "question": "what is adverb"
-                        },
-                        {
-                            "id": 3,
-                            "question": "what is predicate?"
-                        }
-                    ],
                     "materials": [
                         {
                             "id": 1,
+                            "title": "Sample Title",
                             "uploaded_file": "",
                             "resource_link": "http://read-english.com/basics"
                         },
                         {
                             "id": 2,
+                            "title": "Sample Title",
                             "uploaded_file": "",
                             "resource_link": "http://read-english.com/basics2"
                         }
@@ -95,23 +83,10 @@ class ScheduleController extends Controller
                     "instruction": "read it",
                     "available_from": "2020-05-20",
                     "available_to": "2020-05-30",
-                    "questions": [
-                        {
-                            "id": 4,
-                            "question": "what is pronoun?"
-                        },
-                        {
-                            "id": 5,
-                            "question": "what is subject"
-                        },
-                        {
-                            "id": 6,
-                            "question": "what is plural?"
-                        }
-                    ],
                     "materials": [
                         {
                             "id": 3,
+                            "title": "Sample Title",
                             "uploaded_file": "",
                             "resource_link": "http://read-english.com/basics3"
                         }
@@ -149,7 +124,8 @@ class ScheduleController extends Controller
      * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
      * @apiSuccess {String} activities.status published/unpublished
      * @apiSuccess {Array} activities.materials Array of reading materials needed for this activity
-     * @apiSuccess {Number} activities.materials.id 
+     * @apiSuccess {Number} activities.materials.id
+     * @apiSuccess {String} activities.materials.title Title of the Activity Material
      * @apiSuccess {String} activities.materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
      * @apiSuccess {String} activities.materials.resource_link Link to materials e.g google doc, website,etc
      */
@@ -286,6 +262,7 @@ class ScheduleController extends Controller
      * @apiSuccess {String} activities.status "published" or "unpublished"
      * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
      * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {String} activities.materials.title Title of the Activity Material
      * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
      * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
      * 
@@ -324,15 +301,17 @@ class ScheduleController extends Controller
                         "activity_type": "class activity",
                         "available_from": "2020-05-11",
                         "available_to": "2020-05-15",
-                        "status": "unpublished",
+                        "status": "published",
                         "materials": [
                             {
                                 "id": 1,
+                                "title": "Sample Title",
                                 "uploaded_file": "http://link-to-uploaded-file/sample",
                                 "resource_link": ""
                             },
                             {
                                 "id": 2,
+                                "title": "Sample Title",
                                 "uploaded_file": "",
                                 "resource_link": "http://read-english.com/basics2"
                             }
@@ -405,6 +384,7 @@ class ScheduleController extends Controller
      * @apiSuccess {String} activities.status "published" or "unpublished"
      * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
      * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {String} activities.materials.title Title of Activity Material
      * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
      * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
      * 
@@ -433,11 +413,13 @@ class ScheduleController extends Controller
                         "materials": [
                             {
                                 "id": 1,
+                                "title": "Sample Title",
                                 "uploaded_file": "",
                                 "resource_link": "http://read-english.com/basics"
                             },
                             {
                                 "id": 1,
+                                "title": "Sample Title",
                                 "uploaded_file": "http://link-to-uploaded-file.com/sample",
                                 "resource_link": ""
                             },
@@ -853,6 +835,7 @@ class ScheduleController extends Controller
      * @apiSuccess {String} activities.status "published" or "unpublished"
      * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
      * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {String} activities.materials.title title of the Activity Material
      * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
      * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
      * 
@@ -895,11 +878,13 @@ class ScheduleController extends Controller
                         "materials": [
                             {
                                 "id": 1,
+                                "title": "Sample Title",
                                 "uploaded_file": "http://link-to-uploaded-file/sample",
                                 "resource_link": ""
                             },
                             {
                                 "id": 2,
+                                "title": NULL,
                                 "uploaded_file": "",
                                 "resource_link": "http://read-english.com/basics2"
                             }
@@ -966,6 +951,7 @@ class ScheduleController extends Controller
      * @apiSuccess {String} activities.status "published"
      * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
      * @apiSuccess {Number} activities.materials.id the material ID
+     * @apiSuccess {Number} activities.materials.title title of the Activity Material
      * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
      * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
      * 
@@ -994,11 +980,13 @@ class ScheduleController extends Controller
                         "materials": [
                             {
                                 "id": 1,
+                                "title": "Sample Title",
                                 "uploaded_file": "",
                                 "resource_link": "http://read-english.com/basics"
                             },
                             {
                                 "id": 1,
+                                "title": NULL,
                                 "uploaded_file": "http://link-to-uploaded-file.com/sample",
                                 "resource_link": ""
                             },

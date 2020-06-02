@@ -61,7 +61,8 @@ class FileController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
-            'assignment_id' => 'integer'
+            'assignment_id' => 'integer',
+            'title' => 'string'
         ]);
 
         $response = $this->upload($request->file);
@@ -70,6 +71,7 @@ class FileController extends Controller
             $activity_material = new \App\Models\AssignmentMaterial();
             $activity_material->assignment_id = $request->assignment_id;
             $activity_material->file = $response['file'];
+            $activity_material->title = $request->title;
             $activity_material->save();
         }
         else {
@@ -407,20 +409,34 @@ class FileController extends Controller
      *
      * @apiUse JWTHeader
      *
+     * @apiParam {Number} id User ID
      *
-     * @apiSuccess {BLOB} the attached file
+     * @apiSuccess {BLOB} the attached file. Returns 404 if not found.
      *
      */
     public function downloadProfilePicture(Request $request)
     {
+        $request->validate([
+            'id' => 'integer'
+        ]);
+
         $user = Auth::user();
 
+        if($request->id){
+            $user = \App\Models\User::find($request->id);
+        }
+
         if(!$user) {
-            return response('Unauthorized access', 401);
+            return response('No Auth user', 401);
         }
 
         $user_pref = \App\Models\UserPreference::whereUserId($user->getKey())->first();
-        return $this->download($user_pref->profile_picture);
+        if($user_pref){
+            return $this->download($user_pref->profile_picture);
+        }
+
+        return response('Not Found', 404);
+        
     }    
 
     public function download($filename)

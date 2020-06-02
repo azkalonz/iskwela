@@ -329,6 +329,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "materials.title",
+            "description": "<p>Title of the Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "materials.uploaded_file",
             "description": "<p>If there's any uploaded file e.g. pdf, word, excel, ppt</p>"
           },
@@ -344,7 +351,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 6,\n    \"title\": \"class activity sample edited\",\n    \"instruction\": \"this is a class activity\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": null,\n    \"available_to\": null,\n    \"status\": \"published\",\n    \"materials\": [\n        {\n            \"id\": 4,\n            \"uploaded_file\": \"SCHOOL01/2020-05-21/121026-bargram.png\",\n            \"resource_link\": null\n        }\n    ]\n}",
+          "content": "{\n    \"id\": 6,\n    \"title\": \"class activity sample edited\",\n    \"instruction\": \"this is a class activity\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": null,\n    \"available_to\": null,\n    \"status\": \"published\",\n    \"materials\": [\n        {\n            \"id\": 4,\n            \"title\":\"Sample Title\",\n            \"uploaded_file\": \"SCHOOL01/2020-05-21/121026-bargram.png\",\n            \"resource_link\": null\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -517,7 +524,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 3,\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-activity-material-link-2.com\"\n}",
+          "content": "{\n    \"id\": 3,\n    \"title\": \"Sample Title\",\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-activity-material-link-2.com\"\n}",
           "type": "json"
         }
       ]
@@ -650,6 +657,120 @@ define({ "api": [
     },
     "filename": "app/Http/Controllers/AuthController.php",
     "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/class/material/publish/{id}",
+    "title": "Publish class material",
+    "version": "1.0.0",
+    "name": "publishClassMaterial",
+    "description": "<p>Sets class material status to publish</p>",
+    "group": "Class_Materials",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the class material ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassMaterialController.php",
+    "groupTitle": "Class_Materials",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/class/material/unpublish/{id}",
+    "title": "Unpublish class material",
+    "version": "1.0.0",
+    "name": "unpublishClassMaterial",
+    "description": "<p>Sets class material status to unpublish</p>",
+    "group": "Class_Materials",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the class material ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassMaterialController.php",
+    "groupTitle": "Class_Materials",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "POST",
@@ -859,6 +980,19 @@ define({ "api": [
     "name": "DownloadProfilePicture",
     "description": "<p>Returns the url of auth user's profile picture</p>",
     "group": "File_Download",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User ID</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -867,7 +1001,7 @@ define({ "api": [
             "type": "BLOB",
             "optional": false,
             "field": "the",
-            "description": "<p>attached file</p>"
+            "description": "<p>attached file. Returns 404 if not found.</p>"
           }
         ]
       }
@@ -2057,6 +2191,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "activities.materials.title",
+            "description": "<p>Title of the Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "activities.materials.uploaded_file",
             "description": "<p>If there's any uploaded file e.g. pdf, word, excel, ppt</p>"
           },
@@ -2072,7 +2213,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"from\": \"2020-05-15 01:00:00\",\n    \"to\": \"2020-05-15 02:00:00\",\n    \"teacher\": {\n        \"id\": 9,\n        \"first_name\": \"teacher jayson\",\n        \"last_name\": \"barino\"\n    },\n    \"status\": 0,\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"title\": \"English Writing Part 1\",\n            \"instruction\": \"read the textbook\",\n            \"description\": \"learn english writing\",\n            \"uploaded_file\": null,\n            \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n            \"added_by\": {\n                \"id\": 8,\n                \"name\": null\n            }\n        },\n        {\n            \"id\": 2,\n            \"title\": \"English Writing Part 1\",\n            \"instruction\": \"read the textbook\",\n            \"description\": \"learn english writing\",\n            \"uploaded_file\": null,\n            \"resource_link\": \"https://sample-lesson-link.com/english-writing-part2\",\n            \"added_by\": {\n                \"id\": 8,\n                \"name\": null\n            }\n        }\n    ],\n    \"activities\": [\n        {\n            \"id\": 1,\n            \"title\": \"English Assignment 1\",\n            \"instruction\": \"read it\",\n            \"available_from\": \"2020-05-11\",\n            \"available_to\": \"2020-05-15\",\n            \"questions\": [\n                {\n                    \"id\": 1,\n                    \"question\": \"what is noun?\"\n                },\n                {\n                    \"id\": 2,\n                    \"question\": \"what is adverb\"\n                },\n                {\n                    \"id\": 3,\n                    \"question\": \"what is predicate?\"\n                }\n            ],\n            \"materials\": [\n                {\n                    \"id\": 1,\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics\"\n                },\n                {\n                    \"id\": 2,\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics2\"\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"title\": \"English Assignment 2\",\n            \"instruction\": \"read it\",\n            \"available_from\": \"2020-05-20\",\n            \"available_to\": \"2020-05-30\",\n            \"questions\": [\n                {\n                    \"id\": 4,\n                    \"question\": \"what is pronoun?\"\n                },\n                {\n                    \"id\": 5,\n                    \"question\": \"what is subject\"\n                },\n                {\n                    \"id\": 6,\n                    \"question\": \"what is plural?\"\n                }\n            ],\n            \"materials\": [\n                {\n                    \"id\": 3,\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics3\"\n                }\n            ]\n        }\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"from\": \"2020-05-15 01:00:00\",\n    \"to\": \"2020-05-15 02:00:00\",\n    \"teacher\": {\n        \"id\": 9,\n        \"first_name\": \"teacher jayson\",\n        \"last_name\": \"barino\"\n    },\n    \"status\": 0,\n    \"materials\": [\n        {\n            \"id\": 1,\n            \"title\": \"English Writing Part 1\",\n            \"instruction\": \"read the textbook\",\n            \"description\": \"learn english writing\",\n            \"uploaded_file\": null,\n            \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n            \"added_by\": {\n                \"id\": 8,\n                \"name\": null\n            }\n        },\n        {\n            \"id\": 2,\n            \"title\": \"English Writing Part 1\",\n            \"instruction\": \"read the textbook\",\n            \"description\": \"learn english writing\",\n            \"uploaded_file\": null,\n            \"resource_link\": \"https://sample-lesson-link.com/english-writing-part2\",\n            \"added_by\": {\n                \"id\": 8,\n                \"name\": null\n            }\n        }\n    ],\n    \"activities\": [\n        {\n            \"id\": 1,\n            \"title\": \"English Assignment 1\",\n            \"instruction\": \"read it\",\n            \"available_from\": \"2020-05-11\",\n            \"available_to\": \"2020-05-15\",\n            \"materials\": [\n                {\n                    \"id\": 1,\n                    \"title\": \"Sample Title\",\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics\"\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"Sample Title\",\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics2\"\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"title\": \"English Assignment 2\",\n            \"instruction\": \"read it\",\n            \"available_from\": \"2020-05-20\",\n            \"available_to\": \"2020-05-30\",\n            \"materials\": [\n                {\n                    \"id\": 3,\n                    \"title\": \"Sample Title\",\n                    \"uploaded_file\": \"\",\n                    \"resource_link\": \"http://read-english.com/basics3\"\n                }\n            ]\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -2382,6 +2523,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "activities.materials.title",
+            "description": "<p>title of the Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "activities.materials.uploaded_file",
@@ -2399,7 +2547,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"publishedActivities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"published\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics\"\n                    },\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"http://link-to-uploaded-file.com/sample\",\n                        \"resource_link\": \"\"\n                    },\n            {}\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": []\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"publishedActivities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"published\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics\"\n                    },\n                    {\n                        \"id\": 1,\n                        \"title\": NULL,\n                        \"uploaded_file\": \"http://link-to-uploaded-file.com/sample\",\n                        \"resource_link\": \"\"\n                    },\n            {}\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": []\n    }\n]",
           "type": "json"
         }
       ]
@@ -3141,6 +3289,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "activities.materials.title",
+            "description": "<p>title of the Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "activities.materials.uploaded_file",
             "description": "<p>link to uploaded file or</p>"
           },
@@ -3156,7 +3311,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"\",\n                \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            },\n            {}\n        ],\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"unpublished\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"http://link-to-uploaded-file/sample\",\n                        \"resource_link\": \"\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics2\"\n                    }\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [],\n        \"activities\": []\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"\",\n                \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            },\n            {}\n        ],\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"unpublished\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"http://link-to-uploaded-file/sample\",\n                        \"resource_link\": \"\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"title\": NULL,\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics2\"\n                    }\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [],\n        \"activities\": []\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
@@ -3628,6 +3783,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "activities.materials.title",
+            "description": "<p>Title of Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "activities.materials.uploaded_file",
             "description": "<p>link to uploaded file or</p>"
           },
@@ -3643,7 +3805,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"unpublished\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics\"\n                    },\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"http://link-to-uploaded-file.com/sample\",\n                        \"resource_link\": \"\"\n                    },\n            {}\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": []\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"unpublished\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics\"\n                    },\n                    {\n                        \"id\": 1,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"http://link-to-uploaded-file.com/sample\",\n                        \"resource_link\": \"\"\n                    },\n            {}\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"activities\": []\n    }\n]",
           "type": "json"
         }
       ]
@@ -4562,6 +4724,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "activities.materials.title",
+            "description": "<p>Title of the Activity Material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "activities.materials.uploaded_file",
             "description": "<p>link to uploaded file or</p>"
           },
@@ -4577,7 +4746,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"\",\n                \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            },\n            {}\n        ],\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"unpublished\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"uploaded_file\": \"http://link-to-uploaded-file/sample\",\n                        \"resource_link\": \"\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics2\"\n                    }\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [],\n        \"activities\": []\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Writing Part 1\",\n                \"uploaded_file\": \"\",\n                \"resource_link\": \"https://sample-lesson-link.com/english-writing-part1\",\n                \"added_by\": {\n                    \"id\": 8,\n                    \"first_name\": \"teacher tom\",\n                    \"last_name\": \"cruz\"\n                }\n            },\n            {}\n        ],\n        \"activities\": [\n            {\n                \"id\": 1,\n                \"title\": \"English Assignment 1\",\n                \"description\": \"read it\",\n                \"activity_type\": \"class activity\",\n                \"available_from\": \"2020-05-11\",\n                \"available_to\": \"2020-05-15\",\n                \"status\": \"published\",\n                \"materials\": [\n                    {\n                        \"id\": 1,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"http://link-to-uploaded-file/sample\",\n                        \"resource_link\": \"\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"title\": \"Sample Title\",\n                        \"uploaded_file\": \"\",\n                        \"resource_link\": \"http://read-english.com/basics2\"\n                    }\n                ]\n            },\n            {}\n        ]\n    },\n    {\n        \"id\": 2,\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        },\n        \"status\": \"\",\n        \"materials\": [],\n        \"activities\": []\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
