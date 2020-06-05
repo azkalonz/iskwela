@@ -37,6 +37,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/teacher/remove/class-activity-material/{id}', 'Api\\AssignmentController@removeAssignmentMaterial');
     Route::post('/teacher/remove/class-activity/{id}', 'Api\\AssignmentController@remove');
     Route::post('/class/material/save', 'Api\\ClassController@saveClassMaterial');
+    Route::get('/teacher/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
 
 
     //classes -students

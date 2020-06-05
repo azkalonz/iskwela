@@ -3333,7 +3333,7 @@
     }
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "HOST/student/activity-answers/{id}",
     "title": "Show Activity Answer",
     "version": "1.0.0",
@@ -3376,13 +3376,41 @@
             "optional": false,
             "field": "answer_media",
             "description": "<p>download link of the answer file</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "student",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.id",
+            "description": "<p>ID of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.first_name",
+            "description": "<p>First Name of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.last_name",
+            "description": "<p>Last Name of Student</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\"\n    },\n    {\n        \"id\": 2,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/2\"\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -5131,6 +5159,99 @@
       ]
     },
     "filename": "app/Http/Controllers/Api/ClassController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
+    "type": "get",
+    "url": "HOST/teacher/activity-answers/{id}",
+    "title": "Show Activity Answers",
+    "version": "1.0.0",
+    "name": "ShowActivityAnswers",
+    "description": "<p>Get activity answers.</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Answer ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "assignment_id",
+            "description": "<p>Activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer_media",
+            "description": "<p>download link of the answer file</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "student",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.id",
+            "description": "<p>ID of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.first_name",
+            "description": "<p>First Name of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.last_name",
+            "description": "<p>Last Name of Student</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    },\n    {\n        \"id\": 2,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/2\",\n        \"student\": {\n            \"id\": 2,\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\"\n        }\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentAnswerController.php",
     "groupTitle": "Teacher_Classes"
   },
   {
