@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\File;
 use App\Models\UserPreference;
 use App\Models\Classes;
-
 use Storage;
 use Auth;
 
@@ -33,6 +32,12 @@ class FileController extends Controller
         'png',
         'gif'
     ];
+
+    public function __construct()
+    {
+        $user = Auth::user();
+        $this->setRootPath($user->school->school_code); // set default root path for file uploads
+    }
 
     /**
      * Upload Assignment Material
@@ -541,11 +546,6 @@ class FileController extends Controller
         $response = $this->upload($request->file);
 
         return response()->json(['success' => $response['success']]);
-    }
-
-    public function testPublic() 
-    {
-        dd(Storage::disk('do_public')->url("SCHOOL01/2020-06-12/184425-image1c.jpeg"));
     }
 
     public function upload($file) : Array

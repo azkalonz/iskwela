@@ -9,6 +9,18 @@ use Storage;
 trait File
 {
     /**
+     * Undocumented variable
+     *
+     * @var string the root folder of the file, usually it is the school code e.g. SCHOOL01
+     */
+    protected static $root_path;
+
+    public static function setRootPath(string $root_path)
+    {
+        static::$root_path = $root_path;
+    }
+
+    /**
      * Uploading file to storage disk
      * 
      * @param UploadedFile $file 
@@ -54,7 +66,7 @@ trait File
      */
     private function getRootPath()
     {
-        return env('SCHOOL_CODE');
+        return static::$root_path ?: env('SCHOOL_CODE');
     }
 
     private function formatFileName($file)
