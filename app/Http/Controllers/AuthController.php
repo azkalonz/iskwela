@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Hash;
+use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
@@ -100,10 +101,6 @@ class AuthController extends Controller
      * 
      * 
      */
-    /**
-     * @apiDefine JWTHeader
-     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
-     */
     public function changePassword(Request $request)
     {
 
@@ -137,6 +134,52 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
                 'expires_in'   => auth()->factory()->getTTL()
+            ]
+        );
+    }
+
+    /**
+     * Jitsi Login
+     *
+     * @api {post} HOST/api/auth/jitsi Jitsi Login
+     * @apiVersion 1.0.0
+     * @apiName jitsilogin
+     * @apiDescription Generates JWT for jitsi server authentication
+     * @apiGroup Auth
+     *
+     * @apiParam {Number} class_id ID of the class to join in
+     *
+     * @apiSuccess {String} access_token The auth token
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "access_token": "eyiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqaXRzaSIsImlzcyI6InNjaG9vbGh1YiIsInN1YiI6Imp0cy5pc2t3ZWxhLmV4cCI6MTU5NDAyNjE1NCwicm9vbSI6IjEyMzQ1NiJ9.3RMuPoEL-zeAmXkAzqoX2MbVBm_mVvS15EcOtEasNGw"
+        }
+     *
+     * 
+     * 
+     */
+    public function jitsiLogin(Request $request)
+    {
+        $this->validate($request, [
+            'class_id' => 'required|integer'
+        ]);
+
+        $user = \Auth::user();
+        $room_id = \App\Models\Classes::find($request->class_id)->pluck('room_number')->first();
+
+        $token = array(
+            "aud" => 'jitsi',
+            "iss" => env('JITSI_APP_ID'),
+            "sub" => env('JITSI_SUB'),
+            "exp" => strtotime('+24 days'),
+            "room" => $room_id
+        );
+
+        $jwt = JWT::encode($token, env('JITSI_APP_KEY'));
+        return response()->json(
+            [
+                'access_token' => $jwt
             ]
         );
     }

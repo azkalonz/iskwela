@@ -24,6 +24,10 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::middleware('jwt')->group(function () {
+
+    //jitsi auth
+    Route::post('/auth/jitsi', 'AuthController@jitsiLogin');
+
     //classes - teachers
     Route::get('/teacher/classes', 'Api\\ClassController@teacherClasses');
     Route::get('/teacher/class/{id}', 'Api\\ClassController@show');
