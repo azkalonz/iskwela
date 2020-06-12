@@ -65,4 +65,29 @@ trait File
                 '_'
             );
     }
+
+    /**
+     * Upload file to public space
+     */
+    public function uploadToPublicSpace(UploadedFile $file, $root_path = null)
+    {
+        // setting full path of file
+        if(!$root_path) {
+            $root_path = $this->getRootPath();
+        }
+        $full_path =  sprintf("%s/public", $root_path);
+
+        if ($do_path = Storage::disk('do')->putFile($full_path, $file, 'public')) {
+            return $do_path;
+        }
+        return false;
+    }
+
+    /**
+     * returns the public url of the file
+     */
+    public function getFilePublicUrl(String $file_path)
+    {
+        return Storage::disk('do')->url($file_path);
+    }
 }

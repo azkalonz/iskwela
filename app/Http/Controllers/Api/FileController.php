@@ -558,6 +558,13 @@ class FileController extends Controller
         ];
     }
 
+    public function publicUpload(Request $request)
+    {
+        $path = $this->uploadToPublicSpace($request->file);
+
+        return response()->json(['url' => $this->getFilePublicUrl($path)]);
+    }
+
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
