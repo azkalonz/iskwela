@@ -21,10 +21,10 @@ class FileController extends Controller
         'bmp',
         'png',
         'gif',
-        'application/pdf',
-        'application/doc',
-        'text/plain',
-		'txt'
+        'pdf',
+        'doc',
+        'docx',
+        'txt'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
@@ -530,6 +530,22 @@ class FileController extends Controller
     public function download($filename)
     {
         return $this->downloadFile($filename);
+    }
+
+    public function testUpload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES)
+        ]);
+
+        $response = $this->upload($request->file);
+
+        return response()->json(['success' => $response['success']]);
+    }
+
+    public function testPublic() 
+    {
+        dd(Storage::disk('do_public')->url("SCHOOL01/2020-06-12/184425-image1c.jpeg"));
     }
 
     public function upload($file) : Array
