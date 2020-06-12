@@ -51,6 +51,14 @@ class User extends Authenticatable implements JWTSubject
 	public function preference()
 	{
 		return $this->hasMany(UserPreference::class, 'user_id', 'id');
-	}
+    }
+
+    /**
+     * Get the school where the user belongs to.
+     */
+    public function school()
+    {
+        return $this->belongsTo('App\Models\School', 'school_id');
+    }
 	
 }

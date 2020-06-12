@@ -18,6 +18,7 @@ class SchoolDataController extends Controller
         $this->validate($request, [
             'file' => 'required',
             'school_name' => 'required',
+            'school_code' => 'required|unique:schools,school_code',
             'academic_year_name' => 'required',
             'academic_year_from' => 'required|date_format:Y/m/d',
             'academic_year_to' => 'required|date_format:Y/m/d'
