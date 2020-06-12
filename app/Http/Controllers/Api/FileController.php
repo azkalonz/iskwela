@@ -243,7 +243,7 @@ class FileController extends Controller
 	/**
      * Upload User Profile Picture
      *
-     * @api {POST} HOST/api/upload/user/profile-picture
+     * @api {POST} HOST/api/upload/user/profile-picture Upload Profile Picture
      * @apiVersion 1.0.0
      * @apiName UploadUserProfilePicture
      * @apiDescription Allows users to upload/change profile picture
@@ -291,7 +291,7 @@ class FileController extends Controller
     /**
      * Upload Class Image
      *
-     * @api {POST} HOST/api/upload/class/image
+     * @api {POST} HOST/api/upload/class/image Upload Class Image
      * @apiVersion 1.0.0
      * @apiName UploadClassImage
      * @apiDescription Add or Edit a class image
@@ -412,7 +412,7 @@ class FileController extends Controller
      *
      * @apiParam {Number} id Class material ID
      *
-     * @apiSuccess {BLOB} the attached file
+     * @apiSuccess {BLOB} file the attached file
      *
      */
     public function downloadClassMaterial(Request $request)
@@ -468,7 +468,7 @@ class FileController extends Controller
      *
      * @apiParam {Number} id User ID
      *
-     * @apiSuccess {BLOB} the attached file. Returns 404 if not found.
+     * @apiSuccess {BLOB} file the attached file. Returns 404 if not found.
      *
      */
     public function downloadProfilePicture(Request $request)
@@ -509,7 +509,7 @@ class FileController extends Controller
      *
      * @apiParam {Number} id Class ID
      *
-     * @apiSuccess {BLOB} the attached file. Returns 404 if not found.
+     * @apiSuccess {BLOB} file the attached file. Returns 404 if not found.
      *
      */
     public function downloadClassImage(Request $request)

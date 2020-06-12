@@ -900,8 +900,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "BLOB",
             "optional": false,
-            "field": "the",
-            "description": "<p>attached file. Returns 404 if not found.</p>"
+            "field": "file",
+            "description": "<p>the attached file. Returns 404 if not found.</p>"
           }
         ]
       }
@@ -950,8 +950,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "BLOB",
             "optional": false,
-            "field": "the",
-            "description": "<p>attached file</p>"
+            "field": "file",
+            "description": "<p>the attached file</p>"
           }
         ]
       }
@@ -1050,8 +1050,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "BLOB",
             "optional": false,
-            "field": "the",
-            "description": "<p>attached file. Returns 404 if not found.</p>"
+            "field": "file",
+            "description": "<p>the attached file. Returns 404 if not found.</p>"
           }
         ]
       }
@@ -1221,7 +1221,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "HOST/api/upload/class/image",
-    "title": "",
+    "title": "Upload Class Image",
     "version": "1.0.0",
     "name": "UploadClassImage",
     "description": "<p>Add or Edit a class image</p>",
@@ -1458,7 +1458,7 @@ define({ "api": [
   {
     "type": "POST",
     "url": "HOST/api/upload/user/profile-picture",
-    "title": "",
+    "title": "Upload Profile Picture",
     "version": "1.0.0",
     "name": "UploadUserProfilePicture",
     "description": "<p>Allows users to upload/change profile picture</p>",
