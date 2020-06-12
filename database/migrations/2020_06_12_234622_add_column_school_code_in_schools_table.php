@@ -15,6 +15,7 @@ class AddColumnSchoolCodeInSchoolsTable extends Migration
     {
         Schema::table('schools', function (Blueprint $table) {
             $table->string('school_code')->after('id')->unique();
+            $table->string('school_logo')->after('school_name')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class AddColumnSchoolCodeInSchoolsTable extends Migration
     public function down()
     {
         Schema::table('schools', function (Blueprint $table) {
-            //
+            $table->dropColumn(['school_code', 'school_logo']);
         });
     }
 }

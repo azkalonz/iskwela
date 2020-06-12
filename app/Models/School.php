@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class School extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['school_name', 'school_code'];
+    protected $fillable = ['school_name', 'school_code', 'school_logo'];
 }
