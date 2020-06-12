@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\File;
 use App\Models\UserPreference;
+use App\Models\Classes;
 
 use Storage;
 use Auth;
@@ -250,7 +251,7 @@ class FileController extends Controller
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf} file The file to be uploaded
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif} file The file to be uploaded
      *
      * @apiSuccess {Boolean} success true/false
      * @apiSuccessExample {json} Sample Response
@@ -285,6 +286,62 @@ class FileController extends Controller
 
         return response()->json(['success' => $response['success']]);
     }
+
+
+    /**
+     * Upload Class Image
+     *
+     * @api {POST} HOST/api/upload/class/image
+     * @apiVersion 1.0.0
+     * @apiName UploadClassImage
+     * @apiDescription Add or Edit a class image
+     * @apiGroup File Upload
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif} file The file to be uploaded
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+
+    public function saveClassImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|file|mimes:' . implode(',', self::SUPPORTED_IMAGE_TYPES)
+        ]);
+
+        $user =  Auth::user();
+
+        if($user->type = 't')
+        {
+            $response = $this->upload($request->image);
+
+            if($response['success']) {
+                $class = Classes::find($request->id);
+                $class->image = $response['file'];
+                $class->updated_by = $user->id;
+                $class->save();
+            }
+            else {
+                return response('Unable to upload file', 500);
+            }
+    
+            return response()->json(['success' => $response['success']]);
+        }
+        else{
+            return response('Unable to upload file', 401);
+        }
+        
+    }
+
+    /*** DOWNLOAD: ***/
 
     /**
      * Download Activity Material
@@ -437,6 +494,37 @@ class FileController extends Controller
 
         return response('Not Found', 404);
         
+    }
+
+    /**
+     * Download Class Image
+     *
+     * @api {POST} HOST/api/download/class/image Download Class Image
+     * @apiVersion 1.0.0
+     * @apiName DownloadClassImage
+     * @apiDescription Download class image 
+     * @apiGroup File Download
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id Class ID
+     *
+     * @apiSuccess {BLOB} the attached file. Returns 404 if not found.
+     *
+     */
+    public function downloadClassImage(Request $request)
+    {
+
+        $class = Classes::find($request->id);
+
+        if($class)
+        {
+            return $this->download($class->image);
+        }
+        else
+        {
+            return response('Not Found', 404);
+        }
     }    
 
     public function download($filename)
