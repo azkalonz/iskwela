@@ -592,6 +592,50 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "HOST/api/auth/jitsi",
+    "title": "Jitsi Login",
+    "version": "1.0.0",
+    "name": "jitsilogin",
+    "description": "<p>Generates JWT for jitsi server authentication</p>",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>ID of the class to join in</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "access_token",
+            "description": "<p>The auth token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"access_token\": \"eyiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJqaXRzaSIsImlzcyI6InNjaG9vbGh1YiIsInN1YiI6Imp0cy5pc2t3ZWxhLmV4cCI6MTU5NDAyNjE1NCwicm9vbSI6IjEyMzQ1NiJ9.3RMuPoEL-zeAmXkAzqoX2MbVBm_mVvS15EcOtEasNGw\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/AuthController.php",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
     "url": "HOST/api/login",
     "title": "User login",
     "version": "1.0.0",
