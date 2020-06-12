@@ -874,6 +874,56 @@
   },
   {
     "type": "POST",
+    "url": "HOST/api/download/class/image",
+    "title": "Download Class Image",
+    "version": "1.0.0",
+    "name": "DownloadClassImage",
+    "description": "<p>Download class image</p>",
+    "group": "File_Download",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Class ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "BLOB",
+            "optional": false,
+            "field": "the",
+            "description": "<p>attached file. Returns 404 if not found.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Download",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
     "url": "HOST/api/download/class/material/{id}",
     "title": "Class Instruction Material",
     "version": "1.0.0",
@@ -1170,6 +1220,69 @@
   },
   {
     "type": "POST",
+    "url": "HOST/api/upload/class/image",
+    "title": "",
+    "version": "1.0.0",
+    "name": "UploadClassImage",
+    "description": "<p>Add or Edit a class image</p>",
+    "group": "File_Upload",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "allowedValues": [
+              "*.jpeg",
+              "*.bmp",
+              "*.png",
+              "*.gif"
+            ],
+            "optional": false,
+            "field": "file",
+            "description": "<p>The file to be uploaded</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Upload",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
     "url": "HOST/api/upload/class/lesson_plan",
     "title": "Class Lesson Plan",
     "version": "1.0.0",
@@ -1360,8 +1473,7 @@
               "*.jpeg",
               "*.bmp",
               "*.png",
-              "*.gif",
-              "*.pdf"
+              "*.gif"
             ],
             "optional": false,
             "field": "file",
