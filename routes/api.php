@@ -97,6 +97,8 @@ Route::middleware('jwt')->group(function () {
     //class material
     Route::post('/class/material/publish/{id}', 'Api\\ClassMaterialController@publish');
     Route::post('/class/material/unpublish/{id}', 'Api\\ClassMaterialController@unpublish');
+    Route::post('/class/class-material/mark-done/{id}', 'Api\\ClassMaterialController@markDone');
+    Route::post('/class/class-material/mark-not-done/{id}', 'Api\\ClassMaterialController@markNotDone');
 
     //upload to public
     Route::post('/public/upload', 'Api\\FileController@publicUpload');

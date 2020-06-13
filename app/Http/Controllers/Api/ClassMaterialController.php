@@ -86,6 +86,80 @@ class ClassMaterialController extends Controller
     }
 
     /**
+     * Class Material - Mark Done
+     *
+     * @api {POST} HOST/api/class/activity/publish/{id} Class Material Mark Done
+     * @apiVersion 1.0.0
+     * @apiName ClassMaterialMarkDone
+     * @apiDescription Marks Class Material as Done
+     * @apiGroup Class Materials
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of class material
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function markDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 1);   
+    }
+
+    /**
+     * Class Material - Mark Not Done
+     *
+     * @api {POST} HOST/api/class/activity/publish/{id} Class Material Mark Not Done
+     * @apiVersion 1.0.0
+     * @apiName ClassMaterialMarkNotDone
+     * @apiDescription Marks Class Material as Not Done
+     * @apiGroup Class Materials
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of class material
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function markNotDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 0);   
+    }
+
+    private function setDoneStatus($material_id, $status)
+    {
+        $teacher = Auth::user();
+        $class_material = ClassMaterial::find($material_id);
+        
+        if(!$class_material->first()) {
+            return response('Class material not found.', 404);
+        }
+        
+        if($class_material->created_by != $teacher->id) {
+            return response('Unauthorized.', 401);
+        }
+
+        $class_material->done = $status;
+        if($class_material->save())
+        {
+            return response()->json(['success' => true]);
+        }
+    }
+
+    /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
      */
