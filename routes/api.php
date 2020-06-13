@@ -101,4 +101,7 @@ Route::middleware('jwt')->group(function () {
     //upload to public
     Route::post('/public/upload', 'Api\\FileController@publicUpload');
 
+    //quizzes
+    Route::post('/quiz/save', 'Api\\QuizController@save');
+
 });

@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Question extends Model
+{
+    use SoftDeletes;
+    protected $fillable = [
+        'question',
+        'question_type',
+        'question_image',
+        'option_1',
+        'option_2',
+        'option_3',
+        'option_4',
+        'option_5',
+        'answer_1',
+        'answer_2',
+        'answer_3',
+        'answer_4',
+        'answer_5'
+    ];
+}
