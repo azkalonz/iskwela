@@ -18,7 +18,7 @@ class LessonPlanController extends Controller
     /**
      * Class Lesson Plan Save
      *
-     * @api <HOST>/class/lesson-plan/save Add/Edit Lesson Plan
+     * @api {post} <HOST>/api/class/lesson-plan/save Add/Edit Lesson Plan
      * @apiVersion 1.0.0
      * @apiName SaveLessonPlan
      * @apiDescription Saves lesson plan URL and title

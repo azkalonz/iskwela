@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class QuizQuestion extends Model
 {
-    use SoftDeletes;
     protected $table = 'quizzes_questions';
     public $timestamps = false;
     protected $fillable = [
