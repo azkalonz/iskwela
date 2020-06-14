@@ -703,6 +703,127 @@ define({ "api": [
     "groupTitle": "Auth"
   },
   {
+    "type": "post",
+    "url": "HOST/api/class/material/save",
+    "title": "Save Class Material",
+    "version": "1.0.0",
+    "name": "SaveClassMaterial",
+    "description": "<p>Saves a Class Material</p>",
+    "group": "ClassMaterial",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Class Material. if exists, updates the specified class Material ID, otherwise, creates new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>Class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>Schedule ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>Link to class material</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Title of the Class Material</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Class Material ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Class Material Title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uploaded_file",
+            "description": "<p>file uploaded if exits.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "resource_link",
+            "description": "<p>link to class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "added_by",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>teacher ID who added the class material</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the teacher</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the teacher</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 16,\n    \"title\": \"Sample Title2\",\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-class-material-link2.com\",\n    \"added_by\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassMaterialController.php",
+    "groupTitle": "ClassMaterial"
+  },
+  {
     "type": "POST",
     "url": "HOST/api/class/activity/publish/{id}",
     "title": "Class Material Mark Done",
@@ -1677,8 +1798,122 @@ define({ "api": [
     }
   },
   {
-    "type": "",
-    "url": "<HOST>/class/lesson-plan/save",
+    "type": "POST",
+    "url": "HOST/api/class/lesson-plan/mark-done/{id}",
+    "title": "Lesson Plan Mark Done",
+    "version": "1.0.0",
+    "name": "LessonPlanMarkDone",
+    "description": "<p>Marks Lesson Plan as Done</p>",
+    "group": "Lesson_Plan",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of lesson plan</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/LessonPlanController.php",
+    "groupTitle": "Lesson_Plan",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/class/lesson-plan/mark-not-done/{id}",
+    "title": "Lesson Plan Mark Not Done",
+    "version": "1.0.0",
+    "name": "LessonPlanMarkNotDone",
+    "description": "<p>Marks Lesson Plan as Not Done</p>",
+    "group": "Lesson_Plan",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of lesson plan</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/LessonPlanController.php",
+    "groupTitle": "Lesson_Plan",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/class/lesson-plan/save",
     "title": "Add/Edit Lesson Plan",
     "version": "1.0.0",
     "name": "SaveLessonPlan",
@@ -1758,6 +1993,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "lessonPlans.done",
+            "description": "<p>returns true if lesson plan has been marked as done, otherwise, false</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "added_by",
@@ -1796,6 +2038,223 @@ define({ "api": [
     },
     "filename": "app/Http/Controllers/Api/LessonPlanController.php",
     "groupTitle": "Lesson_Plan",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/save",
+    "title": "Save Quiz",
+    "version": "1.0.0",
+    "name": "SaveQuiz",
+    "description": "<p>Save Quiz</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Quiz title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>Quiz intro/instruction</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>array of question object</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questions.question",
+            "description": "<p>the question text</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "mcq"
+            ],
+            "optional": false,
+            "field": "questions.question_type",
+            "description": "<p>accepts multiple choice for now</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.weight",
+            "description": "<p>the score of the question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questions.choices",
+            "description": "<p>array of question choices (up to 5 choices for now)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.choices.option",
+            "description": "<p>the choice text</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questions.choices.is_correct",
+            "description": "<p>multiple choices can be marked as correct</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "media_url",
+            "description": "<p>link to attachment</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the added quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Quiz title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>Quiz intro/instruction</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>array of question object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.id",
+            "description": "<p>ID of the added question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questions.question",
+            "description": "<p>the question text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "allowedValues": [
+              "mcq"
+            ],
+            "optional": false,
+            "field": "questions.question_type",
+            "description": "<p>accepts multiple choice for now</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.weight",
+            "description": "<p>the score of the question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions.choices",
+            "description": "<p>array of question choices (up to 5 choices for now)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.choices.option",
+            "description": "<p>the choice text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questions.choices.is_correct",
+            "description": "<p>multiple choices can be marked as correct</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "media_url",
+            "description": "<p>link to attachment</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 109,\n\t\"title\": \"Quiz 1\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 199,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{},\n\t\t{}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
     "header": {
       "fields": {
         "Header": [
@@ -4560,6 +5019,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "lessonPlans.done",
+            "description": "<p>returns true if lesson plan has been marked as done, otherwise, false</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "added_by",
@@ -4760,6 +5226,13 @@ define({ "api": [
             "optional": false,
             "field": "added_by.last_name",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "done",
+            "description": "<p>returns true if the class material has been marked as done, otherwise, false.</p>"
           }
         ]
       },
@@ -5308,127 +5781,6 @@ define({ "api": [
       ]
     },
     "filename": "app/Http/Controllers/Api/LessonPlanController.php",
-    "groupTitle": "Teacher_Classes"
-  },
-  {
-    "type": "post",
-    "url": "HOST/api/class/material/save",
-    "title": "Save Class Material",
-    "version": "1.0.0",
-    "name": "SaveClassMaterial",
-    "description": "<p>Saves a Class Material</p>",
-    "group": "Teacher_Classes",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>ID of Class Material. if exists, updates the specified class Material ID, otherwise, creates new.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>Class ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "schedule_id",
-            "description": "<p>Schedule ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "url",
-            "description": "<p>Link to class material</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>Title of the Class Material</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Class Material ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>Class Material Title</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "uploaded_file",
-            "description": "<p>file uploaded if exits.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "resource_link",
-            "description": "<p>link to class material</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "added_by",
-            "description": ""
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "added_by.id",
-            "description": "<p>teacher ID who added the class material</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "added_by.first_name",
-            "description": "<p>first name of the teacher</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "added_by.last_name",
-            "description": "<p>last name of the teacher</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "{\n    \"id\": 16,\n    \"title\": \"Sample Title2\",\n    \"uploaded_file\": \"\",\n    \"resource_link\": \"sample-class-material-link2.com\",\n    \"added_by\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/ClassController.php",
     "groupTitle": "Teacher_Classes"
   },
   {
