@@ -162,6 +162,120 @@ define({ "api": [
     }
   },
   {
+    "type": "POST",
+    "url": "HOST/api/class/activity/mark-done/{id}",
+    "title": "Activity Mark Done",
+    "version": "1.0.0",
+    "name": "ActivityMarkDone",
+    "description": "<p>Marks Activity as Done</p>",
+    "group": "Activity",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Activity</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Activity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/class/activity/mark-not-done/{id}",
+    "title": "Activity Mark Not Done",
+    "version": "1.0.0",
+    "name": "ActivityMarkNotDone",
+    "description": "<p>Marks Activity as Not Done</p>",
+    "group": "Activity",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Activity</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Activity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "post",
     "url": "HOST/api/class/activity/save",
     "title": "Add/Edit Activity",
@@ -825,7 +939,7 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/activity/publish/{id}",
+    "url": "HOST/api/class/class-material/mark-done/{id}",
     "title": "Class Material Mark Done",
     "version": "1.0.0",
     "name": "ClassMaterialMarkDone",
@@ -882,7 +996,7 @@ define({ "api": [
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/activity/publish/{id}",
+    "url": "HOST/api/class/class-material/mark-not-done/{id}",
     "title": "Class Material Mark Not Done",
     "version": "1.0.0",
     "name": "ClassMaterialMarkNotDone",

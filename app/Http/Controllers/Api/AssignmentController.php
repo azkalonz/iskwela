@@ -106,6 +106,7 @@ class AssignmentController extends Controller
         $activity->published = $request->published;
 
         $activity->save();
+        $activity = Assignment::find($activity->id);
 
         $fractal = fractal()->item($activity, new AssignmentTransformer);
 
@@ -373,6 +374,78 @@ class AssignmentController extends Controller
         $assignment->delete();
 
         return response()->json(['success' => true]);
+    }
+
+
+    /**
+     * Activity - Mark Done
+     *
+     * @api {POST} HOST/api/class/activity/mark-done/{id} Activity Mark Done
+     * @apiVersion 1.0.0
+     * @apiName ActivityMarkDone
+     * @apiDescription Marks Activity as Done
+     * @apiGroup Activity
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of Activity
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function markDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 1);   
+    }
+
+    /**
+     * Activity - Mark Not Done
+     *
+     * @api {POST} HOST/api/class/activity/mark-not-done/{id} Activity Mark Not Done
+     * @apiVersion 1.0.0
+     * @apiName ActivityMarkNotDone
+     * @apiDescription Marks Activity as Not Done
+     * @apiGroup Activity
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of Activity
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     *
+     *
+     */
+    public function markNotDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 0);
+    }
+
+    private function setDoneStatus($assignment_id, $status)
+    {
+        //$teacher = Auth::user();
+        $activity = Assignment::find($assignment_id);
+
+        if(!$activity->first()) {
+            return response('Lesson Plan not Found.', 404);
+        }
+
+        $activity->done = $status;
+
+        if($activity->save())
+        {
+            return response()->json(['success' => true]);
+        }
     }
 
     /**

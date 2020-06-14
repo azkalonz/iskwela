@@ -78,8 +78,9 @@ class LessonPlanController extends Controller
 		$lesson_plan->class_id = $request->class_id;
 		$lesson_plan->title = $request->title;
         $lesson_plan->updated_by = $user->id;
-        $lesson_plan->done = 0;
         $lesson_plan->save();
+
+        $lesson_plan = LessonPlan::find($lesson_plan->id);
 
         $fractal = fractal()->item($lesson_plan, new LessonPlanTransformer);
 

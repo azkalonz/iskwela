@@ -90,7 +90,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material - Mark Done
      *
-     * @api {POST} HOST/api/class/activity/publish/{id} Class Material Mark Done
+     * @api {POST} HOST/api/class/class-material/mark-done/{id} Class Material Mark Done
      * @apiVersion 1.0.0
      * @apiName ClassMaterialMarkDone
      * @apiDescription Marks Class Material as Done
@@ -117,7 +117,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material - Mark Not Done
      *
-     * @api {POST} HOST/api/class/activity/publish/{id} Class Material Mark Not Done
+     * @api {POST} HOST/api/class/class-material/mark-not-done/{id} Class Material Mark Not Done
      * @apiVersion 1.0.0
      * @apiName ClassMaterialMarkNotDone
      * @apiDescription Marks Class Material as Not Done
@@ -222,10 +222,9 @@ class ClassMaterialController extends Controller
 		$class_material->schedule_id = $request->schedule_id;
         $class_material->class_id = $request->class_id;
         $class_material->created_by = $user->id;
-        $class_material->done = 0;
-        $class_material->published = 0;
-
 		$class_material->save();
+        
+        $class_material = ClassMaterial::find($class_material->id);
 
         $fractal = fractal()->item($class_material, new ClassMaterialTransformer);
 

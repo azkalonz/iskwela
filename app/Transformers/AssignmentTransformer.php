@@ -18,7 +18,8 @@ class AssignmentTransformer extends TransformerAbstract
             'activity_type' => config('school_hub.activity_type')[$assignment->activity_type],
             'available_from' => $assignment->available_from,
             'available_to' => $assignment->available_to,
-            'status' => config('school_hub.file_status')[$assignment->published]
+            'status' => config('school_hub.file_status')[$assignment->published],
+            'done' => config('school_hub.boolean_return')[$assignment->done]
         ];
     }
 
