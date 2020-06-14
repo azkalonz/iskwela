@@ -24,5 +24,9 @@ return [
         0 => 'unpublished',
         1 => 'published'
     ],
+    'boolean_return' => [
+        0 => 'false',
+        1 => 'true'
+    ]
 
 ];

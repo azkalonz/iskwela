@@ -36,6 +36,7 @@ class LessonPlanController extends Controller
      * @apiSuccess {String} lessonPlans.title
      * @apiSuccess {String} lessonPlans.uploaded_file link to uploaded file or
      * @apiSuccess {String} lessonPlans.resource_link a shared reference link (google docs, etc)
+     * @apiSuccess {Boolean} lessonPlans.done returns true if lesson plan has been marked as done, otherwise, false
      * @apiSuccess {Object} added_by the teacher/user who added this lesson plan
      * @apiSuccess {Number} added_by.id
      * @apiSuccess {String} added_by.first_name
@@ -76,8 +77,9 @@ class LessonPlanController extends Controller
 		$lesson_plan->schedule_id = $request->schedule_id;
 		$lesson_plan->class_id = $request->class_id;
 		$lesson_plan->title = $request->title;
-		$lesson_plan->updated_by = $user->id;
-		$lesson_plan->save();
+        $lesson_plan->updated_by = $user->id;
+        $lesson_plan->done = 0;
+        $lesson_plan->save();
 
         $fractal = fractal()->item($lesson_plan, new LessonPlanTransformer);
 
@@ -116,6 +118,80 @@ class LessonPlanController extends Controller
         $lesson_plan->delete();
         
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Lesson Plan - Mark Not Done
+     *
+     * @api {POST} HOST/api/class/lesson-plan/mark-done/{id} Lesson Plan Mark Done
+     * @apiVersion 1.0.0
+     * @apiName LessonPlanMarkDone
+     * @apiDescription Marks Lesson Plan as Done
+     * @apiGroup Lesson Plan
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of lesson plan
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function markDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 1);   
+    }
+
+    /**
+     * Lesson Plan - Mark Not Done
+     *
+     * @api {POST} HOST/api/class/lesson-plan/mark-not-done/{id} Lesson Plan Mark Not Done
+     * @apiVersion 1.0.0
+     * @apiName LessonPlanMarkNotDone
+     * @apiDescription Marks Lesson Plan as Not Done
+     * @apiGroup Lesson Plan
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id ID of lesson plan
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     * 
+     * 
+     */
+    public function markNotDone(Request $request)
+    {
+        return $this->setDoneStatus($request->id, 0);   
+    }
+
+    private function setDoneStatus($lesson_plan_id, $status)
+    {
+        $teacher = Auth::user();
+        $lesson_plan = LessonPlan::find($lesson_plan_id);
+        
+        if(!$lesson_plan->first()) {
+            return response('Lesson Plan not Found.', 404);
+        }
+        
+        if($lesson_plan->created_by != $teacher->id) {
+            return response('Unauthorized.', 401);
+        }
+
+        $lesson_plan->done = $status;
+        if($lesson_plan->save())
+        {
+            return response()->json(['success' => true]);
+        }
     }
 
     /**

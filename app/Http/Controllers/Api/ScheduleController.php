@@ -489,6 +489,8 @@ class ScheduleController extends Controller
      * @apiSuccess {Number} added_by.id
      * @apiSuccess {String} added_by.first_name
      * @apiSuccess {String} added_by.last_name
+     * @apiSuccess {String} status status of the class material (published/unpublished)
+     * @apiSuccess {Boolean} done returns true if the class material has been marked as done, otherwise, false.
      * 
      * 
      * @apiSuccessExample {json} Sample Response
@@ -696,6 +698,7 @@ class ScheduleController extends Controller
      * @apiSuccess {String} lessonPlans.title
      * @apiSuccess {String} lessonPlans.uploaded_file link to uploaded file or
      * @apiSuccess {String} lessonPlans.resource_link a shared reference link (google docs, etc)
+     * @apiSuccess {Boolean} lessonPlans.done returns true if lesson plan has been marked as done, otherwise, false
      * @apiSuccess {Object} added_by the teacher/user who added this lesson plan
      * @apiSuccess {Number} added_by.id
      * @apiSuccess {String} added_by.first_name

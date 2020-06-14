@@ -13,6 +13,7 @@ class LessonPlanTransformer extends TransformerAbstract
             'title' => $lesson_plan->title,
             'uploaded_file' => ($lesson_plan->file) ? sprintf('%s/api/download/class/material/%s', env('APP_URL'), $lesson_plan->id) : "",
             'resource_link' => $lesson_plan->link_url,
+            'done' => config('school_hub.boolean_return')[$lesson_plan->done],
             'added_by' => [
                 'id' => $lesson_plan->user->id,
                 'first_name' => $lesson_plan->user->first_name,

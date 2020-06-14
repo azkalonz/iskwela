@@ -40,7 +40,6 @@ Route::middleware('jwt')->group(function () {
     Route::post('/teacher/remove/class-material/{id}', 'Api\\ClassController@removeClassMaterial');
     Route::post('/teacher/remove/class-activity-material/{id}', 'Api\\AssignmentController@removeAssignmentMaterial');
     Route::post('/teacher/remove/class-activity/{id}', 'Api\\AssignmentController@remove');
-    Route::post('/class/material/save', 'Api\\ClassController@saveClassMaterial');
     Route::get('/teacher/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
 
 
@@ -93,12 +92,15 @@ Route::middleware('jwt')->group(function () {
 	
 	//lesson_plans
     Route::post('/class/lesson-plan/save', 'Api\\LessonPlanController@save');
+    Route::post('/class/lesson-plan/mark-done/{id}', 'Api\\LessonPlanController@markDone');
+    Route::post('/class/lesson-plan/mark-not-done/{id}', 'Api\\LessonPlanController@markNotDone');
 
     //class material
     Route::post('/class/material/publish/{id}', 'Api\\ClassMaterialController@publish');
     Route::post('/class/material/unpublish/{id}', 'Api\\ClassMaterialController@unpublish');
     Route::post('/class/class-material/mark-done/{id}', 'Api\\ClassMaterialController@markDone');
     Route::post('/class/class-material/mark-not-done/{id}', 'Api\\ClassMaterialController@markNotDone');
+    Route::post('/class/material/save', 'Api\\ClassMaterialController@save');
 
     //upload to public
     Route::post('/public/upload', 'Api\\FileController@publicUpload');
