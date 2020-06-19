@@ -50,10 +50,10 @@ class ClassesTransformer extends TransformerAbstract
         $next = [];
         foreach($schedules as $sched)
         {
-            $from = strtotime($sched['date_from']);
-            $now = strtotime('now');
+            $from = date('Y-m-d', strtotime($sched['date_from']));
+            $now = date('Y-m-d', strtotime('now'));
 
-            if($from >= $now) {
+            if($now == $from) {
                 $next = [
                     'id' => $sched['id'],
                     'from' => $sched['date_from'],

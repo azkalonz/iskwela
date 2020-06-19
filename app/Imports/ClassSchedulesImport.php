@@ -82,16 +82,23 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
 
     private function createClassSchedules(Classes $class, User $teacher)
     {
-        for($i=0; $i < 10; $i++) { // fake frequency 
-            $day = Carbon::today()->addDay($i);
-            $schedule = Schedule::firstOrCreate([
-                'class_id' => $class->id, // refactor alert! this needs to use Laravel's relationship implementation
-                'teacher_id' => $teacher->id,
-                'date_from' => $day->format('y-m-d'),
-                'date_to' => $day->format('y-m-d'),
-                'started_at' => $class->time_from,
-                'ended_at' => $class->time_to,
-            ]);
+        $time_from = explode(':', $class->time_from);
+        $time_to = explode(':', $class->time_to);
+        $total_days = $this->ay->date_to->diff(Carbon::now())->days + 1;
+
+        for($i=0; $i <= $total_days; $i++) { // generate schedules til end of academic year  
+            $day_from = Carbon::today()->addDay($i)->setHour($time_from[0])->setMinutes($time_from[1]);
+            $day_to = Carbon::today()->addDay($i)->setHour($time_to[0])->setMinutes($time_to[1]);
+
+            if ($day_from->dayOfWeek >= 1 && $day_from->dayOfWeek <= 5 ) { // generate Mon-Fri only
+                $schedule = Schedule::firstOrCreate([
+                    'class_id' => $class->id, // refactor alert! this needs to use Laravel's relationship implementation
+                    'teacher_id' => $teacher->id,
+                    'date_from' => $day_from->format('y-m-d H:i:s'),
+                    'date_to' => $day_to->format('y-m-d H:i:s'),
+                ]);
+            }
+
         }
     }
 }
