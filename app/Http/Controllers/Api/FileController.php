@@ -33,17 +33,6 @@ class FileController extends Controller
         'gif'
     ];
 
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->setRootPath(Auth::user()->school->school_code);
-
-            return $next($request);
-        });
-        // $user = Auth::user();
-        // $this->setRootPath($user->school->school_code); // set default root path for file uploads
-    }
-
     /**
      * Upload Assignment Material
      *
@@ -555,7 +544,8 @@ class FileController extends Controller
 
     public function upload($file) : Array
     {
-        $full_path = $this->uploadFile($file);
+        $root_path = Auth::user()->school->school_code;
+        $full_path = $this->uploadFile($file, $root_path);
 
         return [
             'success' => ($full_path) ? true : false,
