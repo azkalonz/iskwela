@@ -8,4 +8,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Quiz extends Model
 {
     use SoftDeletes;
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'quizzes_questions', 'quiz_id', 'question_id');
+    }
+
+    public function scopeSchoolQuizzes($builder)
+    {
+        return $builder->whereSchoolPublished(1);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function scopePublishedToClass($builder, $teacher_id, $class_id = null)
+    {
+        return $builder->whereIn('quizzes.id', function($query) use ($teacher_id, $class_id) {
+            $query->from((new ClassQuiz)
+                ->getTable())
+                ->select('quiz_id')
+                ->wherePublishedBy($teacher_id);
+
+            if($class_id) {
+                $query->whereClassId($class_id);
+            }
+        });
+    }
 }

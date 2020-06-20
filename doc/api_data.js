@@ -2167,6 +2167,561 @@ define({ "api": [
     }
   },
   {
+    "type": "delete",
+    "url": "<HOST>/api/quiz/delete/{id}",
+    "title": "Delete Quiz",
+    "version": "1.0.0",
+    "name": "DeleteQuiz",
+    "description": "<p>Deletes the quiz</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of quiz to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/class-publish",
+    "title": "Publish Quiz to Class",
+    "version": "1.0.0",
+    "name": "QuizClassPublish",
+    "description": "<p>Publish the quiz to the class</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "quiz_id",
+            "description": "<p>the quiz ID to be published</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>ID of class where the quiz will be published to</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/quiz/{id}",
+    "title": "Get Quiz Detail",
+    "version": "1.0.0",
+    "name": "QuizDetail",
+    "description": "<p>Returns quiz detail</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>quiz ID</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the added quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Quiz title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>Quiz intro/instruction</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_published",
+            "description": "<p>0: not published to school, 1: published to school</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_published_date",
+            "description": "<p>published date or NULL</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "author",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "author.id",
+            "description": "<p>creator ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>array of question object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.id",
+            "description": "<p>ID of the added question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questions.question",
+            "description": "<p>the question text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "allowedValues": [
+              "mcq"
+            ],
+            "optional": false,
+            "field": "questions.question_type",
+            "description": "<p>accepts multiple choice for now</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.weight",
+            "description": "<p>the score of the question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions.choices",
+            "description": "<p>array of question choices (up to 5 choices for now)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.choices.option",
+            "description": "<p>the choice text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questions.choices.is_correct",
+            "description": "<p>multiple choices can be marked as correct</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "media_url",
+            "description": "<p>link to attachment</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Quiz 2\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/quizzes",
+    "title": "Quiz list",
+    "version": "1.0.0",
+    "name": "QuizList",
+    "description": "<p>Get quiz list</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "allowedValues": [
+              "myQuizzes",
+              "schoolQuizzes",
+              "classQuizzes"
+            ],
+            "optional": false,
+            "field": "types",
+            "description": "<p>available quiz types. <ul><li>myQuizzes: quizzes created by logged in teacher</li><li>schoolQuizzes: quizzes published by different teachers to the school</li><li>classQuizzes: quizzes published by logged in teacher to his/her classes</li></ul></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>get quizzes of the specified class. If this is passed, the &quot;types&quot; param will be invalidated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>number of rows returned per request. Default: 20, Max: 100</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "offset",
+            "description": "<p>the offset. Min: 0</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the added quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Quiz title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>Quiz intro/instruction</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_published",
+            "description": "<p>0: not published to school, 1: published to school</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_published_date",
+            "description": "<p>published date or NULL</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "author",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "author.id",
+            "description": "<p>creator ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "author.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions",
+            "description": "<p>array of question object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.id",
+            "description": "<p>ID of the added question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questions.question",
+            "description": "<p>the question text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "allowedValues": [
+              "mcq"
+            ],
+            "optional": false,
+            "field": "questions.question_type",
+            "description": "<p>accepts multiple choice for now</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.weight",
+            "description": "<p>the score of the question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questions.choices",
+            "description": "<p>array of question choices (up to 5 choices for now)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questions.choices.option",
+            "description": "<p>the choice text</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questions.choices.is_correct",
+            "description": "<p>multiple choices can be marked as correct</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "media_url",
+            "description": "<p>link to attachment</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Quiz 2\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/school-publish/{id}",
+    "title": "Publish Quiz to School",
+    "version": "1.0.0",
+    "name": "QuizSchoolPublish",
+    "description": "<p>Publish the quiz to the school</p>",
+    "group": "Quiz",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of quiz to publish</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/QuizController.php",
+    "groupTitle": "Quiz",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "post",
     "url": "<HOST>/api/quiz/save",
     "title": "Save Quiz",

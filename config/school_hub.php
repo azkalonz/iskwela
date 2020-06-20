@@ -27,6 +27,11 @@ return [
     'boolean_return' => [
         0 => 'false',
         1 => 'true'
+    ],
+    'quiz_types' => [
+        'myQuizzes',
+        'schoolQuizzes',
+        'classQuizzes'
     ]
 
 ];

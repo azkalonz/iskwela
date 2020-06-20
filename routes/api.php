@@ -109,5 +109,10 @@ Route::middleware('jwt')->group(function () {
 
     //quizzes
     Route::post('/quiz/save', 'Api\\QuizController@save');
+    Route::get('/quizzes', 'Api\\QuizController@quizzes');
+    Route::post('/quiz/school-publish/{id}', 'Api\\QuizController@schoolPublish');
+    Route::post('/quiz/class-publish/', 'Api\\QuizController@classPublish');
+    Route::delete('/quiz/delete/{id}', 'Api\\QuizController@deleteQuiz');
+    Route::post('/quiz/{id}', 'Api\\QuizController@show');
 
 });
