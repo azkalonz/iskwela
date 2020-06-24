@@ -557,6 +557,43 @@ class ClassController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * Remove Class
+     *
+     * @api {post} HOST/api/teacher/remove/class/{id} Remove Class
+     * @apiVersion 1.0.0
+     * @apiName RemoveClass
+     * @apiDescription Removes a Class
+     * @apiGroup Teacher Classes
+     *
+     * @apiParam {Number} id ID of Class Material
+     *
+     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
+     *
+     *
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     */
+    public function removeClass(Request $request)
+    {
+        //to do: policy on who can remove classes
+		$class = Classes::with('schedules')->findOrFail($request->id);
+
+        // TODO: remove class schedules?
+        // TODO: remove class topics?
+        // TODO: remove assignments?
+        // TODO: remove assets?
+        // TODO: when removing orphaned items of a class, 
+        // consider using queue jobs to prevent timeout issues
+
+        $class->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     private function serializedUserList(Array $list)
     {
         $serialized_list = collect($list)->map(function($object) {
