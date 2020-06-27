@@ -116,4 +116,8 @@ Route::middleware('jwt')->group(function () {
     Route::delete('/questionnaire/delete/{id}', 'Api\\QuestionnaireController@deleteQuestionnaire');
     Route::get('/questionnaire/{id}', 'Api\\QuestionnaireController@show');
 
+    //SchoolAdmin
+    Route::post('/schooladmin/school-grading-category/save', 'Api\\SchoolGradingCategoryController@save');
+    Route::get('/schooladmin/school-grading-categories', 'Api\\SchoolGradingCategoryController@show');
+
 });
