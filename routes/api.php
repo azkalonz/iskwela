@@ -109,11 +109,11 @@ Route::middleware('jwt')->group(function () {
     Route::post('/public/upload', 'Api\\FileController@publicUpload');
 
     //quizzes
-    Route::post('/quiz/save', 'Api\\QuestionnaireController@save');
-    Route::get('/quizzes', 'Api\\QuestionnaireController@quizzes');
-    Route::post('/quiz/school-publish/{id}', 'Api\\QuestionnaireController@schoolPublish');
-    Route::post('/quiz/class-publish/', 'Api\\QuestionnaireController@classPublish');
-    Route::delete('/quiz/delete/{id}', 'Api\\QuestionnaireController@deleteQuiz');
-    Route::post('/quiz/{id}', 'Api\\QuestionnaireController@show');
+    Route::post('/questionnaire/save', 'Api\\QuestionnaireController@save');
+    Route::get('/questionnaires', 'Api\\QuestionnaireController@questionnaires');
+    Route::post('/questionnaire/school-publish/{id}', 'Api\\QuestionnaireController@schoolPublish');
+    //Route::post('/quiz/class-publish/', 'Api\\QuestionnaireController@classPublish');
+    Route::delete('/questionnaire/delete/{id}', 'Api\\QuestionnaireController@deleteQuestionnaire');
+    Route::get('/questionnaire/{id}', 'Api\\QuestionnaireController@show');
 
 });
