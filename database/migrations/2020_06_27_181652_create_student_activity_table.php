@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuizzesTable extends Migration
+class CreateStudentActivityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,21 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('student_activities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('title');
-            $table->mediumText('instruction');
+            $table->mediumText('instruction')->nullable();
             $table->integer('created_by');
             $table->integer('school_id');
             $table->integer('subject_id');
-            $table->integer('school_published')->default(0);
-            $table->timestamp('school_published_date')->nullable();
+            $table->integer('category_id');
+            $table->integer('duration');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->index('created_by');
             $table->index('school_id');
-            $table->index('school_published');
             $table->index('deleted_at');
         });
     }
@@ -40,6 +39,6 @@ class CreateQuizzesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('student_activities');
     }
 }

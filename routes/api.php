@@ -108,12 +108,15 @@ Route::middleware('jwt')->group(function () {
     //upload to public
     Route::post('/public/upload', 'Api\\FileController@publicUpload');
 
-    //quizzes
+    //questionnaire
     Route::post('/questionnaire/save', 'Api\\QuestionnaireController@save');
     Route::get('/questionnaires', 'Api\\QuestionnaireController@questionnaires');
     Route::post('/questionnaire/school-publish/{id}', 'Api\\QuestionnaireController@schoolPublish');
     //Route::post('/quiz/class-publish/', 'Api\\QuestionnaireController@classPublish');
     Route::delete('/questionnaire/delete/{id}', 'Api\\QuestionnaireController@deleteQuestionnaire');
     Route::get('/questionnaire/{id}', 'Api\\QuestionnaireController@show');
+
+    //quizzes
+    Route::post('/quiz/save', 'Api\\StudentActivityController@save');
 
 });
