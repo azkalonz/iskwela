@@ -11,7 +11,7 @@ class Questionnaire extends Model
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'questionnaire_questions', 'quiz_id', 'question_id');
+        return $this->belongsToMany(Question::class, 'questionnaire_questions', 'questionnaire_id', 'question_id');
     }
 
     public function scopeSchoolQuizzes($builder)

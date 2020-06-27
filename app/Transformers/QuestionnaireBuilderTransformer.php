@@ -4,10 +4,10 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 
-class QuizBuilderTransformer extends TransformerAbstract
+class QuestionnaireBuilderTransformer extends TransformerAbstract
 {
 	protected $defaultIncludes = ['questions'];
-    public function transform(\App\Gateways\QuizBuilderGateway $quiz_builder)
+    public function transform(\App\Gateways\QuestionnaireBuilderGateway $quiz_builder)
     {
 		$quiz = $quiz_builder->getQuiz();
 		return [
@@ -18,7 +18,7 @@ class QuizBuilderTransformer extends TransformerAbstract
 		];
 	}
 
-	public function includeQuestions(\App\Gateways\QuizBuilderGateway $quiz_builder)
+	public function includeQuestions(\App\Gateways\QuestionnaireBuilderGateway $quiz_builder)
     {
         return $this->collection($quiz_builder->getQuestions(), new \App\Transformers\Question\QuestionTransformer);
     }

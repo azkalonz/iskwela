@@ -10,30 +10,30 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
-use App\Transformers\QuizBuilderTransformer;
-use App\Transformers\QuizTransformer;
+use App\Transformers\QuestionnaireBuilderTransformer;
+use App\Transformers\QuestionnaireTransformer;
 
-use \App\Gateways\QuizBuilderGateway;
+use \App\Gateways\QuestionnaireBuilderGateway;
 
-use \App\Models\Quiz;
+use \App\Models\Questionnaire;
 use \App\Models\Classes;
 use \App\Models\ClassQuiz;
 
 class QuestionnaireController extends Controller
 {
 	/**
-     * Quiz
+     * Questionnaire
      *
-     * @api {post} <HOST>/api/quiz/save Save Quiz
+     * @api {post} <HOST>/api/questionnaire/save Save Questionnaire
      * @apiVersion 1.0.0
-     * @apiName SaveQuiz
-     * @apiDescription Save Quiz
-     * @apiGroup Quiz
+     * @apiName SaveQuestionnaire
+     * @apiDescription Save Questionnaire
+     * @apiGroup Questionnaire
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {String} title Quiz title
-     * @apiParam {String} intro Quiz intro/instruction
+     * @apiParam {String} title Questionnaire title
+     * @apiParam {String} intro Questionnaire intro/instruction
      * @apiParam {Number} subject_id
      * @apiParam {Array} questions array of question object
      * @apiParam {String} questions.question the question text
@@ -44,9 +44,9 @@ class QuestionnaireController extends Controller
      * @apiParam {Boolean} questions.choices.is_correct multiple choices can be marked as correct
      * @apiParam {String} media_url link to attachment
 	 * 
-     * @apiSuccess {Number} id ID of the added quiz
-     * @apiSuccess {String} title Quiz title
-     * @apiSuccess {String} intro Quiz intro/instruction
+     * @apiSuccess {Number} id ID of the added Questionnaire
+     * @apiSuccess {String} title Questionnaire title
+     * @apiSuccess {String} intro Questionnaire intro/instruction
      * @apiSuccess {Number} subject_id
      * @apiSuccess {Array} questions array of question object
      * @apiSuccess {Number} questions.id ID of the added question
@@ -62,15 +62,15 @@ class QuestionnaireController extends Controller
      * @apiSuccessExample {json} Sample Response
 		{
 			"id": 109,
-			"title": "Quiz 1",
-			"intro": "this is a quiz to answer",
+			"title": "Questionnaire 1",
+			"intro": "this is a Questionnaire to answer",
 			"subject_id": 1,
 			"questions": [
 				{
 					"id": 199,
 					"question": "test",
 					"question_type": "mcq",
-					"media_url": "http://sample-media.com/q1-quiz1",
+					"media_url": "http://sample-media.com/q1-Questionnaire1",
 					"weight": 1,
 					"choices": [
 						{
@@ -104,84 +104,80 @@ class QuestionnaireController extends Controller
     
 	public function save(Request $request)
 	{
-		$quiz_gw = new QuizBuilderGateway();
+		$questionnaire_gw = new QuestionnaireBuilderGateway();
 
-		//add and attach questions to quiz
-		$quiz_gw->setQuestionnaireDetails($request->toArray());
-		$quiz_gw->save();
+		//add and attach questions to questionnaire
+		$questionnaire_gw->setQuestionnaireDetails($request->toArray());
+		$questionnaire_gw->save();
 
-		$fractal = fractal()->item($quiz_gw, new QuizBuilderTransformer);
+		$fractal = fractal()->item($questionnaire_gw, new QuestionnaireBuilderTransformer);
 
         return response()->json($fractal->toArray());
 	}
 
 	/**
-     * Quiz
+     * Questionnaire
      *
-     * @api {get} <HOST>/api/quizzes Quiz list
+     * @api {get} <HOST>/api/questionnaires Questionnaire list
      * @apiVersion 1.0.0
-     * @apiName QuizList
-     * @apiDescription Get quiz list
-     * @apiGroup Quiz
+     * @apiName QuestionnaireList
+     * @apiDescription Get questionnaire list
+     * @apiGroup Questionnaire
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {Array=myQuizzes, schoolQuizzes, classQuizzes} types available quiz types. <ul><li>myQuizzes: quizzes created by logged in teacher</li><li>schoolQuizzes: quizzes published by different teachers to the school</li><li>classQuizzes: quizzes published by logged in teacher to his/her classes</li></ul>
-     * @apiParam {Number} class_id get quizzes of the specified class. If this is passed, the "types" param will be invalidated
+     * @apiParam {Array=myQnrs, schoolQnrs} types available questionnaire types. <ul><li>myQnrs: questionnaires created by logged in teacher</li><li>schoolQnrs: questionnaires published by different teachers to the school</li></ul>
+     * @apiParam {Number} class_id get questionnaires of the specified class. If this is passed, the "types" param will be invalidated
 	 * @apiParam {Number} limit number of rows returned per request. Default: 20, Max: 100
 	 * @apiParam {Number} offset the offset. Min: 0
 	 *
-	 * @apiUse QuizDetailResponse
-	 * @apiUse QuizSampleResponse
+	 * @apiUse QuestionnaireDetailResponse
+	 * @apiUse QuestionnaireSampleResponse
 	 *
 	*/
-	public function quizzes(Request $request)
+	public function questionnaires(Request $request)
 	{
 		$this->validate($request, [
 			'types' => 'array|distinct',
-			'types.*' => 'in:'.implode(',', config('school_hub.quiz_types')),
-			'class_id' => 'integer',
+			'types.*' => 'in:'.implode(',', config('school_hub.questionnaire_types')),
 			'limit' => 'integer|max:100', // set limit to 50 by default
 			'offset' => 'integer|min:0' // set to 0 by default
 		]);
 
 		if(!$request->types) {
-			$request->types = config('school_hub.quiz_types');
-		}
-		elseif ($request->class_id) {
-			$request->types = ['classQuizzes'];
+			$request->types = config('school_hub.questionnaire_types');
 		}
 
 		$user = \Auth::user();
-		$quiz = Quiz::with('questions');
+		$questionnaire = Questionnaire::with('questions');
 
 		$union = collect();
 
-		array_reduce($request->types, function($index, $type) use ($quiz, $user, &$union, $request) {
+		array_reduce($request->types, function($index, $type) use ($questionnaire, $user, &$union, $request) {
 			switch($type) {
-				case 'myQuizzes':
-					// get own quizzes
-					$own_quizzes = clone $quiz;
-					$own_quizzes->whereCreatedBy($user->getKey());
-					$union->push($own_quizzes);
+				case 'myQnrs':
+					// get own questionnaires
+					$own_questionnaires = clone $questionnaire;
+					$own_questionnaires->whereCreatedBy($user->getKey());
+					$union->push($own_questionnaires);
 				break;
-				case 'classQuizzes':
+/* 				case 'classQuizzes':
 					// quizzes published to classes
 					$class_quizzes = clone $quiz;
 					$class_quizzes->publishedToClass($user->getKey(), $request->class_id);
 					$union->push($class_quizzes);
-				break;
-				case 'schoolQuizzes':
-					$school_quizzes = clone $quiz;
-					$school_quizzes->whereSchoolPublished(1);
-					$union->push($school_quizzes);
+				break; */
+				case 'schoolQnrs':
+					$school_questionnaires = clone $questionnaire;
+					$school_questionnaires->whereSchoolPublished(1);
+					$union->push($school_questionnaires);
 				break;
 			}
 		});
 
-		$quiz = $union->first();
-		($union->slice(1))->map(function($query) use (&$quiz) {
-			$quiz->union($query);
+		$questionnaire = $union->first();
+		($union->slice(1))->map(function($query) use (&$questionnaire) {
+			$questionnaire->union($query);
 		});
 
 		if(!$request->limit) {
@@ -191,25 +187,25 @@ class QuestionnaireController extends Controller
 			$request->offset = 0;
 		}
 		
-		$quiz->offset($request->offset);
-		$quiz->limit($request->limit);
+		$questionnaire->offset($request->offset);
+		$questionnaire->limit($request->limit);
 
-		$fractal = fractal()->collection($quiz->get(), new QuizTransformer);
+		$fractal = fractal()->collection($questionnaire->get(), new QuestionnaireTransformer);
 
         return response()->json($fractal->toArray());
 	}
 
 	/**
-     * Quiz
+     * Questionnaire
      *
-     * @api {post} <HOST>/api/quiz/school-publish/{id} Publish Quiz to School
+     * @api {post} <HOST>/api/questionnaire/school-publish/{id} Publish Questionnaire to School
      * @apiVersion 1.0.0
-     * @apiName QuizSchoolPublish
-     * @apiDescription Publish the quiz to the school
-     * @apiGroup Quiz
+     * @apiName QuestionnaireSchoolPublish
+     * @apiDescription Publish the questionnaire to the school
+     * @apiGroup Questionnaire
      *
      * @apiUse JWTHeader
-     * @apiParam {Number} id ID of quiz to publish
+     * @apiParam {Number} id ID of questionnaire to publish
      * @apiSuccess {Boolean} success true/false
 	 * 
 	 * 
@@ -217,97 +213,50 @@ class QuestionnaireController extends Controller
 	public function schoolPublish(Request $request)
 	{
 		$user = \Auth::user();
-		$quiz = Quiz::find($request->id);
+		$questionnaire = Questionnaire::find($request->id);
 
-		if(!$quiz) {
-			return response('Quiz not found', 404);
+		if(!$questionnaire) {
+			return response('Questionnaire not found', 404);
 		}
-		$quiz->school_published = 1;
-		$quiz->school_published_date = date('Y-m-d H:i:s');
+		$questionnaire->school_published = 1;
+		$questionnaire->school_published_date = date('Y-m-d H:i:s');
 		
 		$success = false;
-		if($quiz->created_by == $user->getKey() && $quiz->save()) {
+		if($questionnaire->created_by == $user->getKey() && $questionnaire->save()) {
 			$success = true;
 		}
 
 		return response()->json(['success' => $success]);
 	}
 
+
 	/**
-     * Quiz
+     * Questionnaire
      *
-     * @api {post} <HOST>/api/quiz/class-publish Publish Quiz to Class
+     * @api {delete} <HOST>/api/questionnaire/delete/{id} Delete Questionnaire
      * @apiVersion 1.0.0
-     * @apiName QuizClassPublish
-     * @apiDescription Publish the quiz to the class
-     * @apiGroup Quiz
+     * @apiName DeleteQuestionnaire
+     * @apiDescription Deletes the questionnaire
+     * @apiGroup Questionnaire
      *
      * @apiUse JWTHeader
-     * 
-	 * @apiParam {Number} quiz_id the quiz ID to be published
-	 * @apiParam {Number} class_id ID of class where the quiz will be published to
-	 * 
+     *
+	 * @apiParam {Number} id ID of questionnaire to delete
      * @apiSuccess {Boolean} success true/false
 	 * 
 	 * 
 	*/
-	public function classPublish(Request $request)
+	public function deleteQuestionnaire(Request $request)
 	{
 		$user = \Auth::user();
-		$quiz = Quiz::find($request->quiz_id);
-		$class = Classes::find($request->class_id);
+		$questionnaire = Questionnaire::find($request->id);
 
-		if(!$quiz) {
-			return response('Quiz not found', 404);
-		}
-		if(!$class || $class->teacher_id != $user->getKey()) {
-			return response('Error: cannot publish the quiz to the specified class.', 500);
-		}
-
-		try {
-			$class_quiz = ClassQuiz::create([
-				'quiz_id' => $request->quiz_id,
-				'class_id' => $class->id,
-				'published_by' => $user->getKey(),
-				'published_at' => date('Y-m-d H:i:s')
-			]);
-
-			return response()->json(['success' => true]);
-		}
-		catch(\Exception $e) {
-			return response('Error: unable to publish.', 500);
-		}
-
-	}
-
-
-	/**
-     * Quiz
-     *
-     * @api {delete} <HOST>/api/quiz/delete/{id} Delete Quiz
-     * @apiVersion 1.0.0
-     * @apiName DeleteQuiz
-     * @apiDescription Deletes the quiz
-     * @apiGroup Quiz
-     *
-     * @apiUse JWTHeader
-     *
-	 * @apiParam {Number} id ID of quiz to delete
-     * @apiSuccess {Boolean} success true/false
-	 * 
-	 * 
-	*/
-	public function deleteQuiz(Request $request)
-	{
-		$user = \Auth::user();
-		$quiz = Quiz::find($request->id);
-
-		if(!$quiz) {
-			return response('Quiz not found', 404);
+		if(!$questionnaire) {
+			return response('Questinnaire not found', 404);
 		}
 
 		$success = false;
-		if($quiz->created_by == $user->getKey() && $quiz->delete()) {
+		if($questionnaire->created_by == $user->getKey() && $questionnaire->delete()) {
 			$success = true;
 		}
 
@@ -315,33 +264,33 @@ class QuestionnaireController extends Controller
 	}
 
 	/**
-     * Quiz
+     * Questionnaire
      *
-     * @api {get} <HOST>/api/quiz/{id} Get Quiz Detail
+     * @api {get} <HOST>/api/questionnaire/{id} Get Questionnaire Detail
      * @apiVersion 1.0.0
-     * @apiName QuizDetail
-     * @apiDescription Returns quiz detail
-     * @apiGroup Quiz
+     * @apiName QuestionnaireDetail
+     * @apiDescription Returns questionnaire detail
+     * @apiGroup Questionnaire
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {Number} id quiz ID
+     * @apiParam {Number} id questionnaire ID
 	 * 
-	 * @apiUse QuizDetailResponse
-	 * @apiUse QuizSampleResponse
+	 * @apiUse QuestionnaireDetailResponse
+	 * @apiUse QuestionnaireSampleResponse
 	 * 
 	*/
 	public function show(Request $request)
 	{
-		//todo: add policy who can view the quiz
+		//todo: add policy who can view the questionnaire
 		$user = \Auth::user();
-		$quiz = Quiz::find($request->id);
+		$questionnaire = Questionnaire::find($request->id);
 
-		if(!$quiz) {
-			return response('Quiz not found', 404);
+		if(!$questionnaire) {
+			return response('Questionnaire not found', 404);
 		}
 
-		$fractal = fractal()->item($quiz, new QuizTransformer);
+		$fractal = fractal()->item($questionnaire, new QuestionnaireTransformer);
 
         return response()->json($fractal->toArray());
 	}
@@ -353,10 +302,10 @@ class QuestionnaireController extends Controller
 	*/
 	
 	/**
-     * @apiDefine QuizDetailResponse
-     * @apiSuccess {Number} id ID of the added quiz
-     * @apiSuccess {String} title Quiz title
-     * @apiSuccess {String} intro Quiz intro/instruction
+     * @apiDefine QuestionnaireDetailResponse
+     * @apiSuccess {Number} id ID of the added questionnaire
+     * @apiSuccess {String} title Questionnaire title
+     * @apiSuccess {String} intro Questionnaire intro/instruction
      * @apiSuccess {Number} subject_id
      * @apiSuccess {Number} school_published 0: not published to school, 1: published to school
      * @apiSuccess {Number} school_published_date published date or NULL
@@ -376,12 +325,12 @@ class QuestionnaireController extends Controller
 	*/
 	
 	/**
-	 * @apiDefine QuizSampleResponse
+	 * @apiDefine QuestionnaireSampleResponse
 	 * @apiSuccessExample {json} Sample Response
 		{
 			"id": 6,
-			"title": "Quiz 2",
-			"intro": "this is a quiz to answer",
+			"title": "Questionnaire 2",
+			"intro": "this is a questionnaire to answer",
 			"subject_id": 1,
 			"school_published": 1,
 			"school_published_date": null,
@@ -395,7 +344,7 @@ class QuestionnaireController extends Controller
 					"id": 13,
 					"question": "test",
 					"question_type": "mcq",
-					"media_url": "http://sample-media.com/q1-quiz1",
+					"media_url": "http://sample-media.com/q1-questionnaire1",
 					"weight": 1,
 					"choices": [
 						{
@@ -424,7 +373,7 @@ class QuestionnaireController extends Controller
 					"id": 14,
 					"question": "test2",
 					"question_type": "mcq",
-					"media_url": "http://sample-media.com/q2-quiz1",
+					"media_url": "http://sample-media.com/q2-questionnaire1",
 					"weight": 5,
 					"choices": [
 						{

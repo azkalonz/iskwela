@@ -2168,12 +2168,12 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "<HOST>/api/quiz/delete/{id}",
-    "title": "Delete Quiz",
+    "url": "<HOST>/api/questionnaire/delete/{id}",
+    "title": "Delete Questionnaire",
     "version": "1.0.0",
-    "name": "DeleteQuiz",
-    "description": "<p>Deletes the quiz</p>",
-    "group": "Quiz",
+    "name": "DeleteQuestionnaire",
+    "description": "<p>Deletes the questionnaire</p>",
+    "group": "Questionnaire",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2182,7 +2182,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of quiz to delete</p>"
+            "description": "<p>ID of questionnaire to delete</p>"
           }
         ]
       }
@@ -2200,65 +2200,8 @@ define({ "api": [
         ]
       }
     },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "post",
-    "url": "<HOST>/api/quiz/class-publish",
-    "title": "Publish Quiz to Class",
-    "version": "1.0.0",
-    "name": "QuizClassPublish",
-    "description": "<p>Publish the quiz to the class</p>",
-    "group": "Quiz",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "quiz_id",
-            "description": "<p>the quiz ID to be published</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "class_id",
-            "description": "<p>ID of class where the quiz will be published to</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
+    "filename": "app/Http/Controllers/Api/QuestionnaireController.php",
+    "groupTitle": "Questionnaire",
     "header": {
       "fields": {
         "Header": [
@@ -2275,12 +2218,12 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "<HOST>/api/quiz/{id}",
-    "title": "Get Quiz Detail",
+    "url": "<HOST>/api/questionnaire/{id}",
+    "title": "Get Questionnaire Detail",
     "version": "1.0.0",
-    "name": "QuizDetail",
-    "description": "<p>Returns quiz detail</p>",
-    "group": "Quiz",
+    "name": "QuestionnaireDetail",
+    "description": "<p>Returns questionnaire detail</p>",
+    "group": "Questionnaire",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2289,13 +2232,13 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>quiz ID</p>"
+            "description": "<p>questionnaire ID</p>"
           }
         ]
       }
     },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
+    "filename": "app/Http/Controllers/Api/QuestionnaireController.php",
+    "groupTitle": "Questionnaire",
     "header": {
       "fields": {
         "Header": [
@@ -2317,21 +2260,21 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of the added quiz</p>"
+            "description": "<p>ID of the added questionnaire</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "title",
-            "description": "<p>Quiz title</p>"
+            "description": "<p>Questionnaire title</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "intro",
-            "description": "<p>Quiz intro/instruction</p>"
+            "description": "<p>Questionnaire intro/instruction</p>"
           },
           {
             "group": "Success 200",
@@ -2453,7 +2396,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Quiz 2\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Questionnaire 2\",\n\t\"intro\": \"this is a questionnaire to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-questionnaire1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-questionnaire1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
           "type": "json"
         }
       ]
@@ -2461,12 +2404,12 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "<HOST>/api/quizzes",
-    "title": "Quiz list",
+    "url": "<HOST>/api/questionnaires",
+    "title": "Questionnaire list",
     "version": "1.0.0",
-    "name": "QuizList",
-    "description": "<p>Get quiz list</p>",
-    "group": "Quiz",
+    "name": "QuestionnaireList",
+    "description": "<p>Get questionnaire list</p>",
+    "group": "Questionnaire",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2474,20 +2417,19 @@ define({ "api": [
             "group": "Parameter",
             "type": "Array",
             "allowedValues": [
-              "myQuizzes",
-              "schoolQuizzes",
-              "classQuizzes"
+              "myQnrs",
+              "schoolQnrs"
             ],
             "optional": false,
             "field": "types",
-            "description": "<p>available quiz types. <ul><li>myQuizzes: quizzes created by logged in teacher</li><li>schoolQuizzes: quizzes published by different teachers to the school</li><li>classQuizzes: quizzes published by logged in teacher to his/her classes</li></ul></p>"
+            "description": "<p>available questionnaire types. <ul><li>myQnrs: questionnaires created by logged in teacher</li><li>schoolQnrs: questionnaires published by different teachers to the school</li></ul></p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "class_id",
-            "description": "<p>get quizzes of the specified class. If this is passed, the &quot;types&quot; param will be invalidated</p>"
+            "description": "<p>get questionnaires of the specified class. If this is passed, the &quot;types&quot; param will be invalidated</p>"
           },
           {
             "group": "Parameter",
@@ -2506,8 +2448,8 @@ define({ "api": [
         ]
       }
     },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
+    "filename": "app/Http/Controllers/Api/QuestionnaireController.php",
+    "groupTitle": "Questionnaire",
     "header": {
       "fields": {
         "Header": [
@@ -2529,21 +2471,21 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of the added quiz</p>"
+            "description": "<p>ID of the added questionnaire</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "title",
-            "description": "<p>Quiz title</p>"
+            "description": "<p>Questionnaire title</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "intro",
-            "description": "<p>Quiz intro/instruction</p>"
+            "description": "<p>Questionnaire intro/instruction</p>"
           },
           {
             "group": "Success 200",
@@ -2665,7 +2607,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Quiz 2\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "{\n\t\"id\": 6,\n\t\"title\": \"Questionnaire 2\",\n\t\"intro\": \"this is a questionnaire to answer\",\n\t\"subject_id\": 1,\n\t\"school_published\": 1,\n\t\"school_published_date\": null,\n\t\"author\": {\n\t\t\"id\": 9,\n\t\t\"first_name\": \"teacher jayson\",\n\t\t\"last_name\": \"barino\"\n\t},\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 13,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-questionnaire1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"id\": 14,\n\t\t\t\"question\": \"test2\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q2-questionnaire1\",\n\t\t\t\"weight\": 5,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
           "type": "json"
         }
       ]
@@ -2673,12 +2615,12 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "<HOST>/api/quiz/school-publish/{id}",
-    "title": "Publish Quiz to School",
+    "url": "<HOST>/api/questionnaire/school-publish/{id}",
+    "title": "Publish Questionnaire to School",
     "version": "1.0.0",
-    "name": "QuizSchoolPublish",
-    "description": "<p>Publish the quiz to the school</p>",
-    "group": "Quiz",
+    "name": "QuestionnaireSchoolPublish",
+    "description": "<p>Publish the questionnaire to the school</p>",
+    "group": "Questionnaire",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2687,7 +2629,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of quiz to publish</p>"
+            "description": "<p>ID of questionnaire to publish</p>"
           }
         ]
       }
@@ -2705,8 +2647,8 @@ define({ "api": [
         ]
       }
     },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
+    "filename": "app/Http/Controllers/Api/QuestionnaireController.php",
+    "groupTitle": "Questionnaire",
     "header": {
       "fields": {
         "Header": [
@@ -2723,12 +2665,12 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "<HOST>/api/quiz/save",
-    "title": "Save Quiz",
+    "url": "<HOST>/api/questionnaire/save",
+    "title": "Save Questionnaire",
     "version": "1.0.0",
-    "name": "SaveQuiz",
-    "description": "<p>Save Quiz</p>",
-    "group": "Quiz",
+    "name": "SaveQuestionnaire",
+    "description": "<p>Save Questionnaire</p>",
+    "group": "Questionnaire",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2737,14 +2679,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "title",
-            "description": "<p>Quiz title</p>"
+            "description": "<p>Questionnaire title</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "intro",
-            "description": "<p>Quiz intro/instruction</p>"
+            "description": "<p>Questionnaire intro/instruction</p>"
           },
           {
             "group": "Parameter",
@@ -2823,21 +2765,21 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of the added quiz</p>"
+            "description": "<p>ID of the added Questionnaire</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "title",
-            "description": "<p>Quiz title</p>"
+            "description": "<p>Questionnaire title</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "intro",
-            "description": "<p>Quiz intro/instruction</p>"
+            "description": "<p>Questionnaire intro/instruction</p>"
           },
           {
             "group": "Success 200",
@@ -2917,13 +2859,13 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 109,\n\t\"title\": \"Quiz 1\",\n\t\"intro\": \"this is a quiz to answer\",\n\t\"subject_id\": 1,\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 199,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{},\n\t\t{}\n\t]\n}",
+          "content": "{\n\t\"id\": 109,\n\t\"title\": \"Questionnaire 1\",\n\t\"intro\": \"this is a Questionnaire to answer\",\n\t\"subject_id\": 1,\n\t\"questions\": [\n\t\t{\n\t\t\t\"id\": 199,\n\t\t\t\"question\": \"test\",\n\t\t\t\"question_type\": \"mcq\",\n\t\t\t\"media_url\": \"http://sample-media.com/q1-Questionnaire1\",\n\t\t\t\"weight\": 1,\n\t\t\t\"choices\": [\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\"is_correct\": true\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\"is_correct\": false\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{},\n\t\t{}\n\t]\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "app/Http/Controllers/Api/QuizController.php",
-    "groupTitle": "Quiz",
+    "filename": "app/Http/Controllers/Api/QuestionnaireController.php",
+    "groupTitle": "Questionnaire",
     "header": {
       "fields": {
         "Header": [
@@ -6362,6 +6304,50 @@ define({ "api": [
       ]
     },
     "filename": "app/Http/Controllers/Api/AssignmentController.php",
+    "groupTitle": "Teacher_Classes"
+  },
+  {
+    "type": "post",
+    "url": "HOST/api/teacher/remove/class/{id}",
+    "title": "Remove Class",
+    "version": "1.0.0",
+    "name": "RemoveClass",
+    "description": "<p>Removes a Class</p>",
+    "group": "Teacher_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Class Material</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>returns true if ID is found. Otherwise, returns error code 404.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ClassController.php",
     "groupTitle": "Teacher_Classes"
   },
   {
