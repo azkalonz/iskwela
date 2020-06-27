@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Quiz extends Model
+class Questionnaire extends Model
 {
     use SoftDeletes;
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'quizzes_questions', 'quiz_id', 'question_id');
+        return $this->belongsToMany(Question::class, 'questionnaire_questions', 'quiz_id', 'question_id');
     }
 
     public function scopeSchoolQuizzes($builder)
@@ -26,10 +26,10 @@ class Quiz extends Model
 
     public function scopePublishedToClass($builder, $teacher_id, $class_id = null)
     {
-        return $builder->whereIn('quizzes.id', function($query) use ($teacher_id, $class_id) {
+        return $builder->whereIn('questionnaire.id', function($query) use ($teacher_id, $class_id) {
             $query->from((new ClassQuiz)
                 ->getTable())
-                ->select('quiz_id')
+                ->select('questionnaire_id')
                 ->wherePublishedBy($teacher_id);
 
             if($class_id) {

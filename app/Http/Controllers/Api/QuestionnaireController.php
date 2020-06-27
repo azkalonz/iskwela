@@ -19,7 +19,7 @@ use \App\Models\Quiz;
 use \App\Models\Classes;
 use \App\Models\ClassQuiz;
 
-class QuizController extends Controller
+class QuestionnaireController extends Controller
 {
 	/**
      * Quiz
@@ -107,7 +107,7 @@ class QuizController extends Controller
 		$quiz_gw = new QuizBuilderGateway();
 
 		//add and attach questions to quiz
-		$quiz_gw->setQuizDetails($request->toArray());
+		$quiz_gw->setQuestionnaireDetails($request->toArray());
 		$quiz_gw->save();
 
 		$fractal = fractal()->item($quiz_gw, new QuizBuilderTransformer);

@@ -2,13 +2,13 @@
 
 namespace App\Gateways;
 
-use \App\Models\Quiz;
+use \App\Models\Questionnaire;
 use \App\Models\Question;
-use \App\Models\QuizQuestion;
+use \App\Models\QuestionnaireQuestion;
 
 class QuizBuilderGateway
 {
-    protected $quiz;
+    protected $questionnaire;
     protected $questions;
     protected $question_mapping;
     protected $user;
@@ -20,20 +20,20 @@ class QuizBuilderGateway
         $this->user = \Auth::user();
     }
 
-    public function setQuizDetails(Array $params)
+    public function setQuestionnaireDetails(Array $params)
     {
         if(isset($params['id'])) {
-            $this->quiz = Quiz::find($params['id']);
+            $this->questionnaire = Questionnaire::find($params['id']);
         }
         else {
-            $this->quiz = new Quiz();
+            $this->questionnaire = new Questionnaire();
         }
 
-        $this->quiz->title = $params['title'];
-        $this->quiz->instruction = $params['intro'];
-        $this->quiz->created_by = $this->user->id;
-        $this->quiz->school_id = $this->user->school_id;
-        $this->quiz->subject_id = $params['subject_id'];
+        $this->questionnaire->title = $params['title'];
+        $this->questionnaire->instruction = $params['intro'];
+        $this->questionnaire->created_by = $this->user->id;
+        $this->questionnaire->school_id = $this->user->school_id;
+        $this->questionnaire->subject_id = $params['subject_id'];
 
         $this->setQuestionDetails($params['questions']);
     }
@@ -75,9 +75,9 @@ class QuizBuilderGateway
 
     public function save()
     {
-        if($this->quiz->save()) {
+        if($this->questionnaire->save()) {
             $this->saveQuestions();
-            $this->mapQuizQuestions();
+            $this->mapQuestionnaireQuestions();
         }
     }
 
@@ -91,21 +91,21 @@ class QuizBuilderGateway
 
             // sets the question_mapping data
             $qm_arr[$i]['question_id'] = $question->id;
-            $qm_arr[$i]['quiz_id'] = $this->quiz->id;
+            $qm_arr[$i]['questionnaire_id'] = $this->questionnaire->id;
         }
 
         $this->questions = $q_arr;
         $this->question_mapping = collect($qm_arr);
     }
 
-    public function mapQuizQuestions()
+    public function mapQuestionnaireQuestions()
     {
-        return QuizQuestion::insert($this->question_mapping->toArray());
+        return QuestionnaireQuestion::insert($this->question_mapping->toArray());
     }
 
     public function getQuiz()
     {
-        return $this->quiz;
+        return $this->questionnaire;
     }
 
     public function getQuestions()
