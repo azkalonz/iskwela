@@ -6,7 +6,7 @@ use \App\Models\Questionnaire;
 use \App\Models\Question;
 use \App\Models\QuestionnaireQuestion;
 
-class QuizBuilderGateway
+class QuestionnaireBuilderGateway
 {
     protected $questionnaire;
     protected $questions;

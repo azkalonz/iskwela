@@ -28,10 +28,9 @@ return [
         0 => 'false',
         1 => 'true'
     ],
-    'quiz_types' => [
-        'myQuizzes',
-        'schoolQuizzes',
-        'classQuizzes'
+    'questionnaire_types' => [
+        'myQnrs',
+        'schoolQnrs'
     ]
 
 ];
