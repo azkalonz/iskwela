@@ -252,7 +252,7 @@ class QuestionnaireController extends Controller
 		$questionnaire = Questionnaire::find($request->id);
 
 		if(!$questionnaire) {
-			return response('Questinnaire not found', 404);
+			return response('Questionnaire not found', 404);
 		}
 
 		$success = false;
