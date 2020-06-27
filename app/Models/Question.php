@@ -29,6 +29,6 @@ class Question extends Model
     {
         // todo: recheck this. It will be bug if question is reused by other quiz 
         // (which becomes one question -> many mapping)
-        return $this->hasOne(QuizQuestion::class, 'question_id');
+        return $this->hasOne(QuestionnaireQuestion::class, 'question_id');
     }
 }
