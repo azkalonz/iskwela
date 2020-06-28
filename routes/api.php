@@ -149,6 +149,10 @@ Route::middleware('jwt')->group(function () {
 
     //SchoolAdmin
     Route::post('/schooladmin/school-grading-category/save', 'Api\\SchoolGradingCategoryController@save');
+    Route::post('/schooladmin/subject-grading-category/save', 'Api\\SubjectGradingCategoryController@save');
+    Route::delete('/schooladmin/school-grading-category/remove/{id}', 'Api\\SchoolGradingCategoryController@remove');
+    Route::delete('/schooladmin/subject-grading-category/remove/{id}', 'Api\\SubjectGradingCategoryController@remove');
     Route::get('/schooladmin/school-grading-categories', 'Api\\SchoolGradingCategoryController@show');
+    Route::get('/schooladmin/subject-grading-categories/{id}', 'Api\\SubjectGradingCategoryController@show');
 
 });
