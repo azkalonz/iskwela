@@ -22,6 +22,7 @@ class CreateStudentActivityTable extends Migration
             $table->integer('subject_id');
             $table->integer('category_id');
             $table->integer('duration');
+            $table->integer('activity_type');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
@@ -29,6 +30,7 @@ class CreateStudentActivityTable extends Migration
             $table->index('created_by');
             $table->index('school_id');
             $table->index('deleted_at');
+            $table->index('activity_type');
         });
     }
 

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentActivityQuestionnaire extends Model
 {
-    use SoftDeletes;
     public $timestamps = false;
 
 }

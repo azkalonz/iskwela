@@ -117,6 +117,38 @@ Route::middleware('jwt')->group(function () {
     Route::get('/questionnaire/{id}', 'Api\\QuestionnaireController@show');
 
     //quizzes
-    Route::post('/quiz/save', 'Api\\StudentActivityController@save');
+    Route::post('/quiz/save', 'Api\\StudentActivityController@saveQuiz');
+    Route::get('/quizzes', 'Api\\StudentActivityController@quizzes');
+    Route::get('/quiz/{id}', 'Api\\StudentActivityController@getQuiz');
+    Route::post('/quiz/publish', 'Api\\StudentActivityController@publishQuiz');
+    Route::post('/quiz/unpublish', 'Api\\StudentActivityController@unpublishQuiz');
+    Route::delete('/quiz/delete/{id}', 'Api\\StudentActivityController@deleteQuiz');
+    Route::post('/quiz/questionnaire/add', 'Api\\StudentActivityController@addQuizQuestionnaire');
+    Route::post('/quiz/questionnaire/remove', 'Api\\StudentActivityController@removeQuizQuestionnaire');
+
+    // periodical
+    Route::post('/periodical/save', 'Api\\StudentActivityController@savePeriodical');
+    Route::get('/periodicals', 'Api\\StudentActivityController@periodicals');
+    Route::get('/periodical/{id}', 'Api\\StudentActivityController@getPeriodical');
+    Route::post('/periodical/publish', 'Api\\StudentActivityController@publishPeriodical');
+    Route::post('/periodical/unpublish', 'Api\\StudentActivityController@unpublishPeriodical');
+    Route::delete('/periodical/delete/{id}', 'Api\\StudentActivityController@deletePeriodical');
+    Route::post('/periodical/questionnaire/add', 'Api\\StudentActivityController@addPeriodicalQuestionnaire');
+    Route::post('/periodical/questionnaire/remove', 'Api\\StudentActivityController@removePeriodicalQuestionnaire');
+
+    // assignment
+    Route::post('/assignment/save', 'Api\\StudentActivityController@saveAssignment');
+    Route::get('/assignments', 'Api\\StudentActivityController@assignments');
+    Route::get('/assignment/{id}', 'Api\\StudentActivityController@getAssignment');
+    Route::post('/assignment/publish', 'Api\\StudentActivityController@publishAssignment');
+    Route::post('/assignment/unpublish', 'Api\\StudentActivityController@unpublishAssignment');
+    Route::delete('/assignment/delete/{id}', 'Api\\StudentActivityController@deleteAssignment');
+    Route::post('/assignment/questionnaire/add', 'Api\\StudentActivityController@addAssignmentQuestionnaire');
+    Route::post('/assignment/questionnaire/remove', 'Api\\StudentActivityController@removeAssignmentQuestionnaire');
+
+
+    //SchoolAdmin
+    Route::post('/schooladmin/school-grading-category/save', 'Api\\SchoolGradingCategoryController@save');
+    Route::get('/schooladmin/school-grading-categories', 'Api\\SchoolGradingCategoryController@show');
 
 });

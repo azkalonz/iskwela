@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassQuizzesTable extends Migration
+class CreateClassActivitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,17 @@ class CreateClassQuizzesTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_quizzes', function (Blueprint $table) {
+        Schema::dropIfExists('class_quizzes');
+
+        Schema::create('class_activities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quiz_id');
+            $table->integer('student_activity_id');
             $table->integer('class_id');
+            $table->integer('schedule_id');
             $table->integer('published_by');
             $table->timestamp('published_at')->useCurrent();
 
-            $table->unique(['quiz_id', 'class_id']);
+            $table->unique(['student_activity_id', 'class_id']);
         });
     }
 
@@ -31,6 +34,6 @@ class CreateClassQuizzesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_quizzes');
+        Schema::dropIfExists('class_activities');
     }
 }

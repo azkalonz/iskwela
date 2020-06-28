@@ -13,4 +13,23 @@ class StudentActivity extends Model
     {
         return $this->belongsToMany(Questionnaire::class, 'student_activity_questionnaires', 'student_activity_id', 'questionnaire_id');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(SchoolGradingCategory::class, 'category_id');
+    }
+
+    public function scopeInClass($builder, $teacher_id, $class_id = null)
+    {
+        return $builder->whereIn('student_activities.id', function($query) use ($teacher_id, $class_id) {
+            $query->from((new ClassActivity)
+                ->getTable())
+                ->select('student_activity_id')
+                ->wherePublishedBy($teacher_id);
+
+            if($class_id) {
+                $query->whereClassId($class_id);
+            }
+        });
+    }
 }
