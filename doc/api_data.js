@@ -1912,6 +1912,440 @@ define({ "api": [
     }
   },
   {
+    "type": "delete",
+    "url": "<HOST>/api/school-grading-category/remove/{id}",
+    "title": "Delete School Grading Category",
+    "version": "1.0.0",
+    "name": "DeleteSchoolGradingCategory",
+    "description": "<p>Deletes the School Grading Category</p>",
+    "group": "Grading_Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of school grading category to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/SchoolGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "<HOST>/api/subject-grading-category/remove/{id}",
+    "title": "Delete Subject Grading Category",
+    "version": "1.0.0",
+    "name": "DeleteSubjectGradingCategory",
+    "description": "<p>Deletes the Subject Grading Category</p>",
+    "group": "Grading_Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Subject grading category to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/Http/Controllers/Api/SubjectGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/school-grading-categories",
+    "title": "Get School Grading Categories",
+    "version": "1.0.0",
+    "name": "GetSchoolGradingCategory",
+    "description": "<p>Gets the grading categories the school of the logged in user.</p>",
+    "group": "Grading_Category",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>School Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_id",
+            "description": "<p>ID of the school that uses the category. Taken from user's school ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category",
+            "description": "<p>name of the grading category</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>grading category percentage (between 0 - 1)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 1,\n        \"school_id\": 1,\n        \"category\": \"Periodical Exam\",\n        \"category_percentage\": \"0.3\"\n    },\n    {\n        \"id\": 2,\n        \"school_id\": 1,\n        \"category\": \"Written Works\",\n        \"category_percentage\": \"0.2\"\n    },\n    {\n        \"id\": 3,\n        \"school_id\": 1,\n        \"category\": \"Participation\",\n        \"category_percentage\": \"0.4\"\n    },\n    {\n        \"id\": 4,\n        \"school_id\": 1,\n        \"category\": \"Performance\",\n        \"category_percentage\": \"0.1\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/SchoolGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/subject-grading-categories/{id}",
+    "title": "Get Subject Grading Categories",
+    "version": "1.0.0",
+    "name": "GetSubjectGradingCategories",
+    "description": "<p>Gets the grading categories a subject specified in {id}.</p>",
+    "group": "Grading_Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the Subject ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Subject Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>Subject ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>School Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>subject grading category percentage (between 0 - 1)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 1,\n        \"subject_id\": 1,\n        \"category_id\": \"1\",\n        \"category_percentage\": \"0.25\"\n    },\n    {\n        \"id\": 2,\n        \"subject_id\": 1,\n        \"category_id\": \"2\",\n        \"category_percentage\": \"0.25\"\n    },\n    {\n        \"id\": 4,\n        \"subject_id\": 1,\n        \"category_id\": \"4\",\n        \"category_percentage\": \"0.2\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/SubjectGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/school-grading-category/save",
+    "title": "Add/Edit School Grading Category",
+    "version": "1.0.0",
+    "name": "SaveSchoolGradingCategory",
+    "description": "<p>Saves School Grading Category</p>",
+    "group": "Grading_Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the School Grading Category ID. If not supplied, adds new category, otherwise updates the supplied ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "category",
+            "description": "<p>Name of the grading category. Required when creating a new category.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>Category Percentage between 0 and 1. Required when creating a new category.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>School Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "school_id",
+            "description": "<p>ID of the school that uses the category. Taken from user's school ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category",
+            "description": "<p>name of the grading category</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>grading category percentage (between 0 - 1)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 6,\n    \"school_id\": 1,\n    \"category\": \"Performance Test\",\n    \"category_percentage\": 0.1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/SchoolGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/subject-grading-category/save",
+    "title": "Add/Edit Subject Grading Category",
+    "version": "1.0.0",
+    "name": "SaveSubjectGradingCategory",
+    "description": "<p>Saves Subject Grading Category</p>",
+    "group": "Grading_Category",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the Subject Grading Category ID. If not supplied, adds new category, otherwise updates the supplied ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>ID of the School Grading Category. Required when creating a new category.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>ID of the Subject. Required when creating a new category.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>Category Percentage between 0 and 1. Required when creating a new category.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Subject Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>Subject ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>School Grading Category ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category_percentage",
+            "description": "<p>subject grading category percentage (between 0 - 1)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 4,\n    \"subject_id\": 1,\n    \"category_id\": 4,\n    \"category_percentage\": 0.2\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/SubjectGradingCategoryController.php",
+    "groupTitle": "Grading_Category",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "POST",
     "url": "HOST/api/class/lesson-plan/mark-done/{id}",
     "title": "Lesson Plan Mark Done",
