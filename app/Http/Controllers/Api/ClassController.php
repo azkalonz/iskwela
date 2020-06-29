@@ -42,6 +42,7 @@ class ClassController extends Controller
      * @apiSuccess {String} description Class description
      * @apiSuccess {Number} room_number
      * @apiSuccess {String} frequency The frequency of session
+     * @apiSuccess {String} color The color assigned to the class
      * @apiSuccess {Date} date_from Start of class
      * @apiSuccess {Date} date_to End of class
      * @apiSuccess {Time} time_from Class duration
@@ -63,6 +64,7 @@ class ClassController extends Controller
                 "description": "learn basics",
                 "room_number": 123455,
                 "frequency": "M,W,F",
+                "color": "#b12d8b",
                 "date_from": "2020-05-11",
                 "date_to": "2020-05-15",
                 "time_from": "09:00:00",
@@ -125,6 +127,7 @@ class ClassController extends Controller
      * @apiSuccess {String} name Defined class name
      * @apiSuccess {String} description Class description
      * @apiSuccess {String} frequency The frequency of session
+     * @apiSuccess {String} color The color assigned to the class
      * @apiSuccess {Date} date_from Start of class
      * @apiSuccess {Date} date_to End of class
      * @apiSuccess {Time} time_from Class duration
@@ -173,6 +176,7 @@ class ClassController extends Controller
                 "from": "2020-05-25 09:00:00",
                 "to": "2020-05-25 10:00:00"
             },
+            "color": "#b12d8b",
             "subject": {
                 "id": 1,
                 "name": "English"
@@ -460,6 +464,7 @@ class ClassController extends Controller
                 "from": "2020-05-25 09:00:00",
                 "to": "2020-05-25 10:00:00"
             },
+            "color": "#b12d8b",
             "subject": {
                 "id": 1,
                 "name": "English"
