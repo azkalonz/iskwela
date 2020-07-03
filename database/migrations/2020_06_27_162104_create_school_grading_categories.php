@@ -17,7 +17,7 @@ class CreateSchoolGradingCategories extends Migration
             $table->bigIncrements('id');
             $table->integer('school_id');
             $table->string('category');
-            $table->string('category_percentage');
+            $table->float('category_percentage');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
