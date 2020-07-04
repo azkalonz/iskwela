@@ -31,6 +31,23 @@ return [
     'questionnaire_types' => [
         'myQnrs',
         'schoolQnrs'
+    ],
+    'colors' => [
+        "Eucalyptus" => "#238468",
+        "Butterfly Bush" => "#5B539D",
+        "Victoria" => "#444B99",
+        "Fun Green" => "#008430",
+        "Red Damask" => "#E06B47",
+        "Indian Tan" => "#4E2102",
+        "Mulberry" => "#CA54A0",
+        "Tory Blue" => "#1650A5",
+        "Surfy Green" => "#117F7F",
+        "Thatch Green" => "#4B5320",
+        "Tuscany" => "#C26F2C",
+        "Rouge" => "#A13668",
+        "Eden" => "#0E6352",
+        "Meteorite" => "#492885",
+        "iSkwela Purple" => "#7539FF"
     ]
 
 ];
