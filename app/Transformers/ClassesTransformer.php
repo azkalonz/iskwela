@@ -23,6 +23,7 @@ class ClassesTransformer extends TransformerAbstract
             'time_from' => $class->time_from,
             'time_to' => $class->time_to,
             'next_schedule' => $next_schedule,
+            'color' => $class->color,
             'subject' => [
                 'id' => $class->subject->id,
                 'name' => $class->subject->name

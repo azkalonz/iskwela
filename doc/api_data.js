@@ -4633,7 +4633,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -5693,6 +5693,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "color",
+            "description": "<p>The color assigned to the class</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "date_from",
@@ -5920,7 +5927,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -7026,6 +7033,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "color",
+            "description": "<p>The color assigned to the class</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "date_from",
@@ -7113,7 +7127,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"color\": \"#b12d8b\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
