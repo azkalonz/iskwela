@@ -57,7 +57,7 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             'frequency' => $row[5],
             'time_from' => Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s'),
             'time_to' => Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s'),
-            'color' => $this->assignColor(),
+            'color' => get_random_color_theme(),
             'room_number' => $this->generateRoom()
         ]);
 
@@ -65,12 +65,6 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
         $schedules = $this->createClassSchedules($class, $teacher);
 
         return $class;
-    }
-
-    private function assignColor()
-    {
-        $colors = config("school_hub.colors");
-        return $colors[ array_rand($colors) ];
     }
 
     private function generateRoom()
