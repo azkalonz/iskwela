@@ -57,7 +57,7 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             'frequency' => $row[5],
             'time_from' => Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s'),
             'time_to' => Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s'),
-            'color' => $this->generateRandomColor(),
+            'color' => get_random_color_theme(),
             'room_number' => $this->generateRoom()
         ]);
 
@@ -65,14 +65,6 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
         $schedules = $this->createClassSchedules($class, $teacher);
 
         return $class;
-    }
-
-    private function generateRandomColor()
-    {
-        return "#"
-            . str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT) 
-            . str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT) 
-            . str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
     }
 
     private function generateRoom()

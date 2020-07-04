@@ -16,8 +16,8 @@ class CreateSubjectGradingCategories extends Migration
         Schema::create('subject_grading_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('subject_id');
-            $table->string('category_id');
-            $table->string('category_percentage');
+            $table->integer('category_id');
+            $table->float('category_percentage');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
