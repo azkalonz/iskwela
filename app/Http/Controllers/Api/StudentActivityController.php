@@ -232,22 +232,25 @@ class StudentActivityController extends Controller
 	{
 		$user = Auth::user();
 
+		$student_activities = StudentActivity::whereActivityType($activity_type);
+
 		if ($user->user_type == 't') {
 			$this->validate($request, [
 				'class_id' => 'integer'
 			]);
+
+			$student_activities->whereCreatedBy($user->getKey());
+			$published_by = $user->getKey();
 		}
 		else {
 			$this->validate($request, [
 				'class_id' => 'integer|required'
 			]);
+			$published_by = null;
 		}
 
-		$student_activities = StudentActivity::whereCreatedBy($user->getKey())
-					->whereActivityType($activity_type);
-
 		if($request->class_id) {
-			$student_activities->inClass($user->getKey(), $request->class_id);
+			$student_activities->inClass($published_by, $request->class_id);
 		}
 
 		$fractal = fractal()->collection($student_activities->get(), new StudentActivityTransformer);

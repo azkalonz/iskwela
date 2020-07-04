@@ -19,13 +19,16 @@ class StudentActivity extends Model
         return $this->belongsTo(SchoolGradingCategory::class, 'category_id');
     }
 
-    public function scopeInClass($builder, $teacher_id, $class_id = null)
+    public function scopeInClass($builder, $teacher_id = null, $class_id = null)
     {
         return $builder->whereIn('student_activities.id', function($query) use ($teacher_id, $class_id) {
             $query->from((new ClassActivity)
                 ->getTable())
-                ->select('student_activity_id')
-                ->wherePublishedBy($teacher_id);
+                ->select('student_activity_id');
+
+            if($teacher_id) {
+                $query->wherePublishedBy($teacher_id);
+            }
 
             if($class_id) {
                 $query->whereClassId($class_id);
