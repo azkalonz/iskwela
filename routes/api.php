@@ -145,6 +145,9 @@ Route::middleware('jwt')->group(function () {
     Route::post('/assignment/questionnaire/add', 'Api\\StudentActivityController@addAssignmentQuestionnaire');
     Route::post('/assignment/questionnaire/remove', 'Api\\StudentActivityController@removeAssignmentQuestionnaire');
 
+    // student submission
+    Route::post('/quiz/answer/submit', 'Api\\StudentActivityAnswerController@submitQuizAnswer');
+
 
     //SchoolAdmin
     Route::post('/schooladmin/school-grading-category/save', 'Api\\SchoolGradingCategoryController@save');
