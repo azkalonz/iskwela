@@ -1015,8 +1015,18 @@ class ScheduleController extends Controller
      * 
      * 
      */
+
+    public function studentSeatworksBySchedule(Request $request)
+    {
+        return $this->studentActivitiesBySchedule($request, 1);
+    }
+
+    public function studentProjectsBySchedule(Request $request)
+    {
+        return $this->studentActivitiesBySchedule($request, 2);
+    }
     
-    public function studentActivitiesBySchedule(Request $request)
+    public function studentActivitiesBySchedule(Request $request, int $activity_type)
     {
         $this->validate($request, [
             'include' => 'in:""' //not customizable
@@ -1024,8 +1034,14 @@ class ScheduleController extends Controller
         //todo: add policy that only teacher/student related to class can view
         $schedules = Schedule::where('class_id', $request->id)->get();
         $fractal = fractal()->collection($schedules, new ScheduleTransformer);
-        $fractal->includePublishedActivities();
-
+        if($activity_type == 1)
+        {
+            $fractal->includePublishedSeatworks();
+        }
+        else if($activity_type == 2)
+        {
+            $fractal->includePublishedProjects();
+        }
         return response()->json($fractal->toArray());
     }
 

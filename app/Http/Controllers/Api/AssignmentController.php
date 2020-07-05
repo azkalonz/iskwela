@@ -18,6 +18,88 @@ use \App\Transformers\AssignmentMaterialTransformer;
 
 class AssignmentController extends Controller
 {
+	const SEATWORK = 1;
+	const PROJECT = 2;
+
+    public function addSeatwork(Request $request)
+    {
+        return $this->save($request, self::SEATWORK);
+    }
+
+    public function addProject(Request $request)
+    {
+        return $this->save($request, self::PROJECT);
+    }
+
+    public function publishSeatwork(Request $request)
+    {
+        return $this->publish($request, self::SEATWORK);
+    }
+
+    public function publishProject(Request $request)
+    {
+        return $this->publish($request, self::PROJECT);
+    }
+
+    public function showSeatwork(Request $request)
+    {
+        return $this->show($request, self::SEATWORK);
+    }
+
+    public function showProject(Request $request)
+    {
+        return $this->show($request, self::PROJECT);
+    }
+
+    public function removeSeatworkMaterial(Request $request)
+    {
+        return $this->removeAssignmentMaterial($request, self::SEATWORK);
+    }
+
+    public function RemoveProjectMaterial(Request $request)
+    {
+        return $this->removeAssignmentMaterial($request, self::PROJECT);
+    }
+
+    public function saveSeatworkMaterial(Request $request)
+    {
+        return $this->saveActivityMaterial($request, self::SEATWORK);
+    }
+
+    public function saveProjectMaterial(Request $request)
+    {
+        return $this->saveActivityMaterial($request, self::PROJECT);
+    }
+
+    public function markSeatworkDone(Request $request)
+    {
+        return $this->markDone($request, self::SEATWORK);
+    }
+
+    public function markProjectDone(Request $request)
+    {
+        return $this->markDone($request, self::PROJECT);
+    }
+
+    public function markSeatworkNotDone(Request $request)
+    {
+        return $this->markNotDone($request, self::SEATWORK);
+    }
+
+    public function markProjectNotDone(Request $request)
+    {
+        return $this->markNotDone($request, self::PROJECT);
+    }
+
+    public function removeSeatwork(Request $request)
+    {
+        return $this->remove($request, self::SEATWORK);
+    }
+
+    public function removeProject(Request $request)
+    {
+        return $this->remove($request, self::PROJECT);
+    }
 
     /**
      * Add Activity
@@ -31,9 +113,8 @@ class AssignmentController extends Controller
      * @apiParam {Number} id Activity ID. If specified, edits the existing activity, otherwise, creates a new record
      * @apiParam {String} title
      * @apiParam {String} description
-     * @apiParam {Number=1,2} activity_type 1-class activity, 2-assignment
      * @apiParam {Date=YYYY-mm-dd} available_from If set as assignment, can be null if session activity
-     * @apiParam {Date=YYYY-mm-dd} available_to If set as assignment, can be null if session activity
+     * @apiParam {Datetime=YYYY-mm-dd h:i:s} due date 
      * @apiParam {Number=0,1} published 0-cannot be viewed by student, 1-publish to student
      * @apiParam {Number} subject_id
      * @apiParam {Number} schedule_id ID of session to which the activity will be attached
@@ -42,9 +123,9 @@ class AssignmentController extends Controller
      * @apiSuccess {Number} id Activity ID. The activity ID
      * @apiSuccess {String} title
      * @apiSuccess {String} description
-     * @apiSuccess {String} activity_type class activity or assignment
-     * @apiSuccess {Date} available_from
-     * @apiSuccess {Date} available_to
+     * @apiSuccess {String} activity_type seat work or project
+     * @apiSuccess {Number} total_score
+     * @apiSuccess {Datetime} due_date
      * @apiSuccess {String} status published/unpublished 
      * @apiSuccess {Array} materials
      * @apiSuccess {Number} materials.id any uploaded materials
@@ -55,13 +136,14 @@ class AssignmentController extends Controller
      * 
      * @apiSuccessExample {json} Sample Response
         {
-            "id": 6,
-            "title": "class activity sample edited",
-            "instruction": "this is a class activity",
-            "activity_type": "class activity",
-            "available_from": null,
-            "available_to": null,
+            "id": 4,
+            "title": "New Seatwork",
+            "description": "Seatwork description",
+            "activity_type": "seatwork",
+            "total_score": 100,
+            "due_date": "2020-07-10 10:00:00",
             "status": "published",
+            "done": "false",
             "materials": [
                 {
                     "id": 4,
@@ -79,16 +161,16 @@ class AssignmentController extends Controller
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
      */
-    public function save(Request $request)
+    public function save(Request $request, int $activity_type)
     {
         $this->validate($request, [
             'title' => 'required|string',
             'description' => 'string',
-            'activity_type' => 'integer|required',
             'published' => 'integer|required',
             'subject_id' => 'integer|required',
             'schedule_id' => 'integer|required',
             'class_id' => 'integer|required',
+            'total_score' => 'integer|required'
         ]);
 
         $user =  Auth::user();
@@ -101,9 +183,10 @@ class AssignmentController extends Controller
         $activity->subject_id = $request->subject_id;
         $activity->created_by = $user->id;
         $activity->activity_type = $request->activity_type;
-        $activity->available_from = $request->available_from;
-        $activity->available_to = $request->available_to;
+        $activity->due_date = $request->due_date;
         $activity->published = $request->published;
+        $activity->total_score = $request->total_score;
+        $activity->activity_type = $activity_type;
 
         $activity->save();
         $activity = Assignment::find($activity->id);
@@ -126,7 +209,7 @@ class AssignmentController extends Controller
      *
      * @apiParam {Number} id ID of activity to be published
      *
-     * @apiSuccess {Boolean} success true/false
+     * @apiSuccess {Boolean} success true/false. API will return response code 404 if seatwork is not found.
      * @apiSuccessExample {json} Sample Response
         {
             "success": true
@@ -135,9 +218,9 @@ class AssignmentController extends Controller
      * 
      * 
      */
-    public function publish(Request $request)
+    public function publish(Request $request, int $activity_type)
     {
-        $activity = Assignment::find($request->id);
+        $activity = Assignment::where('id', '=', $request->id)->where('activity_type', '=', $activity_type)->firstOrFail();
         $activity->published = 1;
         
         try{
@@ -229,7 +312,7 @@ class AssignmentController extends Controller
      * 
      * 
      */
-    public function show(Request $request)
+    public function show(Request $request, int $activity_type)
     {
         
         $user =  Auth::user();
@@ -248,8 +331,7 @@ class AssignmentController extends Controller
                 ]);
             }
         ])
-        ->whereId($request->id)->first();
-
+        ->whereId($request->id)->where('activity_type', '=', $activity_type)->firstOrFail();
         $activity->viewers = \App\TransferObjects\AssignmentSubmissions::create([
             'submissions' => $activity->viewers
         ]);
@@ -284,8 +366,9 @@ class AssignmentController extends Controller
      * 
      * 
      */
-    public function removeAssignmentMaterial(Request $request)
+    public function removeAssignmentMaterial(Request $request, int $activity_type)
     {
+        $assignment = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
 		$assignment_material = AssignmentMaterial::findOrFail($request->id);
 
         $assignment_material->delete();
@@ -321,7 +404,7 @@ class AssignmentController extends Controller
      * 
      * 
      */
-    public function saveActivityMaterial(Request $request)
+    public function saveActivityMaterial(Request $request, int $activity_type)
     {
         $request->validate([
             'id' => 'integer',
@@ -331,6 +414,8 @@ class AssignmentController extends Controller
         ]);
 
         $user =  Auth::user();
+
+        $assignment = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
 
 		$assignment_material = AssignmentMaterial::findOrNew($request->id);
         $assignment_material->link_url = $request->url;
@@ -366,11 +451,11 @@ class AssignmentController extends Controller
      *
      *
      */
-    public function remove(Request $request)
+    public function remove(Request $request, int $activity_type)
     {
         $user =  Auth::user();
 
-		$assignment = Assignment::findOrFail($request->id);
+        $assignment = Assignment::whereId($request->id)->whereActivityType($activity_type)->firstOrFail();
         $assignment->delete();
 
         return response()->json(['success' => true]);
@@ -399,9 +484,9 @@ class AssignmentController extends Controller
      * 
      * 
      */
-    public function markDone(Request $request)
+    public function markDone(Request $request, int $activity_type)
     {
-        return $this->setDoneStatus($request->id, 1);   
+        return $this->setDoneStatus($request->id, 1, $activity_type);   
     }
 
     /**
@@ -426,19 +511,15 @@ class AssignmentController extends Controller
      *
      *
      */
-    public function markNotDone(Request $request)
+    public function markNotDone(Request $request, int $activity_type)
     {
-        return $this->setDoneStatus($request->id, 0);
+        return $this->setDoneStatus($request->id, 0, $activity_type);
     }
 
-    private function setDoneStatus($assignment_id, $status)
+    private function setDoneStatus($assignment_id, $status, $activity_type)
     {
         //$teacher = Auth::user();
-        $activity = Assignment::find($assignment_id);
-
-        if(!$activity->first()) {
-            return response('Lesson Plan not Found.', 404);
-        }
+        $activity = Assignment::whereId($assignment_id)->whereActivityType($activity_type)->firstOrFail();
 
         $activity->done = $status;
 

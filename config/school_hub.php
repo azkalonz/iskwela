@@ -17,8 +17,8 @@ return [
         'text/plain'
     ],
     'activity_type' => [
-        1 => 'class activity',
-        2 => 'assignment'
+        1 => 'seatwork',
+        2 => 'project'
     ],
     'file_status' => [
         0 => 'unpublished',

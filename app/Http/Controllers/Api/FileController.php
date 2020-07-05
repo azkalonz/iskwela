@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\File;
 use App\Models\UserPreference;
 use App\Models\Classes;
+use App\Models\Assignment;
 use Storage;
 use Auth;
 
@@ -33,6 +34,9 @@ class FileController extends Controller
         'gif'
     ];
 
+    const SEATWORK = 1;
+	const PROJECT = 2;
+
     /**
      * Upload Assignment Material
      *
@@ -57,7 +61,17 @@ class FileController extends Controller
      * 
      */
 
-    public function assignmentMaterial(Request $request)
+    public function seatworkMaterial(Request $request)
+    {
+        return $this->assignmentMaterial($request, self::SEATWORK);
+    }
+
+    public function projectMaterial(Request $request)
+    {
+        return $this->assignmentMaterial($request, self::PROJECT);
+    }
+
+    public function assignmentMaterial(Request $request, int $activity_type)
     {
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
@@ -65,6 +79,7 @@ class FileController extends Controller
             'title' => 'string'
         ]);
 
+        $assignment = Assignment::whereId($request->assignment_id)->whereActivityType($activity_type)->firstOrFail();
         $response = $this->upload($request->file);
 
         if($response['success']) {
@@ -104,13 +119,25 @@ class FileController extends Controller
      * 
      * 
      */
+    
+    public function seatworkAnswer(Request $request)
+    {
+        return $this->assignmentAnswer($request, self::SEATWORK);
+    }
 
-    public function assignmentAnswer(Request $request)
+    public function projectAnswer(Request $request)
+    {
+        return $this->assignmentAnswer($request, self::PROJECT);
+    }
+
+    public function assignmentAnswer(Request $request, $activity_type)
     {
         $request->validate([
             'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
             'assignment_id' => 'integer'
         ]);
+
+        $seatwork = Assignment::whereId($request->assignment_id)->whereActivityType($activity_type)->firstOrFail();
 
         $response = $this->upload($request->file);
 
@@ -250,12 +277,12 @@ class FileController extends Controller
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif} file The file to be uploaded
+     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif} profile_picture The file to be uploaded
      *
-     * @apiSuccess {Boolean} success true/false
+     * @apiSuccess {String} url public URL of the profile picture
      * @apiSuccessExample {json} Sample Response
         {
-            "success": true
+            "url": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/jMoBdeY7IlWlqgKOHfmdnC6fls6iUiQjMYcjgEmK.jpeg"
         }
      *
      * 
@@ -270,11 +297,12 @@ class FileController extends Controller
 
 		$user =  Auth::user();
 
-        $response = $this->upload($request->profile_picture);
-
-        if($response['success']) {
+        $path = $this->uploadToPublicSpace($request->profile_picture);
+        
+        if($path) {
+            $url = $this->getFilePublicUrl($path);
             $user_preference = UserPreference::firstOrNew(['user_id' => $user->id]);
-			$user_preference->profile_picture = $response['file'];
+			$user_preference->profile_picture = $this->getFilePublicUrl($path);
 			$user_preference->updated_by = $user->id;
 
 			$user_preference->save();
@@ -283,7 +311,7 @@ class FileController extends Controller
             return response('Unable to upload file', 500);
         }
 
-        return response()->json(['success' => $response['success']]);
+        return response()->json(['url' => $url]);
     }
 
 

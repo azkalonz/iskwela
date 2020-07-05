@@ -11,7 +11,7 @@ class AssignmentAnswerTransformer extends TransformerAbstract
         return [
             'id' => $assignment_answer->id,
             'assignment_id' => $assignment_answer->assignment_id,
-            'answer_media' =>  ($assignment_answer->answer_media) ? sprintf('%s/api/download/activity/answer/%s', env('APP_URL'), $assignment_answer->id) : "",
+            'answer_media' =>  ($assignment_answer->answer_media) ? sprintf('%s/api/download/activity/answer/%s', env('APP_URL'),$assignment_answer->id) : "",
             'student' => [
                 'id' => $assignment_answer->user->id,
                 'first_name' => $assignment_answer->user->first_name,

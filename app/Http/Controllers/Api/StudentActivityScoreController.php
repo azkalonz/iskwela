@@ -10,21 +10,45 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
-use \App\Models\AssignmentAnswer;
+use \App\Models\StudentActivityScore;
 use \App\Models\Assignment;
-use \App\Transformers\AssignmentAnswerTransformer;
+use \App\Transformers\StudentActivityScoreTransformer;
 
-class AssignmentAnswerController extends Controller
+
+class StudentActivityScoreController extends Controller
 {
 
+    const SEATWORK = 1;
+	const PROJECT = 2;
+
+    public function setSeatworkScore(Request $request)
+    {
+        return $this->setScore($request, self::SEATWORK);
+    }
+
+    public function showSeatworkScore(Request $request)
+    {
+        return $this->show($request, self::SEATWORK);
+    }
+
+    public function setProjectScore(Request $request)
+    {
+        return $this->setScore($request, self::PROJECT);
+    }
+
+    public function showProjectScore(Request $request)
+    {
+        return $this->show($request, self::PROJECT);
+    }
+
     /**
-     * Show Activity Answers
+     * Set Activity Score
      *
-     * @api {get} HOST/teacher/activity-answers/{id} Show Activity Answers
+     * @api {get} HOST/class/activity/set-score Set Activity Score
      * @apiVersion 1.0.0
-     * @apiName ShowActivityAnswers
-     * @apiDescription Get activity answers.
-     * @apiGroup Teacher Classes
+     * @apiName SetActivityScore
+     * @apiDescription Set activity score of a student.
+     * @apiGroup Activities
      *
      * @apiParam {Number} id Activity ID
      * @apiParam {Number} student_id Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID
@@ -74,7 +98,7 @@ class AssignmentAnswerController extends Controller
      * @apiDescription Get student's activity answers.
      * @apiGroup Student Classes
      *
-     * @apiParam {Number} id Seatwork ID
+     * @apiParam {Number} id Activity ID
      *
      * @apiSuccess {Number} id Activity Answer ID
      * @apiSuccess {String} assignment_id Activity ID
@@ -101,40 +125,60 @@ class AssignmentAnswerController extends Controller
      * 
      * 
      */
-
-    public function showSeatworkAnswer(Request $request)
-    {
-        return $this->show($request, 1);
-    }
-
-    public function showProjectAnswer(Request $request)
-    {
-        return $this->show($request, 2);
-    }
-
-    public function show(Request $request, int $activity_type)
+    /**
+     * @apiDefine JWTHeader
+     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
+     */
+    public function setScore(Request $request, $activity_type)
     {
 
         $this->validate($request, [
-            'student_id' => 'integer'
+            'score' => 'integer|required',
+            'student_id' => 'integer|required',
+            'activity_id' => 'integer|required'
         ]);
 
         $user =  Auth::user();
 
-        $activity = Assignment::whereId($request->id)->whereActivityType($activity_type)->firstOrFail();
-        $activityAnswer = AssignmentAnswer::whereAssignmentId($request->id);
-        if($user->user_type == 's')
-        {
-            $activityAnswer->whereStudentId($user->id);    
-        }
-        else{
-            if($request->student_id){
-                $activityAnswer->whereStudentId($request->student_id);
-            }
-        }
-       $fractal = fractal()->collection($activityAnswer->get(), new AssignmentAnswerTransformer);
+        $activity = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
 
-       return response()->json($fractal->toArray());
+        $activity_score = StudentActivityScore::firstOrNew(['activity_id' => $request->activity_id,
+                                                            'student_id' => $request->student_id]);
+
+        $activity_score->score = $request->score;
+        $activity_score->score_percentage = ($request->score / $activity->total_score);
+        
+        if(!$activity_score->id)
+        {
+            $activity_score->created_by = $user->id;
+        }
+        
+        $activity_score->updated_by = $user->id;    
+        $activity_score->save();
+
+        $fractal = fractal()->item($activity_score, new StudentActivityScoreTransformer);
+
+        return response()->json($fractal->toArray());
+
+    }
+
+    public function show(Request $request, int $activity_type)
+    {
+        $this->validate($request, [
+            'student_id' => 'integer'
+        ]);
+        
+        $assignment = Assignment::whereId($request->id)->whereActivityType($activity_type)->firstOrFail();
+        $activity_score = StudentActivityScore::whereActivityId($request->id);
+        if($request->student_id)
+        {
+            $activity_score = $activity_score->whereStudentId($request->student_id);
+        }
+
+        $fractal = fractal()->collection($activity_score->get(), new StudentActivityScoreTransformer);
+
+        return response()->json($fractal->toArray());
+
     }
 
     /**

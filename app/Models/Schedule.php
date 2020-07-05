@@ -27,9 +27,14 @@ class Schedule extends Model
         return $this->hasMany(Assignment::class);
     }
 
-    public function publishedAssignments()
+    public function publishedSeatworks()
     {
-        return $this->hasMany(Assignment::class)->where('published', 1);
+        return $this->hasMany(Assignment::class)->where('published', 1)->whereActivityType(1);
+    }
+
+    public function publishedProjects()
+    {
+        return $this->hasMany(Assignment::class)->where('published', 1)->whereActivityType(2);
     }
 
     public function attendances()

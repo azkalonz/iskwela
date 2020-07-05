@@ -33,33 +33,41 @@ Route::middleware('jwt')->group(function () {
     Route::get('/teacher/class/{id}', 'Api\\ClassController@show');
     Route::get('/teacher/class-students/{id}', 'Api\\ClassController@classStudentList');
     Route::get('/teacher/class-schedules/{id}', 'Api\\ScheduleController@classTeacherSchedules');
-    Route::get('/teacher/class-activities/{id}', 'Api\\ScheduleController@activitiesBySchedule');
+    Route::get('/teacher/class-seatworks/{id}', 'Api\\ScheduleController@studentSeatworksBySchedule');
+    Route::get('/teacher/class-projects/{id}', 'Api\\ScheduleController@studentProjectsBySchedule');
     Route::get('/teacher/class-lesson-plans/{id}', 'Api\\ScheduleController@lessonPlansBySchedule');
     Route::get('/teacher/class-materials/{id}', 'Api\\ScheduleController@classMaterialsTeachersBySchedule');
     Route::get('/teacher/remove/class/{id}', 'Api\\ClassController@removeClass');
     Route::post('/teacher/remove/class-lesson-plan/{id}', 'Api\\LessonPlanController@remove');
     Route::post('/teacher/remove/class-material/{id}', 'Api\\ClassController@removeClassMaterial');
-    Route::post('/teacher/remove/class-activity-material/{id}', 'Api\\AssignmentController@removeAssignmentMaterial');
-    Route::post('/teacher/remove/class-activity/{id}', 'Api\\AssignmentController@remove');
-    Route::get('/teacher/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
+    Route::post('/teacher/remove/class-seatwork-material/{id}', 'Api\\AssignmentController@removeSeatworkMaterial');
+    Route::post('/teacher/remove/class-seatwork/{id}', 'Api\\AssignmentController@removeSeatwork');
+    Route::get('/teacher/seatwork-answers/{id}', 'Api\\AssignmentAnswerController@showSeatworkAnswer');
+    Route::post('/teacher/remove/class-project-material/{id}', 'Api\\AssignmentController@removeProjectMaterial');
+    Route::post('/teacher/remove/class-project/{id}', 'Api\\AssignmentController@removeProject');
+    Route::get('/teacher/project-answers/{id}', 'Api\\AssignmentAnswerController@showProjectAnswer');
 
 
     //classes -students
     Route::get('/student/classes', 'Api\\ClassController@studentClasses');
     Route::get('/student/class/{id}', 'Api\\ClassController@showStudentClass');
-    Route::get('/student/class-activities/{id}', 'Api\\ScheduleController@studentActivitiesBySchedule');
+    Route::get('/student/class-seatworks/{id}', 'Api\\ScheduleController@studentSeatworksBySchedule');
+    Route::get('/student/class-projects/{id}', 'Api\\ScheduleController@studentProjectsBySchedule');
     Route::get('/student/class-schedules/{id}', 'Api\\ScheduleController@classStudentSchedules');
     Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
     Route::post('/class/attendance/save', 'Api\\AttendanceController@record');
     Route::get('/class/attendance/{id}', 'Api\\AttendanceController@attendance');
-    Route::get('/student/activity-answers/{id}', 'Api\\AssignmentAnswerController@show');
+    Route::get('/student/seatwork-answers/{id}', 'Api\\AssignmentAnswerController@showSeatworkAnswer');
+    Route::get('/student/project-answers/{id}', 'Api\\AssignmentAnswerController@showProjectAnswer');
 
     // todo
     Route::post('/class/save', 'Api\\ClassController@save');
 
     //uploads
-    Route::post('/upload/activity/material', 'Api\\FileController@assignmentMaterial');
-    Route::post('/upload/activity/answer', 'Api\\FileController@assignmentAnswer');
+    Route::post('/upload/seatwork/material', 'Api\\FileController@seatworkMaterial');
+    Route::post('/upload/project/material', 'Api\\FileController@projectMaterial');
+    Route::post('/upload/seatwork/answer', 'Api\\FileController@seatworkAnswer');
+    Route::post('/upload/project/answer', 'Api\\FileController@projectAnswer');
     Route::post('/upload/class/lesson-plan', 'Api\\FileController@lessonPlan');
     Route::post('/upload/class/material', 'Api\\FileController@classMaterial');
     Route::post('/upload/user/profile-picture', 'Api\\FileController@userProfilePicture');
@@ -70,20 +78,32 @@ Route::middleware('jwt')->group(function () {
     Route::post('/download/activity/answer/{id}', 'Api\\FileController@downloadAssignmentAnswer');
     Route::post('/download/class/lesson-plan/{id}', 'Api\\FileController@downloadLessonPlan');
     Route::post('/download/class/material/{id}', 'Api\\FileController@downloadClassMaterial');
-    Route::post('/download/user/profile-picture', 'Api\\FileController@downloadProfilePicture');
+    //Route::post('/download/user/profile-picture', 'Api\\FileController@downloadProfilePicture');
     Route::post('/download/class/image/{id}', 'Api\\FileController@downloadClassImage');
 
     //schedules
     Route::post('/schedule/save', 'Api\\ScheduleController@save');
     Route::get('/schedule/{id}', 'Api\\ScheduleController@show');
 
-    //activities
-    Route::post('/class/activity/save', 'Api\\AssignmentController@save');
-    Route::post('/class/activity/publish/{id}', 'Api\\AssignmentController@publish');
-    Route::get('/class/activity/{id}', 'Api\\AssignmentController@show');
-    Route::post('/class/activity-material/save', 'Api\\AssignmentController@saveActivityMaterial');
-    Route::post('/class/activity/mark-done/{id}', 'Api\\AssignmentController@markDone');
-    Route::post('/class/activity/mark-not-done/{id}', 'Api\\AssignmentController@markNotDone');
+    //Seatworks
+    Route::post('/class/seatwork/save', 'Api\\AssignmentController@addSeatwork');
+    Route::post('/class/seatwork/publish/{id}', 'Api\\AssignmentController@publishSeatwork');
+    Route::get('/class/seatwork/{id}', 'Api\\AssignmentController@showSeatwork');
+    Route::post('/class/seatwork-material/save', 'Api\\AssignmentController@saveSeatworkMaterial');
+    Route::post('/class/seatwork/mark-done/{id}', 'Api\\AssignmentController@markSeatworkDone');
+    Route::post('/class/seatwork/mark-not-done/{id}', 'Api\\AssignmentController@markSeatworkNotDone');
+    Route::post('/class/seatwork/set-score', 'Api\\StudentActivityScoreController@setSeatworkScore');
+    Route::get('/class/seatwork/get-score/{id}', 'Api\\StudentActivityScoreController@showSeatworkScore');
+
+    //Projects
+    Route::post('/class/project/save', 'Api\\AssignmentController@addProject');
+    Route::post('/class/project/publish/{id}', 'Api\\AssignmentController@publishProject');
+    Route::get('/class/project/{id}', 'Api\\AssignmentController@showProject');
+    Route::post('/class/project-material/save', 'Api\\AssignmentController@saveProjectMaterial');
+    Route::post('/class/project/mark-done/{id}', 'Api\\AssignmentController@markProjectDone');
+    Route::post('/class/project/mark-not-done/{id}', 'Api\\AssignmentController@markProjectNotDone');
+    Route::post('/class/project/set-score', 'Api\\StudentActivityScoreController@setProjectScore');
+    Route::get('/class/project/get-score/{id}', 'Api\\StudentActivityScoreController@showProjectScore');
 
 	//student
 	Route::post('/students/improvement/save', 'Api\\StudentController@addImprovement');
