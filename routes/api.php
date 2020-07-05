@@ -147,6 +147,8 @@ Route::middleware('jwt')->group(function () {
 
     // student submission
     Route::post('/quiz/answer/submit', 'Api\\StudentActivityAnswerController@submitQuizAnswer');
+    Route::post('/periodical/answer/submit', 'Api\\StudentActivityAnswerController@submitPeriodicalAnswer');
+    Route::post('/assignment/answer/submit', 'Api\\StudentActivityAnswerController@submitAssignmentAnswer');
 
 
     //SchoolAdmin

@@ -23,13 +23,31 @@ class StudentActivityAnswerController extends Controller
 
 	public function submitQuizAnswer(Request $request)
 	{
-
 		return $this->submitAnswer($request, self::QUIZ, 'Quiz');
-		
+	}
+
+	public function submitPeriodicalAnswer(Request $request)
+	{
+		return $this->submitAnswer($request, self::PERIODICAL, 'Periodical');
+	}
+
+	public function submitAssignmentAnswer(Request $request)
+	{
+		return $this->submitAnswer($request, self::ASSIGNMENT, 'Assignment');
 	}
 
 	public function submitAnswer(Request $request, int $activity_type, string $activity_name = 'Activity')
 	{
+		$this->validate($request, [
+			'activity_id' => 'required|integer',
+			'subject_id' => 'required|integer',
+			'start_time' => 'required|string',
+			'end_time' => 'required|string',
+			'questionnaires' => 'required|array',
+			'questionnaires.*.questionnaire_id' => 'required|integer',
+			'questionnaires.*.answers' => 'required|array'
+		]);
+
 		$activity = StudentActivity::whereId($request->activity_id)->whereActivityType($activity_type)->first();
 		if(!$activity) {
 			return response("$activity_name not found", 404);
