@@ -197,7 +197,7 @@ class ScheduleController extends Controller
     }
 
     /**
-     * @api {post} HOST/api/schedule/{id} Schedule Detail
+     * @api {post} HOST/api/schedule/:id Schedule Detail
      * @apiVersion 1.0.0
      * @apiName ScheduleDetail
      * @apiDescription Returns schedule detail of specified ID
@@ -224,7 +224,7 @@ class ScheduleController extends Controller
     /**
      * Class Schedules
      *
-     * @api <HOST>/api/teacher/class-schedules/{id} Get class schedules
+     * @api <HOST>/api/teacher/class-schedules/:id Get class schedules
      * @apiVersion 1.0.0
      * @apiName ClassSchedules
      * @apiDescription Returns array of class schedules
@@ -356,7 +356,7 @@ class ScheduleController extends Controller
     /**
      * Class Activities
      *
-     * @api <HOST>/api/teacher/class-activities/{id} Get class activities (by schedule)
+     * @api <HOST>/api/teacher/class-activities/:id Get class activities (by schedule)
      * @apiVersion 1.0.0
      * @apiName ClassActivities
      * @apiDescription Returns list of class activities classified by (array of)schedules
@@ -462,7 +462,7 @@ class ScheduleController extends Controller
     /**
      * Class Materials
      *
-     * @api <HOST>/api/teacher/class-materials/{id} Get class materials (by schedule)
+     * @api <HOST>/api/teacher/class-materials/:id Get class materials (by schedule)
      * @apiVersion 1.0.0
      * @apiName ClassMaterials
      * @apiDescription Returns list of class materials classified by (array of)schedules
@@ -558,7 +558,7 @@ class ScheduleController extends Controller
     /**
      * Class Materials
      *
-     * @api <HOST>/api/teacher/class-materials/{id} Get class materials (by schedule)
+     * @api <HOST>/api/teacher/class-materials/:id Get class materials (by schedule)
      * @apiVersion 1.0.0
      * @apiName ClassMaterials
      * @apiDescription Returns list of class materials classified by (array of)schedules
@@ -675,7 +675,7 @@ class ScheduleController extends Controller
     /**
      * Class Lesson Plans
      *
-     * @api <HOST>/api/teacher/class-lesson-plans/{id} Get class lesson plans (by schedule)
+     * @api <HOST>/api/teacher/class-lesson-plans/:id Get class lesson plans (by schedule)
      * @apiVersion 1.0.0
      * @apiName ClassLessonPlans
      * @apiDescription Returns list of class lesson plans classified by (array of)schedules
@@ -800,7 +800,7 @@ class ScheduleController extends Controller
     /**
      * Class Schedules
      *
-     * @api <HOST>/api/student/class-schedules/{id} Get class schedules
+     * @api <HOST>/api/student/class-schedules/:id Get class schedules
      * @apiVersion 1.0.0
      * @apiName ClassSchedules
      * @apiDescription Returns array of class schedules
@@ -926,7 +926,7 @@ class ScheduleController extends Controller
     /**
      * Class Activities
      *
-     * @api <HOST>/api/student/class-activities/{id} Get class activities (by schedule)
+     * @api <HOST>/api/student/class-activities/:id Get class activities (by schedule)
      * @apiVersion 1.0.0
      * @apiName ClassActivities
      * @apiDescription Returns list of class activities classified by (array of)schedules

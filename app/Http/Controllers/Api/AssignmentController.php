@@ -199,7 +199,7 @@ class AssignmentController extends Controller
     /**
      * Publish activity
      *
-     * @api {POST} HOST/api/class/activity/publish/{id} Publish Activity
+     * @api {POST} HOST/api/class/activity/publish/:id Publish Activity
      * @apiVersion 1.0.0
      * @apiName PublishActivity
      * @apiDescription Publish activity to students
@@ -234,7 +234,7 @@ class AssignmentController extends Controller
     /**
      * Activity Detail
      *
-     * @api {POST} HOST/api/class/activity/{id} Activity Detail
+     * @api {POST} HOST/api/class/activity/:id Activity Detail
      * @apiVersion 1.0.0
      * @apiName ActivityDetail
      * @apiDescription Get activity details
@@ -347,7 +347,7 @@ class AssignmentController extends Controller
     /**
      * Remove Activity Material
      *
-     * @api {post} HOST/api/teacher/remove/class-activity-material/{id} Remove Activity Material
+     * @api {post} HOST/api/teacher/remove/class-activity-material/:id Remove Activity Material
      * @apiVersion 1.0.0
      * @apiName RemoveActivityMaterial
      * @apiDescription SRemove Material of an Activity
@@ -432,7 +432,7 @@ class AssignmentController extends Controller
     /**
      * Remove Class Activity
      *
-     * @api {post} HOST/api/teacher/remove/class-activity/{id} Remove Class Activity
+     * @api {post} HOST/api/teacher/remove/class-activity/:id Remove Class Activity
      * @apiVersion 1.0.0
      * @apiName RemoveClassActivity
      * @apiDescription Remove Class Activity
@@ -465,7 +465,7 @@ class AssignmentController extends Controller
     /**
      * Activity - Mark Done
      *
-     * @api {POST} HOST/api/class/activity/mark-done/{id} Activity Mark Done
+     * @api {POST} HOST/api/class/activity/mark-done/:id Activity Mark Done
      * @apiVersion 1.0.0
      * @apiName ActivityMarkDone
      * @apiDescription Marks Activity as Done
@@ -492,7 +492,7 @@ class AssignmentController extends Controller
     /**
      * Activity - Mark Not Done
      *
-     * @api {POST} HOST/api/class/activity/mark-not-done/{id} Activity Mark Not Done
+     * @api {POST} HOST/api/class/activity/mark-not-done/:id Activity Mark Not Done
      * @apiVersion 1.0.0
      * @apiName ActivityMarkNotDone
      * @apiDescription Marks Activity as Not Done

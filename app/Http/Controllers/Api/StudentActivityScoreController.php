@@ -92,7 +92,7 @@ class StudentActivityScoreController extends Controller
     /**
      * Show Activity Answers
      *
-     * @api {get} HOST/student/activity-answers/{id} Show Activity Answer
+     * @api {get} HOST/student/activity-answers/:id Show Activity Answer
      * @apiVersion 1.0.0
      * @apiName ShowActivityAnswer
      * @apiDescription Get student's activity answers.

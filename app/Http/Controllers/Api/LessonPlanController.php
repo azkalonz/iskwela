@@ -90,7 +90,7 @@ class LessonPlanController extends Controller
     /**
      * Remove Lesson Plan
      *
-     * @api {post} HOST/api/teacher/remove/class-lesson-plan/{id} Remove Lesson Plan
+     * @api {post} HOST/api/teacher/remove/class-lesson-plan/:id Remove Lesson Plan
      * @apiVersion 1.0.0
      * @apiName RemoveLessonPlan
      * @apiDescription Removes Lesson Plan
@@ -124,7 +124,7 @@ class LessonPlanController extends Controller
     /**
      * Lesson Plan - Mark Not Done
      *
-     * @api {POST} HOST/api/class/lesson-plan/mark-done/{id} Lesson Plan Mark Done
+     * @api {POST} HOST/api/class/lesson-plan/mark-done/:id Lesson Plan Mark Done
      * @apiVersion 1.0.0
      * @apiName LessonPlanMarkDone
      * @apiDescription Marks Lesson Plan as Done
@@ -151,7 +151,7 @@ class LessonPlanController extends Controller
     /**
      * Lesson Plan - Mark Not Done
      *
-     * @api {POST} HOST/api/class/lesson-plan/mark-not-done/{id} Lesson Plan Mark Not Done
+     * @api {POST} HOST/api/class/lesson-plan/mark-not-done/:id Lesson Plan Mark Not Done
      * @apiVersion 1.0.0
      * @apiName LessonPlanMarkNotDone
      * @apiDescription Marks Lesson Plan as Not Done

@@ -154,7 +154,7 @@ class SchoolGradingCategoryController extends Controller
     /**
      * School Grading Category Delete
      *
-     * @api {delete} <HOST>/api/school-grading-category/remove/{id} Delete School Grading Category
+     * @api {delete} <HOST>/api/school-grading-category/remove/:id Delete School Grading Category
      * @apiVersion 1.0.0
      * @apiName DeleteSchoolGradingCategory
      * @apiDescription Deletes the School Grading Category

@@ -20,7 +20,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material
      *
-     * @api {post} HOST/api/class/material/publish/{id} Publish class material
+     * @api {post} HOST/api/class/material/publish/:id Publish class material
      * @apiVersion 1.0.0
      * @apiName publishClassMaterial
      * @apiDescription Sets class material status to publish
@@ -46,7 +46,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material
      *
-     * @api {post} HOST/api/class/material/unpublish/{id} Unpublish class material
+     * @api {post} HOST/api/class/material/unpublish/:id Unpublish class material
      * @apiVersion 1.0.0
      * @apiName unpublishClassMaterial
      * @apiDescription Sets class material status to unpublish
@@ -90,7 +90,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material - Mark Done
      *
-     * @api {POST} HOST/api/class/class-material/mark-done/{id} Class Material Mark Done
+     * @api {POST} HOST/api/class/class-material/mark-done/:id Class Material Mark Done
      * @apiVersion 1.0.0
      * @apiName ClassMaterialMarkDone
      * @apiDescription Marks Class Material as Done
@@ -117,7 +117,7 @@ class ClassMaterialController extends Controller
     /**
      * Class Material - Mark Not Done
      *
-     * @api {POST} HOST/api/class/class-material/mark-not-done/{id} Class Material Mark Not Done
+     * @api {POST} HOST/api/class/class-material/mark-not-done/:id Class Material Mark Not Done
      * @apiVersion 1.0.0
      * @apiName ClassMaterialMarkNotDone
      * @apiDescription Marks Class Material as Not Done

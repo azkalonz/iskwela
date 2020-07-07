@@ -20,7 +20,7 @@ class AssignmentAnswerController extends Controller
     /**
      * Show Activity Answers
      *
-     * @api {get} HOST/teacher/activity-answers/{id} Show Activity Answers
+     * @api {get} HOST/teacher/activity-answers/:id Show Activity Answers
      * @apiVersion 1.0.0
      * @apiName ShowActivityAnswers
      * @apiDescription Get activity answers.
@@ -68,7 +68,7 @@ class AssignmentAnswerController extends Controller
     /**
      * Show Activity Answers
      *
-     * @api {get} HOST/student/activity-answers/{id} Show Activity Answer
+     * @api {get} HOST/student/activity-answers/:id Show Activity Answer
      * @apiVersion 1.0.0
      * @apiName ShowActivityAnswer
      * @apiDescription Get student's activity answers.

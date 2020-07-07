@@ -1,7 +1,100 @@
 [
   {
+    "type": "get",
+    "url": "HOST/class/activity/set-score",
+    "title": "Set Activity Score",
+    "version": "1.0.0",
+    "name": "SetActivityScore",
+    "description": "<p>Set activity score of a student.</p>",
+    "group": "Activities",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Answer ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "assignment_id",
+            "description": "<p>Activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer_media",
+            "description": "<p>download link of the answer file</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "student",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.id",
+            "description": "<p>ID of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.first_name",
+            "description": "<p>First Name of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.last_name",
+            "description": "<p>Last Name of Student</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    },\n    {\n        \"id\": 2,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/2\",\n        \"student\": {\n            \"id\": 2,\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\"\n        }\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityScoreController.php",
+    "groupTitle": "Activities"
+  },
+  {
     "type": "POST",
-    "url": "HOST/api/class/activity/{id}",
+    "url": "HOST/api/class/activity/:id",
     "title": "Activity Detail",
     "version": "1.0.0",
     "name": "ActivityDetail",
@@ -163,7 +256,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/activity/mark-done/{id}",
+    "url": "HOST/api/class/activity/mark-done/:id",
     "title": "Activity Mark Done",
     "version": "1.0.0",
     "name": "ActivityMarkDone",
@@ -220,7 +313,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/activity/mark-not-done/{id}",
+    "url": "HOST/api/class/activity/mark-not-done/:id",
     "title": "Activity Mark Not Done",
     "version": "1.0.0",
     "name": "ActivityMarkNotDone",
@@ -309,17 +402,6 @@
           },
           {
             "group": "Parameter",
-            "type": "Number",
-            "allowedValues": [
-              "1",
-              "2"
-            ],
-            "optional": false,
-            "field": "activity_type",
-            "description": "<p>1-class activity, 2-assignment</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Date",
             "allowedValues": [
               "YYYY-mm-dd"
@@ -330,13 +412,14 @@
           },
           {
             "group": "Parameter",
-            "type": "Date",
+            "type": "Datetime",
             "allowedValues": [
-              "YYYY-mm-dd"
+              "YYYY-mm-dd",
+              "h:i:s"
             ],
             "optional": false,
-            "field": "available_to",
-            "description": "<p>If set as assignment, can be null if session activity</p>"
+            "field": "due",
+            "description": "<p>date</p>"
           },
           {
             "group": "Parameter",
@@ -402,20 +485,20 @@
             "type": "String",
             "optional": false,
             "field": "activity_type",
-            "description": "<p>class activity or assignment</p>"
+            "description": "<p>seat work or project</p>"
           },
           {
             "group": "Success 200",
-            "type": "Date",
+            "type": "Number",
             "optional": false,
-            "field": "available_from",
+            "field": "total_score",
             "description": ""
           },
           {
             "group": "Success 200",
-            "type": "Date",
+            "type": "Datetime",
             "optional": false,
-            "field": "available_to",
+            "field": "due_date",
             "description": ""
           },
           {
@@ -465,7 +548,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 6,\n    \"title\": \"class activity sample edited\",\n    \"instruction\": \"this is a class activity\",\n    \"activity_type\": \"class activity\",\n    \"available_from\": null,\n    \"available_to\": null,\n    \"status\": \"published\",\n    \"materials\": [\n        {\n            \"id\": 4,\n            \"title\":\"Sample Title\",\n            \"uploaded_file\": \"SCHOOL01/2020-05-21/121026-bargram.png\",\n            \"resource_link\": null\n        }\n    ]\n}",
+          "content": "{\n    \"id\": 4,\n    \"title\": \"New Seatwork\",\n    \"description\": \"Seatwork description\",\n    \"activity_type\": \"seatwork\",\n    \"total_score\": 100,\n    \"due_date\": \"2020-07-10 10:00:00\",\n    \"status\": \"published\",\n    \"done\": \"false\",\n    \"materials\": [\n        {\n            \"id\": 4,\n            \"title\":\"Sample Title\",\n            \"uploaded_file\": \"SCHOOL01/2020-05-21/121026-bargram.png\",\n            \"resource_link\": null\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -475,7 +558,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/activity/publish/{id}",
+    "url": "HOST/api/class/activity/publish/:id",
     "title": "Publish Activity",
     "version": "1.0.0",
     "name": "PublishActivity",
@@ -502,7 +585,7 @@
             "type": "Boolean",
             "optional": false,
             "field": "success",
-            "description": "<p>true/false</p>"
+            "description": "<p>true/false. API will return response code 404 if seatwork is not found.</p>"
           }
         ]
       },
@@ -532,7 +615,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/teacher/remove/class-activity/{id}",
+    "url": "HOST/api/teacher/remove/class-activity/:id",
     "title": "Remove Class Activity",
     "version": "1.0.0",
     "name": "RemoveClassActivity",
@@ -645,6 +728,815 @@
     },
     "filename": "app/Http/Controllers/Api/AssignmentController.php",
     "groupTitle": "Activity"
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/save",
+    "title": "Add assignment",
+    "version": "1.0.0",
+    "name": "AddAssignment",
+    "description": "<p>Saves a new assignment with attached questionnaires</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>the assignment title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": "<p>descriptions/instructions/introduction texts</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>time limit on answering this class</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>to which category this assignment should be: written, performance, etc (whatever is defined by the school)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs attached to the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>questionnaire ID attached by teacher</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of newly created assignment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"assignment - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/questionnaire/add",
+    "title": "Add Questionnaire",
+    "version": "1.0.0",
+    "name": "AddAssignmentQuestionnaire",
+    "description": "<p>Allows adding more questionnaires to the existing assignment</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs to be added to the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/assignment/:id",
+    "title": "Get Assignment Detail",
+    "version": "1.0.0",
+    "name": "AssignmentDetail",
+    "description": "<p>Returns details of the specified assignment ID</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the assignment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "<HOST>/api/assignment/delete/:id",
+    "title": "Delete Assignment",
+    "version": "1.0.0",
+    "name": "DeleteAssignment",
+    "description": "<p>Delete the assignment from the assignment bank</p>",
+    "group": "Assignments",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/assignments",
+    "title": "Get Assignments",
+    "version": "1.0.0",
+    "name": "ListAssignments",
+    "description": "<p>Returns array of assignments</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>filter the list to return periodiclas of the specified subject only.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "the",
+            "description": "<p>assignment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"assignment - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/publish",
+    "title": "Publish Assignment",
+    "version": "1.0.0",
+    "name": "PublishAssignment",
+    "description": "<p>Publishes the assignment to class</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the assignment to be published</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the target class where the assignment will be published to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>which schedule the assignment should be published</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/questionnaire/remove",
+    "title": "Remove Questionnaire",
+    "version": "1.0.0",
+    "name": "RemoveAssignmentQuestionnaire",
+    "description": "<p>Allows removing questionnaires to the existing assignment. Only one questionnaire can be removed at a time</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaire_id",
+            "description": "<p>the ID of the questionnaire to be removed</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/unpublish",
+    "title": "Unpublish Assignment",
+    "version": "1.0.0",
+    "name": "UnpublishAssignment",
+    "description": "<p>Removes the assignment from the class</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the assignment to be unpublished</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>which class the assignment will be removed from</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "post",
@@ -939,7 +1831,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/class-material/mark-done/{id}",
+    "url": "HOST/api/class/class-material/mark-done/:id",
     "title": "Class Material Mark Done",
     "version": "1.0.0",
     "name": "ClassMaterialMarkDone",
@@ -996,7 +1888,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/class-material/mark-not-done/{id}",
+    "url": "HOST/api/class/class-material/mark-not-done/:id",
     "title": "Class Material Mark Not Done",
     "version": "1.0.0",
     "name": "ClassMaterialMarkNotDone",
@@ -1053,7 +1945,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/class/material/publish/{id}",
+    "url": "HOST/api/class/material/publish/:id",
     "title": "Publish class material",
     "version": "1.0.0",
     "name": "publishClassMaterial",
@@ -1110,7 +2002,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/class/material/unpublish/{id}",
+    "url": "HOST/api/class/material/unpublish/:id",
     "title": "Unpublish class material",
     "version": "1.0.0",
     "name": "unpublishClassMaterial",
@@ -1167,7 +2059,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/download/activity/answer/{id}",
+    "url": "HOST/api/download/activity/answer/:id",
     "title": "Activity Answer",
     "version": "1.0.0",
     "name": "DownloadActivityAnswer",
@@ -1217,7 +2109,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/download/activity/material/{id}",
+    "url": "HOST/api/download/activity/material/:id",
     "title": "Activity Material",
     "version": "1.0.0",
     "name": "DownloadActivityMaterial",
@@ -1317,7 +2209,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/download/class/material/{id}",
+    "url": "HOST/api/download/class/material/:id",
     "title": "Class Instruction Material",
     "version": "1.0.0",
     "name": "DownloadClassMaterial",
@@ -1367,7 +2259,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/download/class/lesson-plan/{id}",
+    "url": "HOST/api/download/class/lesson-plan/:id",
     "title": "Lesson Plan",
     "version": "1.0.0",
     "name": "DownloadLessonPlan",
@@ -1869,7 +2761,7 @@
               "*.gif"
             ],
             "optional": false,
-            "field": "file",
+            "field": "profile_picture",
             "description": "<p>The file to be uploaded</p>"
           }
         ]
@@ -1880,17 +2772,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Boolean",
+            "type": "String",
             "optional": false,
-            "field": "success",
-            "description": "<p>true/false</p>"
+            "field": "url",
+            "description": "<p>public URL of the profile picture</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"success\": true\n}",
+          "content": "{\n    \"url\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/jMoBdeY7IlWlqgKOHfmdnC6fls6iUiQjMYcjgEmK.jpeg\"\n}",
           "type": "json"
         }
       ]
@@ -1913,7 +2805,7 @@
   },
   {
     "type": "delete",
-    "url": "<HOST>/api/school-grading-category/remove/{id}",
+    "url": "<HOST>/api/school-grading-category/remove/:id",
     "title": "Delete School Grading Category",
     "version": "1.0.0",
     "name": "DeleteSchoolGradingCategory",
@@ -1963,7 +2855,7 @@
   },
   {
     "type": "delete",
-    "url": "<HOST>/api/subject-grading-category/remove/{id}",
+    "url": "<HOST>/api/subject-grading-category/remove/:id",
     "title": "Delete Subject Grading Category",
     "version": "1.0.0",
     "name": "DeleteSubjectGradingCategory",
@@ -2078,7 +2970,7 @@
   },
   {
     "type": "get",
-    "url": "<HOST>/api/subject-grading-categories/{id}",
+    "url": "<HOST>/api/subject-grading-categories/:id",
     "title": "Get Subject Grading Categories",
     "version": "1.0.0",
     "name": "GetSubjectGradingCategories",
@@ -2347,7 +3239,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/lesson-plan/mark-done/{id}",
+    "url": "HOST/api/class/lesson-plan/mark-done/:id",
     "title": "Lesson Plan Mark Done",
     "version": "1.0.0",
     "name": "LessonPlanMarkDone",
@@ -2404,7 +3296,7 @@
   },
   {
     "type": "POST",
-    "url": "HOST/api/class/lesson-plan/mark-not-done/{id}",
+    "url": "HOST/api/class/lesson-plan/mark-not-done/:id",
     "title": "Lesson Plan Mark Not Done",
     "version": "1.0.0",
     "name": "LessonPlanMarkNotDone",
@@ -2601,8 +3493,817 @@
     }
   },
   {
+    "type": "post",
+    "url": "<HOST>/api/periodical/save",
+    "title": "Add Periodical",
+    "version": "1.0.0",
+    "name": "AddPeriodical",
+    "description": "<p>Saves a new periodical with attached questionnaires</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>the periodical title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": "<p>descriptions/instructions/introduction texts</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>time limit on answering this class</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>to which category this periodical should be: written, performance, etc (whatever is defined by the school)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs attached to the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>questionnaire ID attached by teacher</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of newly created periodical</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"Periodical - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/periodical/questionnaire/add",
+    "title": "Add Questionnaire",
+    "version": "1.0.0",
+    "name": "AddPeriodicalQuestionnaire",
+    "description": "<p>Allows adding more questionnaires to the existing periodical</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs to be added to the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "delete",
-    "url": "<HOST>/api/questionnaire/delete/{id}",
+    "url": "<HOST>/api/periodical/delete/:id",
+    "title": "Delete Periodical",
+    "version": "1.0.0",
+    "name": "DeletePeriodical",
+    "description": "<p>Delete the periodical from the periodical bank</p>",
+    "group": "Periodicals",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/periodicals",
+    "title": "Get Periodicals",
+    "version": "1.0.0",
+    "name": "ListPeriodicals",
+    "description": "<p>Returns array of periodicals</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>filter the list to return published periodicals to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>filter the list to return periodiclas of the specified subject only.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "the",
+            "description": "<p>periodical ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"periodical - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/periodical/:id",
+    "title": "Get Periodical Detail",
+    "version": "1.0.0",
+    "name": "PeriodicalDetail",
+    "description": "<p>Returns details of the specified periodical ID</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the periodical ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/periodical/publish",
+    "title": "Publish Periodical",
+    "version": "1.0.0",
+    "name": "PublishPeriodical",
+    "description": "<p>Publishes the periodical to class</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the periodical to be published</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the target class where the periodical will be published to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>which schedule the periodical should be published</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/periodical/questionnaire/remove",
+    "title": "Remove Questionnaire",
+    "version": "1.0.0",
+    "name": "RemovePeriodicalQuestionnaire",
+    "description": "<p>Allows removing questionnaires to the existing periodical. Only one questionnaire can be removed at a time</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaire_id",
+            "description": "<p>the ID of the questionnaire to be removed</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/periodical/unpublish",
+    "title": "Unpublish Periodical",
+    "version": "1.0.0",
+    "name": "UnpublishPeriodical",
+    "description": "<p>Removes the periodical from the class</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the periodical to be unpublished</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>which class the periodical will be removed from</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "<HOST>/api/questionnaire/delete/:id",
     "title": "Delete Questionnaire",
     "version": "1.0.0",
     "name": "DeleteQuestionnaire",
@@ -2652,7 +4353,7 @@
   },
   {
     "type": "get",
-    "url": "<HOST>/api/questionnaire/{id}",
+    "url": "<HOST>/api/questionnaire/:id",
     "title": "Get Questionnaire Detail",
     "version": "1.0.0",
     "name": "QuestionnaireDetail",
@@ -3049,7 +4750,7 @@
   },
   {
     "type": "post",
-    "url": "<HOST>/api/questionnaire/school-publish/{id}",
+    "url": "<HOST>/api/questionnaire/school-publish/:id",
     "title": "Publish Questionnaire to School",
     "version": "1.0.0",
     "name": "QuestionnaireSchoolPublish",
@@ -3315,6 +5016,815 @@
     }
   },
   {
+    "type": "post",
+    "url": "<HOST>/api/quiz/save",
+    "title": "Add Quiz",
+    "version": "1.0.0",
+    "name": "AddQuiz",
+    "description": "<p>Saves a new quiz with attached questionnaires</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>the quiz title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": "<p>descriptions/instructions/introduction texts</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>time limit on answering this class</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>to which category this quiz should be: written, performance, etc (whatever is defined by the school)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs attached to the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>questionnaire ID attached by teacher</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of newly created quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"quiz3 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/questionnaire/add",
+    "title": "Add Questionnaire",
+    "version": "1.0.0",
+    "name": "AddQuizQuestionnaire",
+    "description": "<p>Allows adding more questionnaires to the existing quiz</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>array of questionnaire IDs to be added to the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "<HOST>/api/quiz/delete/:id",
+    "title": "Delete Quiz",
+    "version": "1.0.0",
+    "name": "DeleteQuiz",
+    "description": "<p>Delete the quiz from the quiz bank</p>",
+    "group": "Quizzes",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/quizzes",
+    "title": "Get Quizzes",
+    "version": "1.0.0",
+    "name": "ListQuizzes",
+    "description": "<p>Returns array of quizzes</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>filter the list to return published quizzes to the class.<br> OPTIONAL for teacher; and if not specified, returns all the quizzes created by teacher<br><br> REQUIRED for students.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>filter the list to return quizzes of the specified subject only.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"quiz3 - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/publish",
+    "title": "Publish Quiz",
+    "version": "1.0.0",
+    "name": "PublishQuiz",
+    "description": "<p>Publishes the quiz to class</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the quiz to be published</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the target class where the quiz will be published to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>which schedule the quiz should be published</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/quiz/:id",
+    "title": "Get Quiz Detail",
+    "version": "1.0.0",
+    "name": "QuizDetail",
+    "description": "<p>Returns details of the specified quiz ID</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "questionnaires"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the questionnaire details in response data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "subject",
+            "description": "<p>subject details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "subject.subject_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "category",
+            "description": "<p>the category details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "category.school_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "category.category",
+            "description": "<p>the category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "category.category_percentage",
+            "description": "<p>the weight of the category in overall grade calculation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/questionnaire/remove",
+    "title": "Remove Questionnaire",
+    "version": "1.0.0",
+    "name": "RemoveQuizQuestionnaire",
+    "description": "<p>Allows removing questionnaires to the existing quiz. Only one questionnaire can be removed at a time</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaire_id",
+            "description": "<p>the ID of the questionnaire to be removed</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/unpublish",
+    "title": "Unpublish Quiz",
+    "version": "1.0.0",
+    "name": "UnpublishQuiz",
+    "description": "<p>Removes the quiz from the class</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the ID of the quiz to be unpublished</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>which class the quiz will be removed from</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>true/false</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "POST",
     "url": "HOST/students/improvement/save",
     "title": "Add/Edit Student Improvement",
@@ -3429,7 +5939,7 @@
   },
   {
     "type": "get",
-    "url": "HOST/api/class/attendance/{id}",
+    "url": "HOST/api/class/attendance/:id",
     "title": "Attendance Report",
     "version": "1.0.0",
     "name": "ClassAttendance",
@@ -3742,7 +6252,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/schedule/{id}",
+    "url": "HOST/api/schedule/:id",
     "title": "Schedule Detail",
     "version": "1.0.0",
     "name": "ScheduleDetail",
@@ -4141,7 +6651,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/student/class-activities/{id}",
+    "url": "<HOST>/api/student/class-activities/:id",
     "title": "Get class activities (by schedule)",
     "version": "1.0.0",
     "name": "ClassActivities",
@@ -4344,7 +6854,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class/{id}",
+    "url": "<HOST>/api/teacher/class/:id",
     "title": "Get class details",
     "version": "1.0.0",
     "name": "ClassDetail",
@@ -4656,7 +7166,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-materials/{id}",
+    "url": "<HOST>/api/teacher/class-materials/:id",
     "title": "Get class materials (by schedule)",
     "version": "1.0.0",
     "name": "ClassMaterials",
@@ -4831,7 +7341,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/student/class-schedules/{id}",
+    "url": "<HOST>/api/student/class-schedules/:id",
     "title": "Get class schedules",
     "version": "1.0.0",
     "name": "ClassSchedules",
@@ -5108,7 +7618,93 @@
   },
   {
     "type": "get",
-    "url": "HOST/student/activity-answers/{id}",
+    "url": "HOST/student/activity-answers/:id",
+    "title": "Show Activity Answer",
+    "version": "1.0.0",
+    "name": "ShowActivityAnswer",
+    "description": "<p>Get student's activity answers.</p>",
+    "group": "Student_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Seatwork ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Activity Answer ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "assignment_id",
+            "description": "<p>Activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer_media",
+            "description": "<p>download link of the answer file</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "student",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.id",
+            "description": "<p>ID of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.first_name",
+            "description": "<p>First Name of Student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student.last_name",
+            "description": "<p>Last Name of Student</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AssignmentAnswerController.php",
+    "groupTitle": "Student_Classes"
+  },
+  {
+    "type": "get",
+    "url": "HOST/student/activity-answers/:id",
     "title": "Show Activity Answer",
     "version": "1.0.0",
     "name": "ShowActivityAnswer",
@@ -5189,7 +7785,7 @@
         }
       ]
     },
-    "filename": "app/Http/Controllers/Api/AssignmentAnswerController.php",
+    "filename": "app/Http/Controllers/Api/StudentActivityScoreController.php",
     "groupTitle": "Student_Classes"
   },
   {
@@ -5427,7 +8023,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-activities/{id}",
+    "url": "<HOST>/api/teacher/class-activities/:id",
     "title": "Get class activities (by schedule)",
     "version": "1.0.0",
     "name": "ClassActivities",
@@ -5630,7 +8226,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class/{id}",
+    "url": "<HOST>/api/teacher/class/:id",
     "title": "Get class details",
     "version": "1.0.0",
     "name": "ClassDetail",
@@ -5950,7 +8546,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-lesson-plans/{id}",
+    "url": "<HOST>/api/teacher/class-lesson-plans/:id",
     "title": "Get class lesson plans (by schedule)",
     "version": "1.0.0",
     "name": "ClassLessonPlans",
@@ -6132,7 +8728,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-materials/{id}",
+    "url": "<HOST>/api/teacher/class-materials/:id",
     "title": "Get class materials (by schedule)",
     "version": "1.0.0",
     "name": "ClassMaterials",
@@ -6314,7 +8910,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-schedules/{id}",
+    "url": "<HOST>/api/teacher/class-schedules/:id",
     "title": "Get class schedules",
     "version": "1.0.0",
     "name": "ClassSchedules",
@@ -6592,7 +9188,7 @@
   },
   {
     "type": "",
-    "url": "<HOST>/api/teacher/class-students/{id}",
+    "url": "<HOST>/api/teacher/class-students/:id",
     "title": "Get list of students",
     "version": "1.0.0",
     "name": "ClassStudentList",
@@ -6705,7 +9301,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/teacher/remove/class-activity-material/{id}",
+    "url": "HOST/api/teacher/remove/class-activity-material/:id",
     "title": "Remove Activity Material",
     "version": "1.0.0",
     "name": "RemoveActivityMaterial",
@@ -6749,7 +9345,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/teacher/remove/class/{id}",
+    "url": "HOST/api/teacher/remove/class/:id",
     "title": "Remove Class",
     "version": "1.0.0",
     "name": "RemoveClass",
@@ -6793,7 +9389,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/teacher/remove/class-material/{id}",
+    "url": "HOST/api/teacher/remove/class-material/:id",
     "title": "Remove Class Material",
     "version": "1.0.0",
     "name": "RemoveClassMaterial",
@@ -6837,7 +9433,7 @@
   },
   {
     "type": "post",
-    "url": "HOST/api/teacher/remove/class-lesson-plan/{id}",
+    "url": "HOST/api/teacher/remove/class-lesson-plan/:id",
     "title": "Remove Lesson Plan",
     "version": "1.0.0",
     "name": "RemoveLessonPlan",
@@ -6881,7 +9477,7 @@
   },
   {
     "type": "get",
-    "url": "HOST/teacher/activity-answers/{id}",
+    "url": "HOST/teacher/activity-answers/:id",
     "title": "Show Activity Answers",
     "version": "1.0.0",
     "name": "ShowActivityAnswers",

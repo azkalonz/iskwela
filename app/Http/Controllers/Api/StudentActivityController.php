@@ -22,41 +22,510 @@ class StudentActivityController extends Controller
 	const ASSIGNMENT = 3;
 
 
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/api/quiz/save Add Quiz
+     * @apiVersion 1.0.0
+     * @apiName AddQuiz
+     * @apiDescription Saves a new quiz with attached questionnaires
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {String} title the quiz title
+     * @apiParam {String} instruction descriptions/instructions/introduction texts
+     * @apiParam {Number} duration time limit on answering this class
+     * @apiParam {Number} category_id to which category this quiz should be: written, performance, etc (whatever is defined by the school)
+     * @apiParam {Number} subject_id 
+     * @apiParam {Array} questionnaires array of questionnaire IDs attached to the quiz
+     * @apiParam {Number} questionnaires.id questionnaire ID attached by teacher
+     *
+	 * 
+     * @apiSuccess {Number} id ID of newly created quiz
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 21,
+			"title": "quiz3 - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 2,
+				"subject_name": "Filipino"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
 	public function saveQuiz(Request $request)
 	{
 		return $this->save($request, self::QUIZ);
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {get} <HOST>/api/quizzes Get Quizzes
+     * @apiVersion 1.0.0
+     * @apiName ListQuizzes
+     * @apiDescription Returns array of quizzes
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {Number} class_id filter the list to return published quizzes to the class.<br> OPTIONAL for teacher; and if not specified, returns all the quizzes created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} subject_id filter the list to return quizzes of the specified subject only.
+     *
+	 * 
+     * @apiSuccess {Number} id the quiz ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"id": 21,
+				"title": "quiz3 - written",
+				"instruction": "answer this",
+				"duration": 60,
+				"subject": {
+					"id": 2,
+					"subject_name": "Filipino"
+				},
+				"category": {
+					"id": 1,
+					"school_id": 1,
+					"category": "Written Works",
+					"category_percentage": "0.3"
+				},
+				"questionnaires": [
+					{
+						"id": 2,
+						"title": "Questionnaire 1",
+						"intro": "this is a quiz to answer",
+						"subject_id": 1,
+						"school_published": 0,
+						"school_published_date": null,
+						"author": {
+							"id": 8,
+							"first_name": "teacher tom",
+							"last_name": "cruz"
+						},
+						"questions": [
+							{
+								"id": 3,
+								"question": "test",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q1-quiz1",
+								"weight": 1,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 1
+									},
+									{
+										"option": "b",
+										"is_correct": 0
+									},
+									{
+										"option": "c",
+										"is_correct": 0
+									},
+									{
+										"option": "d",
+										"is_correct": 0
+									},
+									{
+										"option": "e",
+										"is_correct": 0
+									}
+								]
+							},
+							{
+								"id": 4,
+								"question": "test2",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q2-quiz1",
+								"weight": 5,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 0
+									},
+									{
+										"option": "b",
+										"is_correct": 1
+									},
+									{
+										"option": "c",
+										"is_correct": 1
+									}
+								]
+							}
+						]
+					},
+					{}
+				]
+			}
+		]
+     * 
+     * 
+     */
+	
 	public function quizzes(Request $request)
 	{
 		return $this->getList($request, self::QUIZ);
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/api/quiz/publish Publish Quiz
+     * @apiVersion 1.0.0
+     * @apiName PublishQuiz
+     * @apiDescription Publishes the quiz to class
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the quiz to be published
+     * @apiParam {Number} class_id the target class where the quiz will be published to
+     * @apiParam {Number} schedule_id which schedule the quiz should be published
+     *
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
 	public function publishQuiz(Request $request)
 	{
 		return $this->publish($request, self::QUIZ, 'Quiz');
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/api/quiz/unpublish Unpublish Quiz
+     * @apiVersion 1.0.0
+     * @apiName UnpublishQuiz
+     * @apiDescription Removes the quiz from the class
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the quiz to be unpublished
+     * @apiParam {Number} class_id which class the quiz will be removed from
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
 	public function unpublishQuiz(Request $request)
 	{
 		return $this->unpublish($request, self::QUIZ, 'Quiz');
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {delete} <HOST>/api/quiz/delete/:id Delete Quiz
+     * @apiVersion 1.0.0
+     * @apiName DeleteQuiz
+     * @apiDescription Delete the quiz from the quiz bank
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
 	public function deleteQuiz(Request $request)
 	{
 		return $this->delete($request, self::QUIZ, 'Quiz');
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/api/quiz/questionnaire/add Add Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName AddQuizQuestionnaire
+     * @apiDescription Allows adding more questionnaires to the existing quiz
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the quiz
+     * @apiParam {Array} questionnaires array of questionnaire IDs to be added to the quiz
+     * @apiParam {Number} questionnaires.id the questionnaire ID
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
 	public function addQuizQuestionnaire(Request $request)
 	{
 		return $this->addQuestionnaire($request, self::QUIZ, 'Quiz');
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/api/quiz/questionnaire/remove Remove Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName RemoveQuizQuestionnaire
+     * @apiDescription Allows removing questionnaires to the existing quiz. Only one questionnaire can be removed at a time
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the quiz
+     * @apiParam {Number} questionnaire_id the ID of the questionnaire to be removed
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
 	public function removeQuizQuestionnaire(Request $request)
 	{
 		return $this->removeQuestionnaire($request, self::QUIZ, 'Quiz');
 	}
 
+	/**
+     * Quizzes
+     *
+     * @api {get} <HOST>/api/quiz/:id Get Quiz Detail
+     * @apiVersion 1.0.0
+     * @apiName QuizDetail
+     * @apiDescription Returns details of the specified quiz ID
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+	 * 
+     * @apiSuccess {Number} id the quiz ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 17,
+			"title": "quiz2 - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 1,
+				"subject_name": "English"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
 	public function getQuiz(Request $request)
 	{
 		return $this->details($request, self::QUIZ, 'Quiz');
@@ -65,41 +534,520 @@ class StudentActivityController extends Controller
 
 	// PERIODICAL
 
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/api/periodical/save Add Periodical
+     * @apiVersion 1.0.0
+     * @apiName AddPeriodical
+     * @apiDescription Saves a new periodical with attached questionnaires
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {String} title the periodical title
+     * @apiParam {String} instruction descriptions/instructions/introduction texts
+     * @apiParam {Number} duration time limit on answering this class
+     * @apiParam {Number} category_id to which category this periodical should be: written, performance, etc (whatever is defined by the school)
+     * @apiParam {Number} subject_id 
+     * @apiParam {Array} questionnaires array of questionnaire IDs attached to the periodical
+     * @apiParam {Number} questionnaires.id questionnaire ID attached by teacher
+     *
+	 * 
+     * @apiSuccess {Number} id ID of newly created periodical
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 21,
+			"title": "Periodical - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 2,
+				"subject_name": "Filipino"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
+
 	public function savePeriodical(Request $request)
 	{
 		return $this->save($request, self::PERIODICAL);
 	}
 
+	/**
+     * Periodicals
+     *
+     * @api {get} <HOST>/api/periodicals Get Periodicals
+     * @apiVersion 1.0.0
+     * @apiName ListPeriodicals
+     * @apiDescription Returns array of periodicals
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {Number} class_id filter the list to return published periodicals to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
+     *
+	 * 
+     * @apiSuccess {Number} the periodical ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"id": 21,
+				"title": "periodical - written",
+				"instruction": "answer this",
+				"duration": 60,
+				"subject": {
+					"id": 2,
+					"subject_name": "Filipino"
+				},
+				"category": {
+					"id": 1,
+					"school_id": 1,
+					"category": "Written Works",
+					"category_percentage": "0.3"
+				},
+				"questionnaires": [
+					{
+						"id": 2,
+						"title": "Questionnaire 1",
+						"intro": "this is a quiz to answer",
+						"subject_id": 1,
+						"school_published": 0,
+						"school_published_date": null,
+						"author": {
+							"id": 8,
+							"first_name": "teacher tom",
+							"last_name": "cruz"
+						},
+						"questions": [
+							{
+								"id": 3,
+								"question": "test",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q1-quiz1",
+								"weight": 1,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 1
+									},
+									{
+										"option": "b",
+										"is_correct": 0
+									},
+									{
+										"option": "c",
+										"is_correct": 0
+									},
+									{
+										"option": "d",
+										"is_correct": 0
+									},
+									{
+										"option": "e",
+										"is_correct": 0
+									}
+								]
+							},
+							{
+								"id": 4,
+								"question": "test2",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q2-quiz1",
+								"weight": 5,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 0
+									},
+									{
+										"option": "b",
+										"is_correct": 1
+									},
+									{
+										"option": "c",
+										"is_correct": 1
+									}
+								]
+							}
+						]
+					},
+					{}
+				]
+			}
+		]
+     * 
+     * 
+     */
+	
+	
 	public function periodicals(Request $request)
 	{
 		return $this->getList($request, self::PERIODICAL);
 	}
 
+
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/api/periodical/publish Publish Periodical
+     * @apiVersion 1.0.0
+     * @apiName PublishPeriodical
+     * @apiDescription Publishes the periodical to class
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the periodical to be published
+     * @apiParam {Number} class_id the target class where the periodical will be published to
+     * @apiParam {Number} schedule_id which schedule the periodical should be published
+     *
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
 	public function publishPeriodical(Request $request)
 	{
 		return $this->publish($request, self::PERIODICAL, 'Periodical');
 	}
 
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/api/periodical/unpublish Unpublish Periodical
+     * @apiVersion 1.0.0
+     * @apiName UnpublishPeriodical
+     * @apiDescription Removes the periodical from the class
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the periodical to be unpublished
+     * @apiParam {Number} class_id which class the periodical will be removed from
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
 	public function unpublishPeriodical(Request $request)
 	{
 		return $this->unpublish($request, self::PERIODICAL, 'Periodical');
 	}
 
+	/**
+     * Periodicals
+     *
+     * @api {delete} <HOST>/api/periodical/delete/:id Delete Periodical
+     * @apiVersion 1.0.0
+     * @apiName DeletePeriodical
+     * @apiDescription Delete the periodical from the periodical bank
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
 	public function deletePeriodical(Request $request)
 	{
 		return $this->delete($request, self::PERIODICAL, 'Periodical');
 	}
 
+
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/api/periodical/questionnaire/add Add Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName AddPeriodicalQuestionnaire
+     * @apiDescription Allows adding more questionnaires to the existing periodical
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the periodical
+     * @apiParam {Array} questionnaires array of questionnaire IDs to be added to the periodical
+     * @apiParam {Number} questionnaires.id the questionnaire ID
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
 	public function addPeriodicalQuestionnaire(Request $request)
 	{
 		return $this->addQuestionnaire($request, self::PERIODICAL, 'Periodical');
 	}
 
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/api/periodical/questionnaire/remove Remove Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName RemovePeriodicalQuestionnaire
+     * @apiDescription Allows removing questionnaires to the existing periodical. Only one questionnaire can be removed at a time
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the periodical
+     * @apiParam {Number} questionnaire_id the ID of the questionnaire to be removed
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
 	public function removePeriodicalQuestionnaire(Request $request)
 	{
 		return $this->removeQuestionnaire($request, self::PERIODICAL, 'Periodical');
 	}
 
+	/**
+     * Periodicals
+     *
+     * @api {get} <HOST>/api/periodical/:id Get Periodical Detail
+     * @apiVersion 1.0.0
+     * @apiName PeriodicalDetail
+     * @apiDescription Returns details of the specified periodical ID
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+	 * 
+     * @apiSuccess {Number} id the periodical ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 17,
+			"title": "quiz2 - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 1,
+				"subject_name": "English"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
+	
 	public function getPeriodical(Request $request)
 	{
 		return $this->details($request, self::PERIODICAL, 'Periodical');
@@ -108,41 +1056,531 @@ class StudentActivityController extends Controller
 
 	// ASSIGNMENT
 
+
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/api/assignment/save Add assignment
+     * @apiVersion 1.0.0
+     * @apiName AddAssignment
+     * @apiDescription Saves a new assignment with attached questionnaires
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {String} title the assignment title
+     * @apiParam {String} instruction descriptions/instructions/introduction texts
+     * @apiParam {Number} duration time limit on answering this class
+     * @apiParam {Number} category_id to which category this assignment should be: written, performance, etc (whatever is defined by the school)
+     * @apiParam {Number} subject_id 
+     * @apiParam {Array} questionnaires array of questionnaire IDs attached to the assignment
+     * @apiParam {Number} questionnaires.id questionnaire ID attached by teacher
+     *
+	 * 
+     * @apiSuccess {Number} id ID of newly created assignment
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 21,
+			"title": "assignment - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 2,
+				"subject_name": "Filipino"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
+
+	
 	public function saveAssignment(Request $request)
 	{
 		return $this->save($request, self::ASSIGNMENT);
 	}
 
+
+	/**
+     * Assignments
+     *
+     * @api {get} <HOST>/api/assignments Get Assignments
+     * @apiVersion 1.0.0
+     * @apiName ListAssignments
+     * @apiDescription Returns array of assignments
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+     * @apiParam {Number} class_id filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
+     *
+	 * 
+     * @apiSuccess {Number} the assignment ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"id": 21,
+				"title": "assignment - written",
+				"instruction": "answer this",
+				"duration": 60,
+				"subject": {
+					"id": 2,
+					"subject_name": "Filipino"
+				},
+				"category": {
+					"id": 1,
+					"school_id": 1,
+					"category": "Written Works",
+					"category_percentage": "0.3"
+				},
+				"questionnaires": [
+					{
+						"id": 2,
+						"title": "Questionnaire 1",
+						"intro": "this is a quiz to answer",
+						"subject_id": 1,
+						"school_published": 0,
+						"school_published_date": null,
+						"author": {
+							"id": 8,
+							"first_name": "teacher tom",
+							"last_name": "cruz"
+						},
+						"questions": [
+							{
+								"id": 3,
+								"question": "test",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q1-quiz1",
+								"weight": 1,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 1
+									},
+									{
+										"option": "b",
+										"is_correct": 0
+									},
+									{
+										"option": "c",
+										"is_correct": 0
+									},
+									{
+										"option": "d",
+										"is_correct": 0
+									},
+									{
+										"option": "e",
+										"is_correct": 0
+									}
+								]
+							},
+							{
+								"id": 4,
+								"question": "test2",
+								"question_type": "mcq",
+								"media_url": "http://sample-media.com/q2-quiz1",
+								"weight": 5,
+								"choices": [
+									{
+										"option": "a",
+										"is_correct": 0
+									},
+									{
+										"option": "b",
+										"is_correct": 1
+									},
+									{
+										"option": "c",
+										"is_correct": 1
+									}
+								]
+							}
+						]
+					},
+					{}
+				]
+			}
+		]
+     * 
+     * 
+     */
+	
+	
+	
 	public function assignments(Request $request)
 	{
 		return $this->getList($request, self::ASSIGNMENT);
 	}
 
+
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/api/assignment/publish Publish Assignment
+     * @apiVersion 1.0.0
+     * @apiName PublishAssignment
+     * @apiDescription Publishes the assignment to class
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the assignment to be published
+     * @apiParam {Number} class_id the target class where the assignment will be published to
+     * @apiParam {Number} schedule_id which schedule the assignment should be published
+     *
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
 	public function publishAssignment(Request $request)
 	{
 		return $this->publish($request, self::ASSIGNMENT, 'Assignment');
 	}
 
+
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/api/assignment/unpublish Unpublish Assignment
+     * @apiVersion 1.0.0
+     * @apiName UnpublishAssignment
+     * @apiDescription Removes the assignment from the class
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the assignment to be unpublished
+     * @apiParam {Number} class_id which class the assignment will be removed from
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
+	
 	public function unpublishAssignment(Request $request)
 	{
 		return $this->unpublish($request, self::ASSIGNMENT, 'Assignment');
 	}
 
+
+	/**
+     * Assignments
+     *
+     * @api {delete} <HOST>/api/assignment/delete/:id Delete Assignment
+     * @apiVersion 1.0.0
+     * @apiName DeleteAssignment
+     * @apiDescription Delete the assignment from the assignment bank
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
 	public function deleteAssignment(Request $request)
 	{
 		return $this->delete($request, self::ASSIGNMENT, 'Assignment');
 	}
 
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/api/assignment/questionnaire/add Add Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName AddAssignmentQuestionnaire
+     * @apiDescription Allows adding more questionnaires to the existing assignment
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the assignment
+     * @apiParam {Array} questionnaires array of questionnaire IDs to be added to the assignment
+     * @apiParam {Number} questionnaires.id the questionnaire ID
+	 * 
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
+	
 	public function addAssignmentQuestionnaire(Request $request)
 	{
 		return $this->addQuestionnaire($request, self::ASSIGNMENT, 'Assignment');
 	}
 
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/api/assignment/questionnaire/remove Remove Questionnaire
+     * @apiVersion 1.0.0
+     * @apiName RemoveAssignmentQuestionnaire
+     * @apiDescription Allows removing questionnaires to the existing assignment. Only one questionnaire can be removed at a time
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the ID of the assignment
+     * @apiParam {Number} questionnaire_id the ID of the questionnaire to be removed
+     * @apiSuccess {Boolean} success true/false
+     * @apiSuccessExample {json} Sample Response
+		{
+			"success": true
+		}
+     * 
+     * 
+     */
+	
+	
+	
 	public function removeAssignmentQuestionnaire(Request $request)
 	{
 		return $this->removeQuestionnaire($request, self::ASSIGNMENT, 'Assignment');
 	}
 
+	/**
+     * Assignments
+     *
+     * @api {get} <HOST>/api/assignment/:id Get Assignment Detail
+     * @apiVersion 1.0.0
+     * @apiName AssignmentDetail
+     * @apiDescription Returns details of the specified assignment ID
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
+	 * 
+     * @apiSuccess {Number} id the assignment ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Object} subject subject details
+     * @apiSuccess {Number} subject.id
+     * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Object} category the category details
+     * @apiSuccess {Number} category.id
+     * @apiSuccess {Number} category.school_id
+     * @apiSuccess {String} category.category the category title
+     * @apiSuccess {Float} category.category_percentage the weight of the category in overall grade calculation
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 17,
+			"title": "quiz2 - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"subject": {
+				"id": 1,
+				"subject_name": "English"
+			},
+			"category": {
+				"id": 1,
+				"school_id": 1,
+				"category": "Written Works",
+				"category_percentage": "0.3"
+			},
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							]
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
+	
+	
 	public function getAssignment(Request $request)
 	{
 		return $this->details($request, self::ASSIGNMENT, 'Assignment');
@@ -236,7 +1674,8 @@ class StudentActivityController extends Controller
 
 		if ($user->user_type == 't') {
 			$this->validate($request, [
-				'class_id' => 'integer'
+				'class_id' => 'integer',
+				'subject_id' => 'integer'
 			]);
 
 			$student_activities->whereCreatedBy($user->getKey());
@@ -244,13 +1683,18 @@ class StudentActivityController extends Controller
 		}
 		else {
 			$this->validate($request, [
-				'class_id' => 'integer|required'
+				'class_id' => 'integer|required',
+				'subject_id' => 'integer'
 			]);
 			$published_by = null;
 		}
 
 		if($request->class_id) {
 			$student_activities->inClass($published_by, $request->class_id);
+		}
+
+		if($request->subject_id) {
+			$student_activities->whereSubjectId($request->subject_id);
 		}
 
 		$fractal = fractal()->collection($student_activities->get(), new StudentActivityTransformer);
@@ -369,4 +1813,11 @@ class StudentActivityController extends Controller
 			$sta->save();
 		});
 	}
+
+	/**
+     * @apiDefine JWTHeader
+     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
+     */
 }
+
+

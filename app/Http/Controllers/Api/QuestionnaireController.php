@@ -198,7 +198,7 @@ class QuestionnaireController extends Controller
 	/**
      * Questionnaire
      *
-     * @api {post} <HOST>/api/questionnaire/school-publish/{id} Publish Questionnaire to School
+     * @api {post} <HOST>/api/questionnaire/school-publish/:id Publish Questionnaire to School
      * @apiVersion 1.0.0
      * @apiName QuestionnaireSchoolPublish
      * @apiDescription Publish the questionnaire to the school
@@ -233,7 +233,7 @@ class QuestionnaireController extends Controller
 	/**
      * Questionnaire
      *
-     * @api {delete} <HOST>/api/questionnaire/delete/{id} Delete Questionnaire
+     * @api {delete} <HOST>/api/questionnaire/delete/:id Delete Questionnaire
      * @apiVersion 1.0.0
      * @apiName DeleteQuestionnaire
      * @apiDescription Deletes the questionnaire
@@ -266,7 +266,7 @@ class QuestionnaireController extends Controller
 	/**
      * Questionnaire
      *
-     * @api {get} <HOST>/api/questionnaire/{id} Get Questionnaire Detail
+     * @api {get} <HOST>/api/questionnaire/:id Get Questionnaire Detail
      * @apiVersion 1.0.0
      * @apiName QuestionnaireDetail
      * @apiDescription Returns questionnaire detail

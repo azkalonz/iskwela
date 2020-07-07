@@ -373,7 +373,7 @@ class FileController extends Controller
     /**
      * Download Activity Material
      *
-     * @api {POST} HOST/api/download/activity/material/{id} Activity Material
+     * @api {POST} HOST/api/download/activity/material/:id Activity Material
      * @apiVersion 1.0.0
      * @apiName DownloadActivityMaterial
      * @apiDescription Downloads the activity material
@@ -401,7 +401,7 @@ class FileController extends Controller
 	/**
      * Download Activity Answer
      *
-     * @api {POST} HOST/api/download/activity/answer/{id} Activity Answer
+     * @api {POST} HOST/api/download/activity/answer/:id Activity Answer
      * @apiVersion 1.0.0
      * @apiName DownloadActivityAnswer
      * @apiDescription Downloads the activity answer
@@ -429,7 +429,7 @@ class FileController extends Controller
     /**
      * Download Class Material
      *
-     * @api {POST} HOST/api/download/class/material/{id} Class Instruction Material
+     * @api {POST} HOST/api/download/class/material/:id Class Instruction Material
      * @apiVersion 1.0.0
      * @apiName DownloadClassMaterial
      * @apiDescription Downloads the class material
@@ -457,7 +457,7 @@ class FileController extends Controller
     /**
      * Download Lessson Plan
      *
-     * @api {POST} HOST/api/download/class/lesson-plan/{id} Lesson Plan
+     * @api {POST} HOST/api/download/class/lesson-plan/:id Lesson Plan
      * @apiVersion 1.0.0
      * @apiName DownloadLessonPlan
      * @apiDescription Downloads the lesson plan

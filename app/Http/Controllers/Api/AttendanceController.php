@@ -81,7 +81,7 @@ class AttendanceController extends Controller
     /**
      * Class Attendance
      *
-     * @api {get} HOST/api/class/attendance/{id} Attendance Report
+     * @api {get} HOST/api/class/attendance/:id Attendance Report
      * @apiVersion 1.0.0
      * @apiName ClassAttendance
      * @apiDescription Returns the attendance report of all users in the class

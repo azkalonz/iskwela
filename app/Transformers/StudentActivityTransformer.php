@@ -15,7 +15,11 @@ class StudentActivityTransformer extends TransformerAbstract
 			'id' => $student_activity->id,
 			'title' => $student_activity->title,
 			'instruction' => $student_activity->instruction,
-			'duration' => $student_activity->duration
+			'duration' => $student_activity->duration,
+			'subject' => [
+				'id' => $student_activity->subject->id,
+				'subject_name' => $student_activity->subject->name
+			]
 			//add subject
 		];
 	}

@@ -112,7 +112,7 @@ class ClassController extends Controller
     /**
      * Class Details
      *
-     * @api <HOST>/api/teacher/class/{id} Get class details
+     * @api <HOST>/api/teacher/class/:id Get class details
      * @apiVersion 1.0.0
      * @apiName ClassDetail
      * @apiDescription Returns a class object of the specified {id}
@@ -243,7 +243,7 @@ class ClassController extends Controller
     /**
      * Class Student list
      *
-     * @api <HOST>/api/teacher/class-students/{id} Get list of students
+     * @api <HOST>/api/teacher/class-students/:id Get list of students
      * @apiVersion 1.0.0
      * @apiName ClassStudentList
      * @apiDescription Returns array of students enrolled in the class
@@ -401,7 +401,7 @@ class ClassController extends Controller
     /**
      * Class Details
      *
-     * @api <HOST>/api/teacher/class/{id} Get class details
+     * @api <HOST>/api/teacher/class/:id Get class details
      * @apiVersion 1.0.0
      * @apiName ClassDetail
      * @apiDescription Returns a class object of the specified {id}
@@ -534,7 +534,7 @@ class ClassController extends Controller
     /**
      * Remove Class Material
      *
-     * @api {post} HOST/api/teacher/remove/class-material/{id} Remove Class Material
+     * @api {post} HOST/api/teacher/remove/class-material/:id Remove Class Material
      * @apiVersion 1.0.0
      * @apiName RemoveClassMaterial
      * @apiDescription Removes a Class Material
@@ -565,7 +565,7 @@ class ClassController extends Controller
     /**
      * Remove Class
      *
-     * @api {post} HOST/api/teacher/remove/class/{id} Remove Class
+     * @api {post} HOST/api/teacher/remove/class/:id Remove Class
      * @apiVersion 1.0.0
      * @apiName RemoveClass
      * @apiDescription Removes a Class

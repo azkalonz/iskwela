@@ -98,7 +98,7 @@ class SubjectGradingCategoryController extends Controller
     /**
      * Subject Grading Category Show
      *
-     * @api {get} <HOST>/api/subject-grading-categories/{id} Get Subject Grading Categories
+     * @api {get} <HOST>/api/subject-grading-categories/:id Get Subject Grading Categories
      * @apiVersion 1.0.0
      * @apiName GetSubjectGradingCategories
      * @apiDescription Gets the grading categories a subject specified in {id}.
@@ -154,7 +154,7 @@ class SubjectGradingCategoryController extends Controller
     /**
      * Subject Grading Category Delete
      *
-     * @api {delete} <HOST>/api/subject-grading-category/remove/{id} Delete Subject Grading Category
+     * @api {delete} <HOST>/api/subject-grading-category/remove/:id Delete Subject Grading Category
      * @apiVersion 1.0.0
      * @apiName DeleteSubjectGradingCategory
      * @apiDescription Deletes the Subject Grading Category
