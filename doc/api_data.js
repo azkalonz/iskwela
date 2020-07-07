@@ -8369,21 +8369,35 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "teacher",
-            "description": "<p>The teacher handling the class</p>"
+            "description": "<p>the class adviser</p>"
           },
           {
             "group": "Success 200",
             "type": "Number",
             "optional": false,
             "field": "teacher.id",
-            "description": "<p>Unique teacher id</p>"
+            "description": ""
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "teacher.name",
-            "description": "<p>The teacher's name</p>"
+            "field": "teacher.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "teacher.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "teacher.profile_picture",
+            "description": ""
           },
           {
             "group": "Success 200",
@@ -8439,6 +8453,13 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "schedules.teacher.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "schedules.teacher.profile_picture",
             "description": ""
           },
           {
@@ -8517,13 +8538,41 @@ define({ "api": [
             "optional": false,
             "field": "students.status",
             "description": "<p>1:active, 0-inactive</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "students.preferences",
+            "description": "<p>user preferences</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "students.preferences.profile_picture",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "students.preferences.push_notfication",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "students.preferences.email_subscription",
+            "description": ""
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\",\n        \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\",\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1,\n            \"preferences\": {\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/ZeXzRdWwYqb1McKBsuCYhfOJHHBAwB4f31f8NmVN.jpeg\",\n                \"push_notification\": 1,\n                \"email_subscription\": 0\n            }\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -9581,6 +9630,17 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "students",
+              "schedules"
+            ],
+            "optional": false,
+            "field": "include",
+            "description": "<p>available includes when getting the class list</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "StringOrNumber",
             "optional": false,
             "field": "user_id",
@@ -9717,13 +9777,34 @@ define({ "api": [
             "optional": false,
             "field": "teacher.last_name",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "teacher.profile_picture",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "students",
+            "description": "<p>refer to <a href='#api-Teacher_Classes-ClassDetail'>/api/teacher/class/:id</a> for the details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "schedules",
+            "description": "<p>refer to <a href='#api-Teacher_Classes-ClassDetail'>/api/teacher/class/:id</a> for the details</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"color\": \"#b12d8b\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\"\n        }\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"color\": \"#b12d8b\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\",\n            \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n        }\n        \"students\": [\n            {},\n            {}\n        ]\n        \"schedules\": [\n            {},\n            {}\n        ]\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]
@@ -9833,16 +9914,30 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "preference",
+            "description": "<p>user preferences</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "profile_picture",
+            "field": "preference.profile_picture",
             "description": "<p>URL of profile_picture</p>"
           },
           {
             "group": "Success 200",
             "type": "Number",
             "optional": false,
-            "field": "push_notification",
+            "field": "preference.push_notification",
+            "description": "<p>1 - enabled; 0 disabled</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "preference.email",
             "description": "<p>1 - enabled; 0 disabled</p>"
           }
         ]
@@ -9850,7 +9945,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "        {\n\t\t\t\"id\": 9,\n\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\"last_name\": \"barino\",\n\t\t\t\"school_id\": 1,\n\t\t\t\"user_type\": \"t\",\n\t\t\t\"username\": \"tjayson\",\n\t\t\t\"email\": \"xxx@gamil.com\",\n\t\t\t\"phone_number\": 111,\n\t\t\t\"status\": 1,\n\t\t\t\"profile_picture\": \"test_profile_pic.jpg\",\n\t\t\t\"push_notification\": 1,\n\t\t\t\"email_subscription\": 0\n\t\t}",
+          "content": "        {\n\t\t\t\"id\": 9,\n\t\t\t\"first_name\": \"teacher jayson\",\n\t\t\t\"last_name\": \"barino\",\n\t\t\t\"school_id\": 1,\n\t\t\t\"user_type\": \"t\",\n\t\t\t\"username\": \"tjayson\",\n\t\t\t\"email\": \"xxx@gamil.com\",\n\t\t\t\"phone_number\": 111,\n\t\t\t\"status\": 1,\n\t\t\t\"preferences\": {\n\t\t\t\t\"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\",\n\t\t\t\t\"push_notification\": 1,\n\t\t\t\t\"email_subscription\": 0\n\t\t\t}\n\t\t}",
           "type": "json"
         }
       ]

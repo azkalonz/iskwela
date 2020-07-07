@@ -6,7 +6,8 @@ use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
-	protected $availableIncludes = ['classes', 'preferences'];
+	protected $availableIncludes = ['classes'];
+	protected $defaultIncludes = ['preferences'];
     public function transform(\App\Models\User $user)
     {
 		return [
@@ -30,6 +31,9 @@ class UserTransformer extends TransformerAbstract
 	
 	public function includePreferences(\App\Models\User $user)
 	{
-		return $this->collection($user->preference, new \App\Transformers\UserPreferenceTransformer);
+		if(!$user->preference) {
+			$user->preference = new \App\Models\UserPreference();
+		}
+		return $this->item($user->preference, new \App\Transformers\UserPreferenceTransformer);
 	}
 }

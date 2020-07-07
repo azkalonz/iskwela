@@ -35,6 +35,7 @@ class ClassController extends Controller
      *
      * @apiUse JWTHeader
      *
+     * @apiParam {String=students,schedules} include available includes when getting the class list
      * @apiParam {StringOrNumber} user_id retrieves list of classes of the specified user. If not passed, defaults to currently logged in user: "me"
      *
      * @apiSuccess {Number} id Unique class id
@@ -55,6 +56,9 @@ class ClassController extends Controller
      * @apiSuccess {Number} teacher.id Unique teacher id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {Array} students refer to <a href='#api-Teacher_Classes-ClassDetail'>/api/teacher/class/:id</a> for the details
+     * @apiSuccess {Array} schedules refer to <a href='#api-Teacher_Classes-ClassDetail'>/api/teacher/class/:id</a> for the details
      * 
      * @apiSuccessExample {json} Sample Response
         [
@@ -81,8 +85,17 @@ class ClassController extends Controller
                 "teacher": {
                     "id": 8,
                     "first_name": "teacher tom",
-                    "last_name": "cruz"
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
                 }
+                "students": [
+                    {},
+                    {}
+                ]
+                "schedules": [
+                    {},
+                    {}
+                ]
             },
             {},
             {}
@@ -138,9 +151,11 @@ class ClassController extends Controller
      * @apiSuccess {Object} subject 
      * @apiSuccess {Number} subject.id 
      * @apiSuccess {String} subject.name The subject name
-     * @apiSuccess {Object} teacher The teacher handling the class
-     * @apiSuccess {Number} teacher.id Unique teacher id
-     * @apiSuccess {String} teacher.name The teacher's name
+     * @apiSuccess {Object} teacher the class adviser
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
      * @apiSuccess {Array} schedules array of class schedules; not included by default
      * @apiSuccess {Number} schedules.id the schedule ID
      * @apiSuccess {Date} schedules.from date/time start of session
@@ -149,6 +164,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} schedules.teacher.id
      * @apiSuccess {String} schedules.teacher.first_name
      * @apiSuccess {String} schedules.teacher.last_name
+     * @apiSuccess {String} schedules.teacher.profile_picture
      * @apiSuccess {String} schedules.status "" or CANCELED
      * @apiSuccess {Array} students array of students enrolled in the class; not included by default
      * @apiSuccess {Number} students.id
@@ -160,6 +176,10 @@ class ClassController extends Controller
      * @apiSuccess {String} students.email
      * @apiSuccess {Number} students.phone_number
      * @apiSuccess {Number} students.status 1:active, 0-inactive
+     * @apiSuccess {Object} students.preferences user preferences
+     * @apiSuccess {String} students.preferences.profile_picture
+     * @apiSuccess {Number} students.preferences.push_notfication
+     * @apiSuccess {Number} students.preferences.email_subscription
      * 
      * 
      * @apiSuccessExample {json} Sample Response
@@ -184,7 +204,8 @@ class ClassController extends Controller
             "teacher": {
                 "id": 8,
                 "first_name": "teacher tom",
-                "last_name": "cruz"
+                "last_name": "cruz",
+                "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
             },
             "schedules": [
                 {
@@ -194,7 +215,9 @@ class ClassController extends Controller
                     "teacher": {
                         "id": 8,
                         "first_name": "teacher tom",
-                        "last_name": "cruz"
+                        "last_name": "cruz",
+                        "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
+
                     },
                     "status": ""
                 },
@@ -211,7 +234,12 @@ class ClassController extends Controller
                     "username": "jayson",
                     "email": "barinojayson@gmail.con",
                     "phone_number": 111,
-                    "status": 1
+                    "status": 1,
+                    "preferences": {
+                        "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/ZeXzRdWwYqb1McKBsuCYhfOJHHBAwB4f31f8NmVN.jpeg",
+                        "push_notification": 1,
+                        "email_subscription": 0
+                    }
                 },
                 {},
                 {}
@@ -236,9 +264,10 @@ class ClassController extends Controller
             $fractal_arr['students'] = $stud_list;
         }
 
+
+
        return response()->json($fractal_arr);
     }
-
 
     /**
      * Class Student list

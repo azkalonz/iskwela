@@ -10,7 +10,6 @@ class ClassesTransformer extends TransformerAbstract
 
     public function transform(\App\Models\Classes $class)
     {
-
         $next_schedule = $this->getNextSchedule($class->schedules->toArray());
         return [
             'id' => $class->id,
@@ -32,6 +31,7 @@ class ClassesTransformer extends TransformerAbstract
                 'id' => $class->teacher->id,
                 'first_name' => $class->teacher->first_name,
                 'last_name' => $class->teacher->last_name,
+                'profile_picture' => ($class->teacher->preference) ? $class->teacher->preference->profile_picture : ""
             ]
         ];
     }

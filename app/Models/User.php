@@ -50,7 +50,7 @@ class User extends Authenticatable implements JWTSubject
 	
 	public function preference()
 	{
-		return $this->hasMany(UserPreference::class, 'user_id', 'id');
+		return $this->hasOne(UserPreference::class, 'user_id', 'id');
     }
 
     /**

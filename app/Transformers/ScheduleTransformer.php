@@ -22,6 +22,7 @@ class ScheduleTransformer extends TransformerAbstract
                 'id' => $schedule->teacher->id,
                 'first_name' => $schedule->teacher->first_name,
                 'last_name' => $schedule->teacher->last_name,
+                'profile_picture' => ($schedule->teacher->preference) ? $schedule->teacher->preference->profile_picture : ""
             ],
             'status' => config('school_hub.schedule_status')[$schedule->status],
         ];

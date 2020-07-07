@@ -37,9 +37,10 @@ class UserController extends Controller
 	 * @apiSuccess {String} email email address of user
 	 * @apiSuccess {Number} phone_number phone number of user
 	 * @apiSuccess {Number} status 1 - active; 0 - inactive
-	 * @apiSuccess {String} profile_picture URL of profile_picture
-	 * @apiSuccess {Number} push_notification 1 - enabled; 0 disabled
-	 * @apiSuccess {Number} email 1 - enabled; 0 disabled
+	 * @apiSuccess {Object} preference user preferences
+	 * @apiSuccess {String} preference.profile_picture URL of profile_picture
+	 * @apiSuccess {Number} preference.push_notification 1 - enabled; 0 disabled
+	 * @apiSuccess {Number} preference.email 1 - enabled; 0 disabled
      * @apiSuccessExample {json} Sample Response
         {
 			"id": 9,
@@ -51,9 +52,11 @@ class UserController extends Controller
 			"email": "xxx@gamil.com",
 			"phone_number": 111,
 			"status": 1,
-			"profile_picture": "test_profile_pic.jpg",
-			"push_notification": 1,
-			"email_subscription": 0
+			"preferences": {
+				"profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg",
+				"push_notification": 1,
+				"email_subscription": 0
+			}
 		}
      *
      * 
