@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Year;
 use Illuminate\Console\Command;
 
-class GenerateTestDataCommand extends Command
+class GenerateTrainingDataCommand extends Command
 {
     /**
      * The name and signature of the console command.
