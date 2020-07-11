@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Classes;
 use App\Models\School;
 use App\Models\Section;
+use App\Models\SectionStudent;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Year;
@@ -88,25 +89,6 @@ class GenerateTrainingDataCommand extends Command
         ]);
         $this->info("TEACHER ".$teacher->username." / ".$prefix.".trainingteacher");
 
-        // generate 10 test students
-        for($i=1; $i<=10; $i++) {
-            $student = User::updateOrCreate([
-                'username' => $prefix.".trainingstudent".$i
-            ],[
-                'username'      => $prefix.".trainingstudent".$i,
-                'first_name'    => "Training",
-                'middle_name'   => "",
-                'last_name'     => "Student".$i,
-                'gender'        => " ",
-                'phone_number'  => null,
-                'email'         => null,
-                'user_type'     => 's',
-                'password'      => $prefix.".trainingstudent".$i,
-                'school_id'     => $target_school->id
-            ]);
-            $this->info("STUDENT ".$student->username." / ".$prefix.".trainingstudent".$i);
-        }
-
         // generate training Subject
         $subject = Subject::updateOrCreate([
             'name'    => "Training Subject"
@@ -127,6 +109,36 @@ class GenerateTrainingDataCommand extends Command
             'year_id'   => $year->id
         ]);
         $this->info("SECTION ".$section->name);
+
+
+        // generate 10 test students and add to class
+        for($i=1; $i<=10; $i++) {
+            $student = User::updateOrCreate([
+                'username' => $prefix.".trainingstudent".$i
+            ],[
+                'username'      => $prefix.".trainingstudent".$i,
+                'first_name'    => "Training",
+                'middle_name'   => "",
+                'last_name'     => "Student".$i,
+                'gender'        => " ",
+                'phone_number'  => null,
+                'email'         => null,
+                'user_type'     => 's',
+                'password'      => $prefix.".trainingstudent".$i,
+                'school_id'     => $target_school->id
+            ]);
+
+            // add student in section
+            $section_student = SectionStudent::updateOrCreate([
+                'section_id' => $section->id,
+                'user_id' => $student->id
+            ],[
+                'section_id' => $section->id,
+                'user_id' => $student->id
+            ]);
+
+            $this->info("STUDENT ".$student->username." / ".$prefix.".trainingstudent".$i);
+        }
 
         // generate 1 class
         $class = Classes::updateOrCreate([
