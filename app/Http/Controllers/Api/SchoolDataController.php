@@ -48,7 +48,12 @@ class SchoolDataController extends Controller
             }
 
             // create academic year
-            $academic_year = AcademicYear::firstOrCreate([
+            $academic_year = AcademicYear::updateOrCreate([
+                'name' => $request->academic_year_name,
+                'date_from' => $academic_year_from,
+                'date_to' => $academic_year_to,
+                'school_id' => $school->id
+            ], [
                 'name' => $request->academic_year_name,
                 'date_from' => $academic_year_from,
                 'date_to' => $academic_year_to,
