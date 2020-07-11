@@ -18,6 +18,7 @@ class GenerateClassSchedules extends Command
      */
     protected $signature = 'generate:class-schedules 
     {--school-code= : School Code}
+    {--class= : Class name of selected school}
     {--until= : Generate schedules until specific date in Y/m/d format}';
 
     /**
@@ -28,6 +29,7 @@ class GenerateClassSchedules extends Command
     protected $description = 'This command generates schedules of all classes by given school.';
 
     protected $school_code = null;
+    protected $classes = [];
     protected $date_until = null;
 
     /**
@@ -47,7 +49,6 @@ class GenerateClassSchedules extends Command
      */
     public function handle()
     {
-        // get URL instance
         if ($this->option('school-code')) {
             $this->school_code = $this->option('school-code');
         } else {
@@ -60,7 +61,14 @@ class GenerateClassSchedules extends Command
 
         $target_school = School::where('school_code', $this->school_code)->first();
 
-        // get URL instance
+        if ($this->option('class')) {
+            $this->classes[] = Classes::where('name', $this->option('class'))->first();
+            $this->info("Target class ".$this->classes[0]->name);
+        } else {
+            $this->classes = Classes::all();
+            $this->info("Targetting all classes.");
+        }
+
         if ($this->option('until')) {
             $this->until = Carbon::createFromFormat('Y/m/d', $this->option('until'));
         } else {
@@ -69,11 +77,9 @@ class GenerateClassSchedules extends Command
         }
 
         $total_days = $this->until->diff(Carbon::now())->days + 1;
+        $this->info("Generating ".$total_days." total days of schedules...");
 
-        // get all classes
-        $classes = Classes::all();
-
-        foreach($classes as $class) {
+        foreach($this->classes as $class) {
             $time_from = explode(':', $class->time_from);
             $time_to = explode(':', $class->time_to);
 
