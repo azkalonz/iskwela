@@ -15,6 +15,7 @@ class ClassesTransformer extends TransformerAbstract
             'id' => $class->id,
             'name' => $class->name,
             'description' => $class->description,
+            'bg_image' => $class->image,
             'room_number' => $class->room_number,
             'frequency' => strtoupper($class->frequency),
             'date_from' => $class->date_from,

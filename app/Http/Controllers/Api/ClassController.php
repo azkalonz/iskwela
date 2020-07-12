@@ -41,6 +41,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
      * @apiSuccess {String} description Class description
+     * @apiSuccess {String} bg_image class background image
      * @apiSuccess {Number} room_number
      * @apiSuccess {String} frequency The frequency of session
      * @apiSuccess {String} color The color assigned to the class
@@ -66,6 +67,7 @@ class ClassController extends Controller
                 "id": 1,
                 "name": "English 101",
                 "description": "learn basics",
+                "bg_image": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg",
                 "room_number": 123455,
                 "frequency": "M,W,F",
                 "color": "#b12d8b",
@@ -139,6 +141,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
      * @apiSuccess {String} description Class description
+     * @apiSuccess {String} bg_image class background image
      * @apiSuccess {String} frequency The frequency of session
      * @apiSuccess {String} color The color assigned to the class
      * @apiSuccess {Date} date_from Start of class
@@ -187,6 +190,7 @@ class ClassController extends Controller
             "id": 1,
             "name": "English 101",
             "description": "learn basics",
+            "bg_image": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg",
             "frequency": "M,W,F",
             "date_from": "2020-05-11",
             "date_to": "2020-05-15",
@@ -355,6 +359,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} classes.id the class ID
      * @apiSuccess {String} classes.name
      * @apiSuccess {String} classes.description
+     * @apiSuccess {String} classes.bg_image class background image
      * @apiSuccess {String} classes.frequency
      * @apiSuccess {Date} classes.date_from
      * @apiSuccess {Date} classes.date_to
@@ -388,6 +393,7 @@ class ClassController extends Controller
                     "id": 1,
                     "name": "English 101",
                     "description": "learn basics",
+                    "bg_image": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg",
                     "frequency": "M,W,F",
                     "date_from": "2020-05-11",
                     "date_to": "2020-05-15",
@@ -444,6 +450,7 @@ class ClassController extends Controller
      * @apiSuccess {Number} id Unique class id
      * @apiSuccess {String} name Defined class name
      * @apiSuccess {String} description Class description
+     * @apiSuccess {String} bg_image class background image
      * @apiSuccess {String} frequency The frequency of session
      * @apiSuccess {Date} date_from Start of class
      * @apiSuccess {Date} date_to End of class
@@ -484,6 +491,7 @@ class ClassController extends Controller
             "id": 1,
             "name": "English 101",
             "description": "learn basics",
+            "bg_image": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg",
             "frequency": "M,W,F",
             "date_from": "2020-05-11",
             "date_to": "2020-05-15",

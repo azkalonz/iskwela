@@ -348,11 +348,12 @@ class FileController extends Controller
 
         if($user->type = 't')
         {
-            $response = $this->upload($request->image);
+            $path = $this->uploadToPublicSpace($request->image);
 
-            if($response['success']) {
+            if($path) {
+                $url = $this->getFilePublicUrl($path);
                 $class = Classes::find($request->id);
-                $class->image = $response['file'];
+                $class->image = $url;
                 $class->updated_by = $user->id;
                 $class->save();
             }
@@ -360,12 +361,11 @@ class FileController extends Controller
                 return response('Unable to upload file', 500);
             }
     
-            return response()->json(['success' => $response['success']]);
+            return response()->json(['url' => $url]);
         }
         else{
             return response('Unable to upload file', 401);
         }
-        
     }
 
     /*** DOWNLOAD: ***/
