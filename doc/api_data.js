@@ -5825,6 +5825,132 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "<HOST>/api/reports/activity-scores",
+    "title": "Activity Scores",
+    "version": "1.0.0",
+    "name": "ActivityScores",
+    "description": "<p>Get the activity scores per activity type</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "scores",
+            "description": "<p>the activity scores</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "scores.quizzes",
+            "description": "<p>score percentage based on the date range</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "scores.periodicals",
+            "description": "<p>score percentage based on the date range</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "scores.assignements",
+            "description": "<p>score percentage based on the date range</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 1,\n\t\t\"username\": \"jayson\",\n\t\t\"first_name\": \"jayson\",\n\t\t\"last_name\": \"barino\",\n\t\t\"scores\": {\n\t\t\t\"quizzes\": 0.583,\n\t\t\t\"periodicals\": 1,\n\t\t\t\"assignments\": 0.583\n\t\t}\n\t},\n\t{},\n\t{},\n\t{}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "POST",
     "url": "HOST/students/improvement/save",
     "title": "Add/Edit Student Improvement",
@@ -6911,6 +7037,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "bg_image",
+            "description": "<p>class background image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "frequency",
             "description": "<p>The frequency of session</p>"
           },
@@ -7143,7 +7276,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"bg_image\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -7894,6 +8027,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "classes.bg_image",
+            "description": "<p>class background image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "classes.frequency",
             "description": ""
           },
@@ -8000,13 +8140,667 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"first_name\": \"jayson\",\n    \"last_name\": \"barino\",\n    \"school_id\": 1,\n    \"user_type\": \"s\",\n    \"user_name\": \"jayson\",\n    \"email\": \"barinojayson@gmail.con\",\n    \"phone_number\": 111,\n    \"status\": 1,\n    \"classes\": [\n        {\n            \"id\": 1,\n            \"name\": \"English 101\",\n            \"description\": \"learn basics\",\n            \"frequency\": \"M,W,F\",\n            \"date_from\": \"2020-05-11\",\n            \"date_to\": \"2020-05-15\",\n            \"time_from\": \"09:00:00\",\n            \"time_to\": \"10:00:00\",\n            \"next_schedule\": {\n                \"from\": \"2020-05-25 09:00:00\",\n                \"to\": \"2020-05-25 10:00:00\"\n            },\n            \"subject\": {\n                \"id\": 1,\n                \"name\": \"English\"\n            },\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            }\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"first_name\": \"jayson\",\n    \"last_name\": \"barino\",\n    \"school_id\": 1,\n    \"user_type\": \"s\",\n    \"user_name\": \"jayson\",\n    \"email\": \"barinojayson@gmail.con\",\n    \"phone_number\": 111,\n    \"status\": 1,\n    \"classes\": [\n        {\n            \"id\": 1,\n            \"name\": \"English 101\",\n            \"description\": \"learn basics\",\n            \"bg_image\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg\",\n            \"frequency\": \"M,W,F\",\n            \"date_from\": \"2020-05-11\",\n            \"date_to\": \"2020-05-15\",\n            \"time_from\": \"09:00:00\",\n            \"time_to\": \"10:00:00\",\n            \"next_schedule\": {\n                \"from\": \"2020-05-25 09:00:00\",\n                \"to\": \"2020-05-25 10:00:00\"\n            },\n            \"subject\": {\n                \"id\": 1,\n                \"name\": \"English\"\n            },\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\"\n            }\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
     },
     "filename": "app/Http/Controllers/Api/ClassController.php",
     "groupTitle": "Student_Classes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/assignment/answer/submit",
+    "title": "Submit Assignment",
+    "version": "1.0.0",
+    "name": "SubmitAssignment",
+    "description": "<p>Allows submission of assignment answer</p>",
+    "group": "Submit_Activity_Answer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the assignment ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>the subject ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>the time when the student starts the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>the time when the student finishes the assignment</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>the array of questionnaires with answers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.questionnaire_id",
+            "description": "<p>the ID of questionnaire</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER <br><br> 0: first try, 1: retried, 2:skip</i></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>marks if the answer is wrong/correct</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the assignment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>the actual score of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "score_percentage",
+            "description": "<p>the student's score percentage</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect",
+            "description": "<p>the total score of the assignment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>student's time in answerting the assignment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>details of students's answers</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.activity_record_id",
+            "description": "<p>record ID of this attempt</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.id",
+            "description": "<p>record ID of this answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question which this answer is for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER</i></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>answer remark</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 24,\n    \"score\": 7,\n    \"score_percentage\": 0.58,\n    \"pefect_score\": 12,\n    \"duration\": 1500,\n    \"questionnaires\": [\n        {\n            \"questionnaire_id\": 5,\n            \"activity_record_id\": 39,\n            \"answers\": [\n                {\n                    \"id\": 77,\n                    \"question_id\": 9,\n                    \"status\": 0,\n                    \"is_correct\": 1,\n                    \"answer\": \"test 3\"\n                },\n                {\n                    \"id\": 78,\n                    \"question_id\": 10,\n                    \"status\": 0,\n                    \"is_correct\": 1,\n                    \"answer\": \"test 4\"\n                }\n            ]\n        },\n        {\n            \"questionnaire_id\": 6,\n            \"activity_record_id\": 40,\n            \"answers\": [\n                {\n                    \"id\": 79,\n                    \"question_id\": 11,\n                    \"status\": 0,\n                    \"is_correct\": 1,\n                    \"answer\": \"test 5\"\n                },\n                {\n                    \"id\": 80,\n                    \"question_id\": 12,\n                    \"status\": 0,\n                    \"is_correct\": 0,\n                    \"answer\": \"test 6\"\n                }\n            ]\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Submit_Activity_Answer",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/periodical/answer/submit",
+    "title": "Submit Periodical",
+    "version": "1.0.0",
+    "name": "SubmitPeriodical",
+    "description": "<p>Allows submission of periodical answer</p>",
+    "group": "Submit_Activity_Answer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the periodical ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>the subject ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>the time when the student starts the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>the time when the student finishes the periodical</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>the array of questionnaires with answers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.questionnaire_id",
+            "description": "<p>the ID of questionnaire</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER <br><br> 0: first try, 1: retried, 2:skip</i></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>marks if the answer is wrong/correct</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the periodical ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>the actual score of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "score_percentage",
+            "description": "<p>the student's score percentage</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect",
+            "description": "<p>the total score of the periodical</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>student's time in answerting the periodical</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>details of students's answers</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.activity_record_id",
+            "description": "<p>record ID of this attempt</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.id",
+            "description": "<p>record ID of this answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question which this answer is for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER</i></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>answer remark</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 23,\n    \"score\": 6,\n    \"score_percentage\": 1,\n    \"pefect_score\": 6,\n    \"duration\": 1500,\n    \"questionnaires\": [\n        {\n            \"questionnaire_id\": 4,\n            \"activity_record_id\": 38,\n            \"answers\": [\n                {\n                    \"id\": 75,\n                    \"question_id\": 7,\n                    \"status\": 0,\n                    \"is_correct\": 1,\n                    \"answer\": \"test 3\"\n                },\n                {\n                    \"id\": 76,\n                    \"question_id\": 8,\n                    \"status\": 0,\n                    \"is_correct\": 1,\n                    \"answer\": \"test 4\"\n                }\n            ]\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Submit_Activity_Answer",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/quiz/answer/submit",
+    "title": "Submit Quiz",
+    "version": "1.0.0",
+    "name": "SubmitQuiz",
+    "description": "<p>Allows submission of quiz answer</p>",
+    "group": "Submit_Activity_Answer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the quiz ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subject_id",
+            "description": "<p>the subject ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "start_time",
+            "description": "<p>the time when the student starts the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "end_time",
+            "description": "<p>the time when the student finishes the quiz</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>the array of questionnaires with answers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.questionnaire_id",
+            "description": "<p>the ID of questionnaire</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER <br><br> 0: first try, 1: retried, 2:skip</i></p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>marks if the answer is wrong/correct</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>the actual score of student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "score_percentage",
+            "description": "<p>the student's score percentage</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect",
+            "description": "<p>the total score of the quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>student's time in answerting the quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>details of students's answers</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.id",
+            "description": "<p>the questionnaire ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.activity_record_id",
+            "description": "<p>record ID of this attempt</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires.answers",
+            "description": "<p>answer details and remarks</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.id",
+            "description": "<p>record ID of this answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.question_id",
+            "description": "<p>the question which this answer is for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.status",
+            "description": "<p><i>PLACEHOLDER</i></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.answers.is_correct",
+            "description": "<p>answer remark</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.answers.answer",
+            "description": "<p>the actual answer string</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n\t\"id\": 22,\n\t\"score\": 7,\n\t\"score_percent\": 0.58,\n\t\"pefect_score\": 12,\n\t\"duration\": 1500,\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"questionnaire_id\": 2,\n\t\t\t\"activity_record_id\": 36,\n\t\t\t\"answers\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 71,\n\t\t\t\t\t\"question_id\": 3,\n\t\t\t\t\t\"status\": 0,\n\t\t\t\t\t\"is_correct\": 1,\n\t\t\t\t\t\"answer\": \"test 3\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 72,\n\t\t\t\t\t\"question_id\": 4,\n\t\t\t\t\t\"status\": 0,\n\t\t\t\t\t\"is_correct\": 1,\n\t\t\t\t\t\"answer\": \"test 4\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"questionnaire_id\": 3,\n\t\t\t\"activity_record_id\": 37,\n\t\t\t\"answers\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 73,\n\t\t\t\t\t\"question_id\": 5,\n\t\t\t\t\t\"status\": 0,\n\t\t\t\t\t\"is_correct\": 1,\n\t\t\t\t\t\"answer\": \"test 5\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 74,\n\t\t\t\t\t\"question_id\": 6,\n\t\t\t\t\t\"status\": 0,\n\t\t\t\t\t\"is_correct\": 0,\n\t\t\t\t\t\"answer\": \"test 6\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Submit_Activity_Answer",
     "header": {
       "fields": {
         "Header": [
@@ -8279,6 +9073,13 @@ define({ "api": [
             "optional": false,
             "field": "description",
             "description": "<p>Class description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "bg_image",
+            "description": "<p>class background image</p>"
           },
           {
             "group": "Success 200",
@@ -8572,7 +9373,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\",\n        \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\",\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1,\n            \"preferences\": {\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/ZeXzRdWwYqb1McKBsuCYhfOJHHBAwB4f31f8NmVN.jpeg\",\n                \"push_notification\": 1,\n                \"email_subscription\": 0\n            }\n        },\n        {},\n        {}\n    ]\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"English 101\",\n    \"description\": \"learn basics\",\n    \"bg_image\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg\",\n    \"frequency\": \"M,W,F\",\n    \"date_from\": \"2020-05-11\",\n    \"date_to\": \"2020-05-15\",\n    \"time_from\": \"09:00:00\",\n    \"time_to\": \"10:00:00\",\n    \"next_schedule\": {\n        \"from\": \"2020-05-25 09:00:00\",\n        \"to\": \"2020-05-25 10:00:00\"\n    },\n    \"color\": \"#b12d8b\",\n    \"subject\": {\n        \"id\": 1,\n        \"name\": \"English\"\n    },\n    \"teacher\": {\n        \"id\": 8,\n        \"first_name\": \"teacher tom\",\n        \"last_name\": \"cruz\",\n        \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n    },\n    \"schedules\": [\n        {\n            \"id\": 1,\n            \"from\": \"2020-05-15 09:00:00\",\n            \"to\": \"2020-05-15 10:00:00\",\n            \"teacher\": {\n                \"id\": 8,\n                \"first_name\": \"teacher tom\",\n                \"last_name\": \"cruz\",\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n\n            },\n            \"status\": \"\"\n        },\n        {},\n    {}\n    ],\n    \"students\": [\n        {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"school_id\": 1,\n            \"user_type\": \"s\",\n            \"username\": \"jayson\",\n            \"email\": \"barinojayson@gmail.con\",\n            \"phone_number\": 111,\n            \"status\": 1,\n            \"preferences\": {\n                \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/ZeXzRdWwYqb1McKBsuCYhfOJHHBAwB4f31f8NmVN.jpeg\",\n                \"push_notification\": 1,\n                \"email_subscription\": 0\n            }\n        },\n        {},\n        {}\n    ]\n}",
           "type": "json"
         }
       ]
@@ -9675,6 +10476,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "bg_image",
+            "description": "<p>class background image</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Number",
             "optional": false,
             "field": "room_number",
@@ -9804,7 +10612,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"color\": \"#b12d8b\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\",\n            \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n        }\n        \"students\": [\n            {},\n            {}\n        ]\n        \"schedules\": [\n            {},\n            {}\n        ]\n    },\n    {},\n    {}\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"English 101\",\n        \"description\": \"learn basics\",\n        \"bg_image\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/GFChqQIl5s587gLV0SEoEA0q8mr7CICPWdVBTW7H.jpeg\",\n        \"room_number\": 123455,\n        \"frequency\": \"M,W,F\",\n        \"color\": \"#b12d8b\",\n        \"date_from\": \"2020-05-11\",\n        \"date_to\": \"2020-05-15\",\n        \"time_from\": \"09:00:00\",\n        \"time_to\": \"10:00:00\",\n        \"next_schedule\": {\n            \"from\": \"2020-05-25 09:00:00\",\n            \"to\": \"2020-05-25 10:00:00\"\n            \"status\": \"DONE\"\n        },\n        \"subject\": {\n            \"id\": 1,\n            \"name\": \"English\"\n        },\n        \"teacher\": {\n            \"id\": 8,\n            \"first_name\": \"teacher tom\",\n            \"last_name\": \"cruz\",\n            \"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\"\n        }\n        \"students\": [\n            {},\n            {}\n        ]\n        \"schedules\": [\n            {},\n            {}\n        ]\n    },\n    {},\n    {}\n]",
           "type": "json"
         }
       ]

@@ -78,4 +78,13 @@ class Classes extends Model
         return $this->hasMany(SectionStudent::class, 'section_id', 'section_id');
     }
 
+    public function students()
+    {
+/*         $sql = $this->hasManyThrough(User::class, SectionStudent::class, 'user_id', 'id', 'id', 'user_id')->toSql();
+
+        dd($sql); */
+
+        return $this->hasManyThrough(User::class, SectionStudent::class, 'user_id', 'id', 'id', 'user_id');
+    }
+
 }

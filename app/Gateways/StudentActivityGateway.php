@@ -30,7 +30,6 @@ class StudentActivityGateway
 
                 $answers = collect($rec['answers'])->map(function($ans) use ($student_activity){
                     $ans['record_id'] = $student_activity->id;
-                    unset($ans['is_correct']);
 
                     return $ans;
                 });

@@ -12,6 +12,7 @@ class StudentActivityAnswer extends Model
         'record_id',
         'question_id',
         'status',
+        'is_correct',
         'answer'
     ];
 }

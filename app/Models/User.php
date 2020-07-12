@@ -60,5 +60,24 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo('App\Models\School', 'school_id');
     }
-	
+
+    public function activityRecords()
+    {
+        return $this->hasMany(StudentActivityRecord::class, 'user_id');
+    }
+
+    public function scopeInClass($builder, int $class_id)
+    {
+        return $builder->whereIn('users.id', function($query) use ($class_id) {
+            $query->from((new SectionStudent)->getTable())
+                ->select('user_id')
+                ->join('sections', function($join) use ($class_id) {
+                    $join->on('sections_students.section_id', '=', 'sections.id');
+                })
+                ->join('classes', function($join) use ($class_id) {
+                    $join->on('sections.id', '=', 'classes.section_id')
+                         ->where('classes.id', '=', $class_id);
+                });
+        });
+    }
 }

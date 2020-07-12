@@ -24,4 +24,9 @@ class StudentActivityRecord extends Model
     {
         return $this->hasMany(StudentActivityAnswer::class, 'record_id');
     }
+
+    public function studentActivity()
+    {
+        return $this->belongsTo(StudentActivity::class, 'activity_id');
+    }
 }
