@@ -16,6 +16,7 @@ class AssignmentTransformer extends TransformerAbstract
             'title' => $assignment->title,
             'description' => $assignment->instruction,
             'activity_type' => config('school_hub.activity_type')[$assignment->activity_type],
+            'grading_category' => $assignment->grading_category,
             'total_score' => $assignment->total_score,
             'due_date' => $assignment->due_date,
             'status' => config('school_hub.file_status')[$assignment->published],

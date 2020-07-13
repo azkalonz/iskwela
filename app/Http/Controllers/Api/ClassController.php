@@ -21,6 +21,8 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
+use Illuminate\Support\Facades\DB as DB;
+use Illuminate\Support\Str;
 class ClassController extends Controller
 {
 
@@ -645,8 +647,214 @@ class ClassController extends Controller
         return $serialized_list->toArray();
     }
 
-    
+    public function saveClass(Request $request)
+    {
+        $this->validate($request, [
+            'teacher_id' => 'integer',
+            'subject_id' => 'integer',
+            'year_id' => 'integer',
+            'section_id' => 'integer'
+        ]);
 
+        $user = Auth::user();
+        $previous_dow = Array();
+
+        if($request->id)
+        {
+            $class = Classes::findOrFail($request->id);
+            $class->updated_by = $user->id;
+            $previous_dow = explode(',', $class->frequency);
+            $previous_date_to = $class->date_to;
+        }
+        else
+        {
+            $this->validate($request, [
+                'name' => 'required'
+            ]);
+            $class = new Classes();
+            $class->created_by = $user->id;
+            $class->updated_by = $user->id;
+            $previous_date_to = null;
+        }
+
+        $class->name = $request->name ?? $class->name;
+        $class->description = $request->description ?? $class->description;
+        $class->teacher_id = $request->teacher_id ?? $class->teacher_id;
+        $class->subject_id = $request->subject_id ?? $class->subject_id;
+        $class->year_id = $request->year_id ?? $class->year_id;
+        $class->section_id = $request->section_id ?? $class->section_id;
+        $class->color = $request->color ?? $class->color ?? $this->generateClassColor();
+        $class->room_number = $request->room_id ?? $class->room_number ?? $this->generateRoomNumber();
+        $class->date_from = $request->date_from ?? $class->date_from;
+        $class->date_to = $request->date_to ?? $class->date_to;
+        $class->time_from = $request->time_from ?? $class->time_from;
+        $class->time_to = $request->time_to ?? $class->time_to;
+        $class->frequency = strtolower($request->frequency) ?? $class->frequency;
+        $class->save();
+
+        if($request->date_from && $request->date_to && $request->time_from && $request->time_to && $request->frequency)
+        {
+            //if schedule info is given in the request, generate schedules
+            $this->generateClassSchedules($class, $user, $previous_dow, $previous_date_to);
+        }
+
+        $fractal = fractal()->item($class, new ClassesTransformer);
+        return response()->json($fractal->toArray());
+
+    }
+    private function generateRoomNumber()
+    {
+        return Str::random(32);
+    }
+
+    private function generateClassColor()
+    {
+        $colors = config("school_hub.colors");
+        return $colors[ array_rand($colors) ];
+    }
+
+    private function generateClassSchedules(Classes $class, User $teacher, Array $previous_dow, $previous_date_to)
+    {
+
+        //generate schedules only if there no exist schedules
+        $frequency = Array();
+        $reschedule = false;
+
+        $hours_start_int = (int)str_replace(':','.',$class->time_from);
+        $hours_end_int = (int)str_replace(':','.',$class->time_to);
+
+        $frequency = explode(',', $class->frequency);
+
+
+        foreach($frequency as $day_of_week)
+        {
+            
+            if(in_array($day_of_week, $previous_dow))
+            {
+                //schedule exist for specified day of week.
+                $reschedule = true;
+            }
+            else
+            {
+                /* day of week schedule is new */
+                $date_from = $class->date_from;
+                $date_to = $previous_date_to ?? $class->date_to; /* if there exist a previous date to, use it. the new dates will be handled in if($previous_date_to) */
+                $this->createSchedulesByDayOfWeek($class, $teacher->id, $date_from, $date_to, $day_of_week);
+            }
+
+            if($previous_date_to)
+            {
+                if(strtotime($previous_date_to) < strtotime($class->date_to))
+                {
+                    //new schedules are added to the class
+                    $date_from = Date("Y-m-d", strtotime("+1 day", strtotime($previous_date_to)));
+                    $date_to = $class->date_to;
+                    $this->createSchedulesByDayOfWeek($class, $teacher->id, $date_from, $date_to, $day_of_week);
+                }
+            }
+        }
+
+        if($previous_date_to)
+        {
+            if(strtotime($previous_date_to) > strtotime($class->date_to))
+            {
+                //schedule has been shortened
+                $this->removeSchedulesByEndDate($class);
+            }
+        }
+        
+        $this->removeSchedulesByDayOfWeek($class->id, $frequency);
+
+        if($reschedule)
+        {
+            $this->reschedule($class);
+        }
+    }
+
+    private function reschedule(Classes $class)
+    {
+        $schedules = Schedule::whereClassId($class->id)->where('date_from', '>=', Date("Y-m-d", time()))->update(
+            [
+                'date_from' => DB::raw("concat(date(`date_from`), ' ".$class->time_from."')"),
+                'date_to' => DB::raw("concat(date(`date_to`), ' ".$class->time_to."')")
+            ]
+        );
+    }
+
+    private function removeSchedulesByDayOfWeek(int $class_id, Array $new_dow)
+    {
+        $dow_code_arr = array(
+            "u" => "6",
+            "m" => "0",
+            "t" => "1",
+            "w" => "2",
+            "r" => "3",
+            "f" => "4",
+            "s" => "5"
+            );
+        
+        $dow_arr = array("u", "m", "t", "w", "r", "f", "s");
+
+        foreach($dow_arr as $dow)
+        {
+            if(!in_array($dow, $new_dow))
+            {
+                //previous schedule exist but is no longer needed
+                $schedule = Schedule::whereClassId($class_id)->whereRaw('WEEKDAY(date_from)='.$dow_code_arr[$dow])->delete();
+            }
+        }
+    }
+
+    private function removeSchedulesByEndDate(Classes $class)
+    {
+        $Schedules = Schedule::whereClassId($class->id)->where('date_to', '>', Date("Y-m-d", strtotime("+1 day", strtotime($class->date_to))))->delete();
+    }
+
+    private function createSchedulesByDayOfWeek(Classes $class, $teacher_id, $date_from, $date_to, $day_of_week)
+    {
+        $start_date_dow = date('w', strtotime($date_from));
+
+        $dow_code_arr = array(
+            "u" => "sunday",
+            "m" => "monday",
+            "t" => "tuesday",
+            "w" => "wednesday",
+            "r" => "thursday",
+            "f" => "friday",
+            "s" => "saturday"
+            );
+        
+        $dow_int_arr = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
+
+        $day_of_week_full = $dow_code_arr[$day_of_week];
+
+        if($dow_int_arr[$start_date_dow] == $day_of_week_full)
+        {
+            $schedule_start_datetime = strtotime($date_from);
+        }
+        else
+        {
+            $schedule_start_datetime = strtotime('next '.$day_of_week_full, strtotime($date_from));
+        }
+
+        $schedules = collect();
+
+        for($datetime_traverser = $schedule_start_datetime; $datetime_traverser <= strtotime($date_to); $datetime_traverser = strtotime('+1 week', $datetime_traverser))
+        {
+
+            $schedules->push(
+                [
+                    'class_id' => $class->id,
+                    'teacher_id' => $teacher_id,
+                    'date_from' => date('Y-m-d',  $datetime_traverser).' '.$class->time_from,
+                    'date_to' => date('Y-m-d',  $datetime_traverser).' '.$class->time_to,
+                    'status' => 0
+                ]
+            );
+        }
+
+        Schedule::insert($schedules->toArray());
+    }
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"

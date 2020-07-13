@@ -127,6 +127,31 @@ class AuthController extends Controller
 
     }
 
+
+    public function adminChangePassword(Request $request)
+    {
+
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::whereUsername($request->username);
+        $user = $user->first();
+   
+        $user->password = $request->password;
+        $user->save();
+
+        return response()->json(['success' => true]);
+        
+        /* to limit functionality to teacher and school admin oly
+        else
+        {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } */
+
+    }
+
     protected function respondWithToken($token)
     {
         return response()->json(

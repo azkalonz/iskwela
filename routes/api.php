@@ -61,7 +61,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/student/project-answers/{id}', 'Api\\AssignmentAnswerController@showProjectAnswer');
 
     // todo
-    Route::post('/class/save', 'Api\\ClassController@save');
+    //Route::post('/class/save', 'Api\\ClassController@save');
 
     //uploads
     Route::post('/upload/seatwork/material', 'Api\\FileController@seatworkMaterial');
@@ -181,5 +181,9 @@ Route::middleware('jwt')->group(function () {
 
     //reports
     Route::get('/reports/activity-scores', 'Api\\ReportController@activities');
+
+    //school admin user settings
+    Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
+    Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
 
 });

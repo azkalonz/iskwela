@@ -6,7 +6,13 @@ use League\Fractal\TransformerAbstract;
 
 class ScheduleTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['materials', 'activities', 'publishedSeatworks', 'lessonPlans', 'publishedProjects'];
+    protected $availableIncludes = ['materials'
+            , 'activities'
+            , 'publishedSeatworks'
+            , 'lessonPlans'
+            , 'publishedProjects'
+            , 'seatworks'
+            , 'projects'];
     /**
      * A Fractal transformer.
      *
@@ -43,9 +49,19 @@ class ScheduleTransformer extends TransformerAbstract
         return $this->collection($schedule->publishedSeatworks, new \App\Transformers\AssignmentTransformer);
     }
 
+    public function includeSeatworks(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->seatworks, new \App\Transformers\AssignmentTransformer);
+    }
+
     public function includePublishedProjects(\App\Models\Schedule $schedule)
     {
         return $this->collection($schedule->publishedProjects, new \App\Transformers\AssignmentTransformer);
+    }
+
+    public function includeProjects(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->projects, new \App\Transformers\AssignmentTransformer);
     }
 
     public function includeLessonPlans(\App\Models\Schedule $schedule)

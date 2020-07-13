@@ -13,6 +13,7 @@ use League\Fractal\Serializer\ArraySerializer;
 use \App\Models\Assignment;
 use \App\Models\AssignmentAnswer;
 use \App\Models\AssignmentMaterial;
+use \App\Models\SchoolGradingCategory;
 use \App\Transformers\AssignmentTransformer;
 use \App\Transformers\AssignmentMaterialTransformer;
 
@@ -170,10 +171,13 @@ class AssignmentController extends Controller
             'subject_id' => 'integer|required',
             'schedule_id' => 'integer|required',
             'class_id' => 'integer|required',
+            "grading_category" => 'integer|required',
             'total_score' => 'integer|required'
         ]);
 
         $user =  Auth::user();
+
+        $grading_category = SchoolGradingCategory::findOrFail($request->grading_category);
 
         $activity = Assignment::findOrNew($request->id);
         $activity->title = $request->title;
@@ -187,6 +191,7 @@ class AssignmentController extends Controller
         $activity->published = $request->published;
         $activity->total_score = $request->total_score;
         $activity->activity_type = $activity_type;
+        $activity->grading_category = $request->grading_category;
 
         $activity->save();
         $activity = Assignment::find($activity->id);
