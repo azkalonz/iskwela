@@ -13,7 +13,7 @@ class PostController extends Controller
     /**
      * Add/Edit a Post
      *
-     * @api {POST} HOST/api/post/save Post
+     * @api {POST} HOST/api/post/save Add/Edit Post
      * @apiVersion 1.0.0
      * @apiName savePost
      * @apiDescription Add/Edit a post
@@ -24,7 +24,7 @@ class PostController extends Controller
      * @apiParam {Number} id ID of Post. If exists, updates the specified post, otherwise, creates new.
      * @apiParam {Text} body Content of the post.
      * @apiParam {String=class} itemable_type The type of item the post belongs to
-     * @apiParam {Number} itemable_id ID of the item the post belongs to
+     * @apiParam {Number} itemable_id ID of the item the post belongs to. E.g. class ID
      *
      * @apiSuccess {Number} id Post ID
      * @apiSuccess {Text} body content of the post
@@ -79,15 +79,16 @@ class PostController extends Controller
     /**
      * Get details of a Post
      *
-     * @api {POST} HOST/api/post/:id Post
+     * @api {GET} HOST/api/post/:id?include=comments Get details of a Post
      * @apiVersion 1.0.0
      * @apiName getPost
-     * @apiDescription Get detail of a post
+     * @apiDescription Get details of a post
      * @apiGroup Post
      *
      * @apiUse JWTHeader
      *
      * @apiParam {Number} id ID of Post
+     * @apiParam {String=comments} [include] if specified, includes the comments in response data
      *
      * @apiSuccess {Number} id Post ID
      * @apiSuccess {Text} body content of the post
@@ -161,7 +162,7 @@ class PostController extends Controller
     /**
      * Get detail of Post
      *
-     * @api {POST} HOST/api/post/class/:id Posts of class
+     * @api {GET} HOST/api/post/class/:id?include=comments Get posts of a class
      * @apiVersion 1.0.0
      * @apiName getPostsOfClass
      * @apiDescription Get posts of selected class

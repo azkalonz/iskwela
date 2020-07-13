@@ -4302,6 +4302,727 @@ define({ "api": [
     }
   },
   {
+    "type": "GET",
+    "url": "HOST/api/comment/:id",
+    "title": "Get details of a Comment",
+    "version": "1.0.0",
+    "name": "getComment",
+    "description": "<p>Get detail of a comment</p>",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Comment</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Comment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>content of the comment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 51,\n    \"body\": \"This is a sample comment from Postman. Edited here.\",\n    \"created_at\": \"2020-07-13 21:04:57\",\n    \"updated_at\": \"2020-07-13 21:10:37\",\n    \"added_by\": {\n        \"id\": 7,\n        \"first_name\": \"davy\",\n        \"last_name\": \"castillo\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/CommentController.php",
+    "groupTitle": "Post",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "HOST/api/post/:id?include=comments",
+    "title": "Get details of a Post",
+    "version": "1.0.0",
+    "name": "getPost",
+    "description": "<p>Get details of a post</p>",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Post</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "comments"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the comments in response data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Post ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>content of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>list of comments of this post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "comments.id",
+            "description": "<p>Comment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "comments.body",
+            "description": "<p>content of the comment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "comments.created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "comments.updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments.added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "comments.added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "comments.added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "comments.added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 8,\n    \"body\": \"I know?' said Alice, 'a great girl like you,' (she might well say this), 'to go on crying in this way! Stop this moment, I tell you!' But she waited for a few yards off. The Cat only grinned when it.\",\n    \"created_at\": \"1981-10-29 00:30:58\",\n    \"updated_at\": \"1981-10-29 00:30:58\",\n    \"added_by\": {\n        \"id\": 10,\n        \"first_name\": \"teacher grace\",\n        \"last_name\": \"ungui\"\n    },\n    \"comments\": [\n        {\n            \"id\": 5,\n            \"body\": \"Dormouse, without considering at all for any lesson-books!' And so she went on, 'if you only walk long enough.' Alice felt that there was the White Rabbit; 'in fact, there's nothing written on the.\",\n            \"created_at\": \"1995-06-17 15:33:58\",\n            \"updated_at\": \"1995-06-17 15:33:58\",\n            \"added_by\": {\n                \"id\": 12,\n                \"first_name\": \"teacher davy\",\n                \"last_name\": \"castillo\"\n            }\n        },\n        {\n            \"id\": 46,\n            \"body\": \"Mock Turtle went on planning to herself 'It's the oldest rule in the middle. Alice kept her eyes anxiously fixed on it, and fortunately was just beginning to write this down on one knee as he shook.\",\n            \"created_at\": \"1983-04-30 18:26:19\",\n            \"updated_at\": \"1983-04-30 18:26:19\",\n            \"added_by\": {\n                \"id\": 4,\n                \"first_name\": \"davy\",\n                \"last_name\": \"castillo\"\n            }\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/PostController.php",
+    "groupTitle": "Post",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "HOST/api/post/class/:id?include=comments",
+    "title": "Get posts of a class",
+    "version": "1.0.0",
+    "name": "getPostsOfClass",
+    "description": "<p>Get posts of selected class</p>",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of class</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "comments"
+            ],
+            "optional": true,
+            "field": "include",
+            "description": "<p>if specified, includes the comments in response data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "posts",
+            "description": "<p>list of Posts</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "posts.id",
+            "description": "<p>Post ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "posts.body",
+            "description": "<p>content of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "posts.created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "posts.updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "posts.added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "posts.added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "posts.added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "posts.added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>list of comments of this post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "comments.id",
+            "description": "<p>Comment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "comments.body",
+            "description": "<p>content of the comment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "comments.created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "comments.updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "comments.added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "comments.added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "comments.added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "comments.added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"id\": 8,\n        \"body\": \"I know?' said Alice, 'a great girl like you,' (she might well say this), 'to go on crying in this way! Stop this moment, I tell you!' But she waited for a few yards off. The Cat only grinned when it.\",\n        \"created_at\": \"1981-10-29 00:30:58\",\n        \"updated_at\": \"1981-10-29 00:30:58\",\n        \"added_by\": {\n            \"id\": 10,\n            \"first_name\": \"teacher grace\",\n            \"last_name\": \"ungui\"\n        },\n        \"comments\": [\n            {\n                \"id\": 5,\n                \"body\": \"Dormouse, without considering at all for any lesson-books!' And so she went on, 'if you only walk long enough.' Alice felt that there was the White Rabbit; 'in fact, there's nothing written on the.\",\n                \"created_at\": \"1995-06-17 15:33:58\",\n                \"updated_at\": \"1995-06-17 15:33:58\",\n                \"added_by\": {\n                    \"id\": 12,\n                    \"first_name\": \"teacher davy\",\n                    \"last_name\": \"castillo\"\n                }\n            },\n            {\n                \"id\": 46,\n                \"body\": \"Mock Turtle went on planning to herself 'It's the oldest rule in the middle. Alice kept her eyes anxiously fixed on it, and fortunately was just beginning to write this down on one knee as he shook.\",\n                \"created_at\": \"1983-04-30 18:26:19\",\n                \"updated_at\": \"1983-04-30 18:26:19\",\n                \"added_by\": {\n                    \"id\": 4,\n                    \"first_name\": \"davy\",\n                    \"last_name\": \"castillo\"\n                }\n            }\n        ]\n    },\n    {\n        \"id\": 9,\n        \"body\": \"Alice. 'Why?' 'IT DOES THE BOOTS AND SHOES.' the Gryphon added 'Come, let's try the patience of an oyster!' 'I wish I hadn't mentioned Dinah!' she said to herself; 'his eyes are so VERY wide, but.\",\n        \"created_at\": \"1989-09-23 01:49:54\",\n        \"updated_at\": \"1989-09-23 01:49:54\",\n        \"added_by\": {\n            \"id\": 6,\n            \"first_name\": \"dhame\",\n            \"last_name\": \"amaya\"\n        },\n        \"comments\": [\n            {\n                \"id\": 4,\n                \"body\": \"Rabbit's little white kid gloves and a crash of broken glass. 'What a curious feeling!' said Alice; 'living at the March Hare, who had been all the while, and fighting for the hedgehogs; and in.\",\n                \"created_at\": \"1982-08-30 21:37:17\",\n                \"updated_at\": \"1982-08-30 21:37:17\",\n                \"added_by\": {\n                    \"id\": 11,\n                    \"first_name\": \"teacher jen\",\n                    \"last_name\": \"amaya\"\n                }\n            }\n        ]\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/PostController.php",
+    "groupTitle": "Post",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/comment/save",
+    "title": "Add/Edit a Comment",
+    "version": "1.0.0",
+    "name": "saveComment",
+    "description": "<p>Add/Edit a comment</p>",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Comment. If exists, updates the specified comment, otherwise, creates new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>Content of the comment.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>ID of the post.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Comment ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>content of the comment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "added_by",
+            "description": "<p>owner of the comment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 51,\n    \"body\": \"This is a sample comment from Postman. Edited here.\",\n    \"created_at\": \"2020-07-13 21:04:57\",\n    \"updated_at\": \"2020-07-13 21:10:37\",\n    \"added_by\": {\n        \"id\": 7,\n        \"first_name\": \"davy\",\n        \"last_name\": \"castillo\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/CommentController.php",
+    "groupTitle": "Post",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/post/save",
+    "title": "Add/Edit Post",
+    "version": "1.0.0",
+    "name": "savePost",
+    "description": "<p>Add/Edit a post</p>",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of Post. If exists, updates the specified post, otherwise, creates new.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>Content of the post.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "class"
+            ],
+            "optional": false,
+            "field": "itemable_type",
+            "description": "<p>The type of item the post belongs to</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "itemable_id",
+            "description": "<p>ID of the item the post belongs to. E.g. class ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Post ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Text",
+            "optional": false,
+            "field": "body",
+            "description": "<p>content of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "created_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "updated_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "added_by",
+            "description": "<p>owner of the post</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "added_by.id",
+            "description": "<p>id of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.first_name",
+            "description": "<p>first name of the owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "added_by.last_name",
+            "description": "<p>last name of the owner</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"id\": 11,\n    \"body\": \"This is a sample post from Postman. Edited here.\",\n    \"created_at\": \"2020-07-13 20:29:25\",\n    \"updated_at\": \"2020-07-13 20:30:20\",\n    \"added_by\": {\n        \"id\": 7,\n        \"first_name\": \"davy\",\n        \"last_name\": \"castillo\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/PostController.php",
+    "groupTitle": "Post",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "delete",
     "url": "<HOST>/api/questionnaire/delete/:id",
     "title": "Delete Questionnaire",

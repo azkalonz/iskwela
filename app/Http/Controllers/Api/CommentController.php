@@ -13,7 +13,7 @@ class CommentController extends Controller
     /**
      * Add/Edit a Comment
      *
-     * @api {POST} HOST/api/comment/save Comment
+     * @api {POST} HOST/api/comment/save Add/Edit a Comment
      * @apiVersion 1.0.0
      * @apiName saveComment
      * @apiDescription Add/Edit a comment
@@ -76,7 +76,7 @@ class CommentController extends Controller
     /**
      * Get details of a Comment
      *
-     * @api {POST} HOST/api/comment/:id Comment
+     * @api {GET} HOST/api/comment/:id Get details of a Comment
      * @apiVersion 1.0.0
      * @apiName getComment
      * @apiDescription Get detail of a comment
