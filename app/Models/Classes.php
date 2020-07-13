@@ -87,4 +87,11 @@ class Classes extends Model
         return $this->hasManyThrough(User::class, SectionStudent::class, 'user_id', 'id', 'id', 'user_id');
     }
 
+    /**
+     * Classes will have posts, but posts can be owned by classes or other models.
+     * This is why it is implemented as itemable.
+     */
+    public function posts() {
+        return $this->morphMany('App\Models\Post', 'itemable');
+    }
 }
