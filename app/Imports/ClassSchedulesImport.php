@@ -46,24 +46,41 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
         $section = Section::whereName($row[3])->first();
         $teacher = User::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), "=", $row[4])->first();
 
-        $class = Classes::firstOrCreate([
-            'name' => $row[0],
-            'year_id' => $year->id,
-            'teacher_id' => $teacher->id,
-            'created_by' => $teacher->id,
-            'updated_by' => $teacher->id,
-            'subject_id' => $subject->id,
-            'section_id' => $section->id,
-            'frequency' => $row[5],
-            'time_from' => Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s'),
-            'time_to' => Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s'),
-            'color' => get_random_color_theme(),
-            'room_number' => $this->generateRoom()
-        ]);
+        $class = Classes::where('name', $row[0])
+                    ->where('section_id', $section->id)
+                    ->where('subject_id', $subject->id)
+                    ->where('year_id', $year->id)
+                    ->first();
 
-        // generate class schedules from today til end of academic year
-        $schedules = $this->createClassSchedules($class, $teacher);
+        // if class already exist then update and don't create schedules
+        if($class) {
+            $class->teacher_id = $teacher->id;
+            $class->frequency = $row[5];
+            $class->time_from = Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s');
+            $class->time_to = Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s');
+            $class->save();
 
+            $class = Classes::find($class->id);
+        } else { // create new one and create schedules
+            $class = Classes::firstOrCreate([
+                'name' => $row[0],
+                'year_id' => $year->id,
+                'teacher_id' => $teacher->id,
+                'created_by' => $teacher->id,
+                'updated_by' => $teacher->id,
+                'subject_id' => $subject->id,
+                'section_id' => $section->id,
+                'frequency' => $row[5],
+                'time_from' => Carbon::instance(Date::excelToDateTimeObject($row[6]))->format('H:i:s'),
+                'time_to' => Carbon::instance(Date::excelToDateTimeObject($row[7]))->format('H:i:s'),
+                'color' => get_random_color_theme(),
+                'room_number' => $this->generateRoom()
+            ]);
+    
+            // generate class schedules from today til end of academic year
+            $schedules = $this->createClassSchedules($class, $teacher);
+        }
+        
         return $class;
     }
 

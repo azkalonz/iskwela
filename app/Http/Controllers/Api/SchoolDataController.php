@@ -74,10 +74,7 @@ class SchoolDataController extends Controller
 
             return response()->json($results);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'error' => $th->getMessage()
-            ]);
+            throw $th;
         }
     }
 }
