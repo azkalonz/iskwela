@@ -24,7 +24,9 @@ class FileController extends Controller
         'pdf',
         'doc',
         'docx',
-        'txt'
+        'txt',
+        'mpga', // mp3
+        'wav'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
