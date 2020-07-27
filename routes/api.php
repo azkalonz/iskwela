@@ -185,6 +185,7 @@ Route::middleware('jwt')->group(function () {
     //school admin user settings
     Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
     Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
+    Route::post('/schooladmin/section/add-student', 'Api\\SectionStudentController@add');
 
     // posts and comments
     Route::get('/post/{itemable_type}/{itemable_id}', 'Api\\PostController@getPostsOfItemable');

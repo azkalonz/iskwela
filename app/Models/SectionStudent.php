@@ -24,4 +24,9 @@ class SectionStudent extends Model
     {
         return $this->hasMany(AssignmentAnswer::class, 'student_id', 'user_id');
     }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
+    }
 }

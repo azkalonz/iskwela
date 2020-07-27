@@ -58,7 +58,7 @@ class StudentController extends Controller
             'student_id' => 'required|integer',
             'class_id' => 'required|integer'
         ]);
-		
+
 		$student_improvement = StudentImprovement::findOrNew($request->id);
 		$student_improvement->student_id = $request->student_id;
 		$student_improvement->class_id = $request->class_id;

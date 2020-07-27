@@ -373,8 +373,10 @@ class AssignmentController extends Controller
      */
     public function removeAssignmentMaterial(Request $request, int $activity_type)
     {
-        $assignment = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
-		$assignment_material = AssignmentMaterial::findOrFail($request->id);
+        //$assignment = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
+        $assignment_material = AssignmentMaterial::findOrFail($request->id);
+
+        $assignment = Assignment::whereId($assignment_material->assignment_id)->whereActivityType($activity_type)->firstOrFail();
 
         $assignment_material->delete();
         
