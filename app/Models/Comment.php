@@ -28,13 +28,13 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    /**
-     * The has Many Relationship
-     *
-     * @var array
-     */
-    public function replies()
-    {
-        return $this->hasMany(Comment::class, 'parent_id');
-    }
+    // /**
+    //  * The has Many Relationship
+    //  *
+    //  * @var array
+    //  */
+    // public function replies()
+    // {
+    //     return $this->hasMany(Comment::class, 'parent_id');
+    // }
 }
