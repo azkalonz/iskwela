@@ -190,7 +190,9 @@ Route::middleware('jwt')->group(function () {
     // posts and comments
     Route::get('/post/{itemable_type}/{itemable_id}', 'Api\\PostController@getPostsOfItemable');
     Route::get('/post/{id}', 'Api\\PostController@show');
+    Route::delete('/post/remove/{id}', 'Api\\PostController@remove');
     Route::post('/post/save', 'Api\\PostController@save');
     Route::get('/comment/{id}', 'Api\\CommentController@show');
+    Route::delete('/comment/remove/{id}', 'Api\\CommentController@remove');
     Route::post('/comment/save', 'Api\\CommentController@save');
 });

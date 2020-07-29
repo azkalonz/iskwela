@@ -80,4 +80,12 @@ class User extends Authenticatable implements JWTSubject
                 });
         });
     }
+
+    public function isTeacher() {
+        return ($this->user_type == UserType::TEACHER);
+    }
+
+    public function isStudent() {
+        return ($this->user_type == UserType::STUDENT);
+    }
 }

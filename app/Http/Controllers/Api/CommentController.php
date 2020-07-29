@@ -121,4 +121,47 @@ class CommentController extends Controller
         
        return response()->json($response);
     }
+
+    /**
+     * Remove Comment
+     *
+     * @api {Delete} HOST/api/comment/remove/:id Remove Comment
+     * @apiVersion 1.0.0
+     * @apiName RemoveComment
+     * @apiDescription Remove Comment. Only the owner of the comment can do this action.
+     * @apiGroup Post
+     *
+     * @apiParam {Number} id Comment ID.
+     *
+     * @apiSuccess {String} success returns true if coomment has been removed. Otherwise, returns error code 403.
+     *
+     *
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     *
+     *
+     */
+    public function remove(Request $request)
+    {
+        try {
+            $user =  Auth::user();
+            $comment = Comment::findOrFail($request->id);
+
+            if(
+                $comment &&
+                ($user->isTeacher() || $comment->created_by == $user->id) // if teacher or is owner
+            ) {
+                $comment->delete();
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['error' => 'Unable to remove comment.'], 403);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return response()->json(['error' => 'Unable to remove comment.'], 403);
+    }
 }

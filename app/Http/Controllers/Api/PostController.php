@@ -273,4 +273,47 @@ class PostController extends Controller
 
         return response()->json($response);
     }
+
+    /**
+     * Remove Post
+     *
+     * @api {Delete} HOST/api/post/remove/:id Remove Post
+     * @apiVersion 1.0.0
+     * @apiName RemovePost
+     * @apiDescription Remove Post. Only a teacher or the owner of the post can do this action.
+     * @apiGroup Post
+     *
+     * @apiParam {Number} id Post ID.
+     *
+     * @apiSuccess {String} success returns true if post has been removed. Otherwise, returns error code 403.
+     *
+     *
+     * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+     *
+     *
+     *
+     */
+    public function remove(Request $request)
+    {
+        try {
+            $user =  Auth::user();
+            $post = Post::findOrFail($request->id);
+
+            if(
+                $post &&
+                ($user->isTeacher() || $post->created_by == $user->id) // if teacher or is owner
+            ) {
+                $post->delete();
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['error' => 'Unable to remove post.'], 403);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return response()->json(['error' => 'Unable to remove post.'], 403);
+    }
 }
