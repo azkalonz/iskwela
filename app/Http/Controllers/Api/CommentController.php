@@ -33,6 +33,7 @@ class CommentController extends Controller
      * @apiSuccess {Number} added_by.id id of the owner
      * @apiSuccess {String} added_by.first_name first name of the owner
      * @apiSuccess {String} added_by.last_name last name of the owner
+     * @apiSuccess {String} added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
         {
@@ -43,7 +44,8 @@ class CommentController extends Controller
             "added_by": {
                 "id": 7,
                 "first_name": "davy",
-                "last_name": "castillo"
+                "last_name": "castillo",
+                "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
             }
         }
      * 
@@ -94,6 +96,7 @@ class CommentController extends Controller
      * @apiSuccess {Number} added_by.id id of the owner
      * @apiSuccess {String} added_by.first_name first name of the owner
      * @apiSuccess {String} added_by.last_name last name of the owner
+     * @apiSuccess {String} added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
         {
@@ -104,7 +107,8 @@ class CommentController extends Controller
             "added_by": {
                 "id": 7,
                 "first_name": "davy",
-                "last_name": "castillo"
+                "last_name": "castillo",
+                "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
             }
         }
      * 
@@ -128,7 +132,7 @@ class CommentController extends Controller
      * @api {Delete} HOST/api/comment/remove/:id Remove Comment
      * @apiVersion 1.0.0
      * @apiName RemoveComment
-     * @apiDescription Remove Comment. Only the owner of the comment can do this action.
+     * @apiDescription Remove Comment. IMPORTANT! Only the teacher or owner of the comment can do this action.
      * @apiGroup Post
      *
      * @apiParam {Number} id Comment ID.

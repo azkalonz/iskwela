@@ -34,6 +34,7 @@ class PostController extends Controller
      * @apiSuccess {Number} added_by.id id of the owner
      * @apiSuccess {String} added_by.first_name first name of the owner
      * @apiSuccess {String} added_by.last_name last name of the owner
+     * @apiSuccess {String} added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
         {
@@ -45,6 +46,7 @@ class PostController extends Controller
                 "id": 7,
                 "first_name": "davy",
                 "last_name": "castillo"
+                "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
             }
         }
      * 
@@ -98,6 +100,7 @@ class PostController extends Controller
      * @apiSuccess {Number} added_by.id id of the owner
      * @apiSuccess {String} added_by.first_name first name of the owner
      * @apiSuccess {String} added_by.last_name last name of the owner
+     * @apiSuccess {String} added_by.profile_picture avatar of the owner
      * @apiSuccess {Array} comments list of comments of this post
      * @apiSuccess {Number} comments.id Comment ID
      * @apiSuccess {Text} comments.body content of the comment
@@ -107,6 +110,7 @@ class PostController extends Controller
      * @apiSuccess {Number} comments.added_by.id id of the owner
      * @apiSuccess {String} comments.added_by.first_name first name of the owner
      * @apiSuccess {String} comments.added_by.last_name last name of the owner
+     * @apiSuccess {String} comments.added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
         {
@@ -117,7 +121,8 @@ class PostController extends Controller
             "added_by": {
                 "id": 10,
                 "first_name": "teacher grace",
-                "last_name": "ungui"
+                "last_name": "ungui",
+                "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
             },
             "comments": [
                 {
@@ -128,7 +133,8 @@ class PostController extends Controller
                     "added_by": {
                         "id": 12,
                         "first_name": "teacher davy",
-                        "last_name": "castillo"
+                        "last_name": "castillo",
+                        "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                     }
                 },
                 {
@@ -139,7 +145,8 @@ class PostController extends Controller
                     "added_by": {
                         "id": 4,
                         "first_name": "davy",
-                        "last_name": "castillo"
+                        "last_name": "castillo",
+                        "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                     }
                 }
             ]
@@ -182,6 +189,7 @@ class PostController extends Controller
      * @apiSuccess {Number} posts.added_by.id id of the owner
      * @apiSuccess {String} posts.added_by.first_name first name of the owner
      * @apiSuccess {String} posts.added_by.last_name last name of the owner
+     * @apiSuccess {String} posts.added_by.profile_picture avatar of the owner
      * @apiSuccess {Array} comments list of comments of this post
      * @apiSuccess {Number} comments.id Comment ID
      * @apiSuccess {Text} comments.body content of the comment
@@ -191,6 +199,7 @@ class PostController extends Controller
      * @apiSuccess {Number} comments.added_by.id id of the owner
      * @apiSuccess {String} comments.added_by.first_name first name of the owner
      * @apiSuccess {String} comments.added_by.last_name last name of the owner
+     * @apiSuccess {String} comments.added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
         [
@@ -202,7 +211,8 @@ class PostController extends Controller
                 "added_by": {
                     "id": 10,
                     "first_name": "teacher grace",
-                    "last_name": "ungui"
+                    "last_name": "ungui",
+                    "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                 },
                 "comments": [
                     {
@@ -213,7 +223,8 @@ class PostController extends Controller
                         "added_by": {
                             "id": 12,
                             "first_name": "teacher davy",
-                            "last_name": "castillo"
+                            "last_name": "castillo",
+                            "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                         }
                     },
                     {
@@ -224,7 +235,8 @@ class PostController extends Controller
                         "added_by": {
                             "id": 4,
                             "first_name": "davy",
-                            "last_name": "castillo"
+                            "last_name": "castillo",
+                            "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                         }
                     }
                 ]
@@ -237,7 +249,8 @@ class PostController extends Controller
                 "added_by": {
                     "id": 6,
                     "first_name": "dhame",
-                    "last_name": "amaya"
+                    "last_name": "amaya",
+                    "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                 },
                 "comments": [
                     {
@@ -248,7 +261,8 @@ class PostController extends Controller
                         "added_by": {
                             "id": 11,
                             "first_name": "teacher jen",
-                            "last_name": "amaya"
+                            "last_name": "amaya",
+                            "profile_picture": "https://iskwela.net/path/to/profile/pic.jpeg"
                         }
                     }
                 ]
@@ -280,7 +294,7 @@ class PostController extends Controller
      * @api {Delete} HOST/api/post/remove/:id Remove Post
      * @apiVersion 1.0.0
      * @apiName RemovePost
-     * @apiDescription Remove Post. Only a teacher or the owner of the post can do this action.
+     * @apiDescription Remove Post. IMPORTANT! Only a teacher or the owner of the post can do this action.
      * @apiGroup Post
      *
      * @apiParam {Number} id Post ID.
