@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
+use App\Models\UserPreference;
 
 class CommentTransformer extends TransformerAbstract
 {
@@ -11,6 +12,10 @@ class CommentTransformer extends TransformerAbstract
 
     public function transform(\App\Models\Comment $comment)
     {
+        if(!$comment->user->preference) {
+			$comment->user->preference = new UserPreference();
+        }
+
         return [
             'id' => $comment->id,
             'body' => $comment->body,
@@ -20,6 +25,7 @@ class CommentTransformer extends TransformerAbstract
                 'id' => $comment->user->id,
                 'first_name' => $comment->user->first_name,
                 'last_name' => $comment->user->last_name,
+                'profile_picture' => $comment->user->preference->profile_picture
             ]
         ];
     }
