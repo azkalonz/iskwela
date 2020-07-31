@@ -20,7 +20,7 @@ class FixSectionsData extends Migration
         $sections = DB::table('sections')
             ->join('classes', 'sections.id', '=', 'classes.section_id')
             ->join('users', 'users.id', '=', 'classes.teacher_id')
-            ->select('sections.id', 'sections.name', DB::raw('GROUP_CONCAT(DISTINCT users.school_id) AS schools'))
+            ->select('sections.id', DB::raw('GROUP_CONCAT(DISTINCT users.school_id) AS schools'))
             ->where('sections.school_id', 0)
             ->whereNull('classes.deleted_at')
             ->groupBy("sections.id")
