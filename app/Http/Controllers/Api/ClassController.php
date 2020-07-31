@@ -695,7 +695,7 @@ class ClassController extends Controller
         if($request->date_from && $request->date_to && $request->time_from && $request->time_to && $request->frequency)
         {
             //if schedule info is given in the request, generate schedules
-            $this->generateClassSchedules($class, $user, $previous_dow, $previous_date_to);
+            $this->generateClassSchedules($class, $request->teacher_id, $previous_dow, $previous_date_to);
         }
 
         $fractal = fractal()->item($class, new ClassesTransformer);
@@ -713,7 +713,7 @@ class ClassController extends Controller
         return $colors[ array_rand($colors) ];
     }
 
-    private function generateClassSchedules(Classes $class, User $teacher, Array $previous_dow, $previous_date_to)
+    private function generateClassSchedules(Classes $class, $teacher_id, Array $previous_dow, $previous_date_to)
     {
 
         //generate schedules only if there no exist schedules
@@ -739,7 +739,7 @@ class ClassController extends Controller
                 /* day of week schedule is new */
                 $date_from = $class->date_from;
                 $date_to = $previous_date_to ?? $class->date_to; /* if there exist a previous date to, use it. the new dates will be handled in if($previous_date_to) */
-                $this->createSchedulesByDayOfWeek($class, $teacher->id, $date_from, $date_to, $day_of_week);
+                $this->createSchedulesByDayOfWeek($class, $teacher_id, $date_from, $date_to, $day_of_week);
             }
 
             if($previous_date_to)
@@ -749,7 +749,7 @@ class ClassController extends Controller
                     //new schedules are added to the class
                     $date_from = Date("Y-m-d", strtotime("+1 day", strtotime($previous_date_to)));
                     $date_to = $class->date_to;
-                    $this->createSchedulesByDayOfWeek($class, $teacher->id, $date_from, $date_to, $day_of_week);
+                    $this->createSchedulesByDayOfWeek($class, $teacher_id, $date_from, $date_to, $day_of_week);
                 }
             }
         }
@@ -776,7 +776,8 @@ class ClassController extends Controller
         $schedules = Schedule::whereClassId($class->id)->where('date_from', '>=', Date("Y-m-d", time()))->update(
             [
                 'date_from' => DB::raw("concat(date(`date_from`), ' ".$class->time_from."')"),
-                'date_to' => DB::raw("concat(date(`date_to`), ' ".$class->time_to."')")
+                'date_to' => DB::raw("concat(date(`date_to`), ' ".$class->time_to."')"),
+                'teacher_id' => $class->teacher_id
             ]
         );
     }

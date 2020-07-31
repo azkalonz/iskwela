@@ -172,7 +172,7 @@ class AssignmentController extends Controller
             'schedule_id' => 'integer|required',
             'class_id' => 'integer|required',
             "grading_category" => 'integer|required',
-            'total_score' => 'integer|required'
+            'total_score' => 'integer|required|min:1'
         ]);
 
         $user =  Auth::user();
