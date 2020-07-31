@@ -15,4 +15,12 @@ class Section extends Model
     {
         return $this->hasMany(SectionStudent::class);
     }
+
+    /**
+     * Get the school where the section belongs to.
+     */
+    public function school()
+    {
+        return $this->belongsTo('App\Models\School', 'school_id');
+    }
 }
