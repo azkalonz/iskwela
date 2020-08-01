@@ -25,7 +25,6 @@ class StudentActivityGateway
     {
         try {
             $this->records = $this->records->map(function($rec) {
-
                 $student_activity = StudentActivityRecord::create($rec);
 
                 $answers = collect($rec['answers'])->map(function($ans) use ($student_activity){
@@ -48,7 +47,9 @@ class StudentActivityGateway
     public function setActivityAnswers($request)
     {
         $this->activity = StudentActivity::find($request->activity_id);
-        $this->records = collect($request->questionnaires)->map(function ($q) use ($request) {
+        $batch_id = uniqid(time(),$this->user->getKey());
+
+        $this->records = collect($request->questionnaires)->map(function ($q) use ($request, $batch_id) {
 
             $activity_record = [
                 'activity_id' => $request->activity_id,
@@ -60,6 +61,7 @@ class StudentActivityGateway
                 'end_time' => $request->end_time,
                 'perfect_score' => $this->getQuestionnaireTotalScore($q['questionnaire_id']),
                 'score' => $this->getStudentScore($q['answers']),
+                'batch' => $batch_id,
                 'answers' => $q['answers']
             ];
 

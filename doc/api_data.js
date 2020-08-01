@@ -6779,7 +6779,21 @@ define({ "api": [
             "group": "Success 200",
             "type": "Double",
             "optional": false,
-            "field": "scores.assignements",
+            "field": "scores.assignments",
+            "description": "<p>score percentage based on the date range</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "scores.projects",
+            "description": "<p>score percentage based on the date range</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "scores.seatworks",
             "description": "<p>score percentage based on the date range</p>"
           }
         ]
@@ -6787,7 +6801,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n\t{\n\t\t\"id\": 1,\n\t\t\"username\": \"jayson\",\n\t\t\"first_name\": \"jayson\",\n\t\t\"last_name\": \"barino\",\n\t\t\"scores\": {\n\t\t\t\"quizzes\": 0.583,\n\t\t\t\"periodicals\": 1,\n\t\t\t\"assignments\": 0.583\n\t\t}\n\t},\n\t{},\n\t{},\n\t{}\n]",
+          "content": "[\n\t{\n\t\t\"id\": 1,\n\t\t\"username\": \"jayson\",\n\t\t\"first_name\": \"jayson\",\n\t\t\"last_name\": \"barino\",\n\t\t\"scores\": {\n\t\t\t\"quizzes\": 0.583,\n\t\t\t\"periodicals\": 1,\n\t\t\t\"assignments\": 0.583\n\t\t\t\"project\": 0\n\t\t\t\"seatwork\": 0\n\t\t}\n\t},\n\t{},\n\t{},\n\t{}\n]",
           "type": "json"
         }
       ]
@@ -6923,6 +6937,125 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "<HOST>/api/reports/assignments",
+    "title": "Periodical Scores",
+    "version": "1.0.0",
+    "name": "AssignmentsScores",
+    "description": "<p>Returns scores of individual assignments</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the assignment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 24,\n\t\t\"published_at\": \"2020-07-12 18:04:05\",\n\t\t\"title\": \"assignment1 - written\",\n\t\t\"perfect_score\": \"12\",\n\t\t\"student_score\": 0,\n\t\t\"rating\": 0\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
     "url": "HOST/api/class/attendance/:id",
     "title": "Attendance Report",
     "version": "1.0.0",
@@ -7013,6 +7146,244 @@ define({ "api": [
     },
     "filename": "app/Http/Controllers/Api/AttendanceController.php",
     "groupTitle": "Reports"
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/reports/periodicals",
+    "title": "Periodical Scores",
+    "version": "1.0.0",
+    "name": "PeriodicalScores",
+    "description": "<p>Returns scores of individual periodical exams</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the periodical</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 23,\n\t\t\"published_at\": \"2020-07-12 18:03:33\",\n\t\t\"title\": \"periodical 1 - written\",\n\t\t\"perfect_score\": \"12\",\n\t\t\"student_score\": 0,\n\t\t\"rating\": 0\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/reports/quizzes",
+    "title": "Quiz Scores",
+    "version": "1.0.0",
+    "name": "QuizScores",
+    "description": "<p>Returns scores of individual quizzes</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the quiz</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 22,\n\t\t\"published_at\": \"2020-07-12 18:02:35\",\n\t\t\"title\": \"quiz1 - written\",\n\t\t\"perfect_score\": \"12\",\n\t\t\"student_score\": \"7\",\n\t\t\"rating\": 0.5833333333333334\n\t},\n\t{\n\t\t\"id\": 22,\n\t\t\"published_at\": \"2020-07-12 18:02:35\",\n\t\t\"title\": \"quiz1 - written\",\n\t\t\"perfect_score\": \"12\",\n\t\t\"student_score\": \"7\",\n\t\t\"rating\": 0.5833333333333334\n\t},\n\t{\n\t\t\"id\": 25,\n\t\t\"published_at\": \"2020-07-31 15:31:30\",\n\t\t\"title\": \"quiz4 - written\",\n\t\t\"perfect_score\": \"12\",\n\t\t\"student_score\": 0,\n\t\t\"rating\": 0\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "post",

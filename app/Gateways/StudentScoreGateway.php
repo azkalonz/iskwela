@@ -3,39 +3,51 @@
 namespace App\Gateways;
 
 use App\Models\User;
+use App\Models\Classes;
+
+use App\Models\ClassActivity;
 use App\TransferObjects\StudentScoreData;
+use App\TransferObjects\ActivityScoreData;
 
 class StudentScoreGateway
 {
-    protected $student_records;
-    protected $score_reports;
     protected $class_id;
+    protected $from;
+    protected $to;
 
     public function __construct(int $class_id, string $from, string $to)
     {
         $this->score_reports = collect();
         $this->class_id = $class_id;
-        $this->student_records = User::with([
-                    'activityRecords' => function($query) use ($from, $to) {
-                                            $query->whereBetween('start_time', [$from, $to]);
-                                        }
-                    ])->inClass($this->class_id)->get();
+        $this->from = $from;
+        $this->to = $to;
+
     }
 
     /**
-     * classfies activities into quizze, periodical, assignment, etc
+     * calculate scores all of activities: quizzes, assigments, projects, seatwork, periodical
      */
     public function getActivityScores()
     {
-        $this->score_reports = $this->student_records->map(function($rec) {
-            
+        $student_records = User::with([
+                        'scoreReport' => function($query) {
+                            $query->whereBetween('date_created',  [$this->from, $this->to])
+                                  ->whereClassId($this->class_id);
+                        }
+                    ])->inClass($this->class_id)->get();
+
+        $score_reports = $student_records->map(function($rec) {
+
             $quizzes = collect();
             $periodicals = collect();
             $assignments = collect();
+            $seatworks = collect();
+            $projects = collect();
             $student_records = [];
 
-            $rec->activityRecords->map(function($act) use (&$quizzes, &$periodicals, &$assignments, &$student_records) {
-                $activity_type = $act->studentActivity->activity_type;
+            $rec->scoreReport->map(function($act) use (&$quizzes, &$periodicals, &$assignments, &$seatworks, &$projects, &$student_records) {
+                $activity_type = $act->activity_type;
+
                 switch($activity_type) {
                     case 1:
                         $quizzes->push($act);
@@ -46,13 +58,20 @@ class StudentScoreGateway
                     case 3:
                         $assignments->push($act);
                         break;
+                    case 4:
+                        $seatworks->push($act);
+                        break;
+                    case 5:
+                        $projects->push($act);
+                        break;
                 }
             });
 
-            $student_records['quizzes'] = ($quizzes->sum('score')) ? (ROUND($quizzes->sum('score')/$quizzes->sum('perfect_score'), 3)) : 0;
-            $student_records['periodicals'] = ($periodicals->sum('score')) ? (ROUND($periodicals->sum('score')/$periodicals->sum('perfect_score'), 3)) : 0;
-            $student_records['assignments'] = ($assignments->sum('score')) ? (ROUND($assignments->sum('score')/$assignments->sum('perfect_score'), 3)) : 0; 
-
+            $student_records['quizzes'] = ($quizzes->sum('achieved_score')) ? (ROUND($quizzes->sum('achieved_score')/$quizzes->sum('perfect_score'), 3)) : 0;
+            $student_records['periodicals'] = ($periodicals->sum('achieved_score')) ? (ROUND($periodicals->sum('achieved_score')/$periodicals->sum('perfect_score'), 3)) : 0;
+            $student_records['assignments'] = ($assignments->sum('achieved_score')) ? (ROUND($assignments->sum('achieved_score')/$assignments->sum('perfect_score'), 3)) : 0; 
+            $student_records['seatworks'] = ($seatworks->sum('achieved_score')) ? (ROUND($seatworks->sum('achieved_score')/$seatworks->sum('perfect_score'), 3)) : 0; 
+            $student_records['projects'] = ($projects->sum('achieved_score')) ? (ROUND($projects->sum('achieved_score')/$projects->sum('perfect_score'), 3)) : 0; 
 
             $rec->activityRecords = collect($student_records);
 
@@ -67,6 +86,33 @@ class StudentScoreGateway
                 );
         });
 
-        return $this->score_reports;
+        return $score_reports;
     }
+   
+    /**
+     * returns the individual scores of the activity
+     */
+    public function getScores(int $user_id, int $activity_type)
+    {
+        $activity = ClassActivity::selectRaw(
+                'student_activities.id,
+                class_activities.published_at,
+                student_activities.title,
+                student_activities.perfect_score,
+                sum(student_activity_records.score) as total_score,
+                sum(student_activity_records.score )/student_activities.perfect_score as rating'
+            )
+            ->type($activity_type, $this->class_id, $user_id)
+            ->whereBetween('class_activities.published_at', [$this->from, $this->to])
+            ->groupBy(['class_activities.student_activity_id', 'class_activities.published_at', 'student_activity_records.batch'])
+            ->get();
+
+        $activity = $activity->map(function($act) {
+            return ActivityScoreData::create($act->toArray());
+        });
+
+        return $activity;
+    }
+
+
 }

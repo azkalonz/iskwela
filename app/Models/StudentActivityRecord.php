@@ -17,6 +17,7 @@ class StudentActivityRecord extends Model
         'start_time',
         'end_time',
         'perfect_score',
+        'batch',
         'score'
     ];
 

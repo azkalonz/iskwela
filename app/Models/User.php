@@ -88,4 +88,9 @@ class User extends Authenticatable implements JWTSubject
     public function isStudent() {
         return ($this->user_type == UserType::STUDENT);
     }
+    
+    public function scoreReport()
+    {
+        return $this->hasMany(ScoreReportRecordView::class, 'user_id');
+    }
 }

@@ -11,6 +11,7 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
 use App\Models\StudentActivity;
+use App\Models\Questionnaire;
 use App\Models\StudentActivityQuestionnaire;
 use App\Models\ClassActivity;
 use App\Transformers\StudentActivityTransformer;
@@ -1794,6 +1795,7 @@ class StudentActivityController extends Controller
 		$student_activity->created_by = $user->getKey();
 		$student_activity->school_id = $user->school_id;
 		$student_activity->activity_type = $activity_type;
+		$student_activity->perfect_score = $this->getActivityTotalScore($request->questionnaires);
 		
 		if($student_activity->save() && $request->questionnaires) {
 			$this->attachQuestionnaireToActivity($request->questionnaires, $student_activity);
@@ -1812,6 +1814,20 @@ class StudentActivityController extends Controller
 			$sta->questionnaire_id = $qnr['id'];
 			$sta->save();
 		});
+	}
+
+	private function getActivityTotalScore(array $questionnaires)
+	{
+		$perfect_score = 0;
+
+		collect($questionnaires)->map(function($qs) use (&$perfect_score) {
+			$questionnaire = Questionnaire::find($qs['id']);
+			$questionnaire->questions->map(function ($q) use (&$perfect_score) {
+				$perfect_score += $q->pivot->weight;
+			});
+		});
+
+        return $perfect_score;
 	}
 
 	/**
