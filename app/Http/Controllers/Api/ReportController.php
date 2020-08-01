@@ -197,7 +197,7 @@ class ReportController extends Controller
 	/**
      * Reports
      *
-     * @api {get} <HOST>/api/reports/assignments Periodical Scores
+     * @api {get} <HOST>/api/reports/assignments Assignment Scores
      * @apiVersion 1.0.0
      * @apiName AssignmentsScores
      * @apiDescription Returns scores of individual assignments

@@ -6938,7 +6938,7 @@
   {
     "type": "get",
     "url": "<HOST>/api/reports/assignments",
-    "title": "Periodical Scores",
+    "title": "Assignment Scores",
     "version": "1.0.0",
     "name": "AssignmentsScores",
     "description": "<p>Returns scores of individual assignments</p>",
