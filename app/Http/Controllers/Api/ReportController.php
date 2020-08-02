@@ -85,7 +85,10 @@ class ReportController extends Controller
 			$request->to = $schedule->end;
 		} 
 
-		$sg = new StudentScoreGateway($request->class_id, $request->from, $request->to);
+		$start = (new \DateTime($request->from))->setTime(0,0,0);
+		$end = (new \DateTime($request->to))->setTime(23,59,59);
+
+		$sg = new StudentScoreGateway($request->class_id, $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'));
 		$student_scores = $sg->getActivityScores();
 
 		$fractal = fractal()->collection($student_scores, new StudentScoreGatewayTransformer);
@@ -251,7 +254,11 @@ class ReportController extends Controller
 			$request->from = $schedule->start;
 			$request->to = $schedule->end;
 		} 
-		$sg = new StudentScoreGateway($request->class_id, $request->from, $request->to);
+
+		$start = (new \DateTime($request->from))->setTime(0,0,0);
+		$end = (new \DateTime($request->to))->setTime(23,59,59);
+
+		$sg = new StudentScoreGateway($request->class_id, $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'));
 		$student_scores = $sg->getScores($request->user_id, $activity_type);
 		$fractal = fractal()->collection($student_scores, new ActivityScoreDataTransformer);
 
