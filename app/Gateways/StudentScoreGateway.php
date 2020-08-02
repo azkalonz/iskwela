@@ -4,6 +4,7 @@ namespace App\Gateways;
 
 use App\Models\User;
 use App\Models\Classes;
+use App\Models\Assignment;
 
 use App\Models\ClassActivity;
 use App\TransferObjects\StudentScoreData;
@@ -90,7 +91,7 @@ class StudentScoreGateway
     }
    
     /**
-     * returns the individual scores of the activity
+     * returns the individual scores of the activity: assignment, periodical, quizzes
      */
     public function getScores(int $user_id, int $activity_type)
     {
@@ -106,6 +107,36 @@ class StudentScoreGateway
             ->whereBetween('class_activities.published_at', [$this->from, $this->to])
             ->groupBy(['student_activities.id','student_activities.title','student_activities.perfect_score','class_activities.student_activity_id', 'class_activities.published_at', 'student_activity_records.batch'])
             ->get();
+
+        $activity = $activity->map(function($act) {
+            return ActivityScoreData::create($act->toArray());
+        });
+
+        return $activity;
+    }
+
+    /**
+     * return scores for projects and seatworks
+     */
+    public function getClassActivityScores(int $user_id, int $activity_type)
+    {
+        $activity = Assignment::selectRaw(
+            'assignments.id,
+            assignments.available_from as published_at,
+            assignments.title,
+            assignments.total_score as perfect_score,
+            sum(student_activity_scores.score) as total_score,
+            sum(student_activity_scores.score )/assignments.total_score as rating'
+        )
+        ->score($activity_type, $this->class_id, $user_id)
+        ->whereBetween('assignments.available_from', [$this->from, $this->to])
+        ->groupBy([
+            'assignments.id',
+            'assignments.available_from',
+            'assignments.title',
+            'assignments.total_score',
+        ])
+        ->get();
 
         $activity = $activity->map(function($act) {
             return ActivityScoreData::create($act->toArray());

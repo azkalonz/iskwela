@@ -264,4 +264,33 @@ class ReportController extends Controller
 
         return response()->json($fractal->toArray());
 	}
+
+	public function seatworks(Request $request)
+	{
+		$this->validate($request, [
+			'class_id' => 'integer|integer',
+			'user_id' => 'integer|required',
+			'from' => 'string',
+			'to' => 'string'
+		]);
+
+		if(!$request->from || !$request->to) {
+			$schedule = Schedule::selectRaw("MIN(date_from) AS start, MAX(date_to) AS end")
+					->whereClassId($request->class_id)->first();
+			$request->from = $schedule->start;
+			$request->to = $schedule->end;
+		} 
+
+		$start = (new \DateTime($request->from))->setTime(0,0,0);
+		$end = (new \DateTime($request->to))->setTime(23,59,59);
+
+		$sg = new StudentScoreGateway($request->class_id, $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'));
+
+		$activity_type = 1;
+
+		$student_scores = $sg->getSeatworksScores($request->user_id, $activity_type);
+		$fractal = fractal()->collection($student_scores, new ActivityScoreDataTransformer);
+
+        return response()->json($fractal->toArray());
+	}
 }

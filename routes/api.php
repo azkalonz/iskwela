@@ -184,6 +184,8 @@ Route::middleware('jwt')->group(function () {
     Route::get('/reports/quizzes', 'Api\\ReportController@quizzes');
     Route::get('/reports/periodicals', 'Api\\ReportController@periodicals');
     Route::get('/reports/assignments', 'Api\\ReportController@assignments');
+    Route::get('/reports/seatworks', 'Api\\ReportController@seatworks');
+    Route::get('/reports/projects', 'Api\\ReportController@projects');
 
     //school admin user settings
     Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
