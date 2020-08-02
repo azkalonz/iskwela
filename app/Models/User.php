@@ -93,4 +93,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ScoreReportRecordView::class, 'user_id');
     }
+
+    public function children()
+    {
+        return $this->hasMany(StudentParent::class, 'parent_id', 'id');
+    }
 }

@@ -6,7 +6,7 @@ use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
-	protected $availableIncludes = ['classes'];
+	protected $availableIncludes = ['classes', 'children'];
 	protected $defaultIncludes = ['preferences'];
     public function transform(\App\Models\User $user)
     {
@@ -18,7 +18,6 @@ class UserTransformer extends TransformerAbstract
 			'user_type' => $user->user_type,
 			'username' => $user->username,
 			'email' => $user->email,
-			'phone_number' => $user->phone_number,
 			'phone_number' => $user->phone_number,
 			'status' => $user->status
 		];
@@ -36,4 +35,10 @@ class UserTransformer extends TransformerAbstract
 		}
 		return $this->item($user->preference, new \App\Transformers\UserPreferenceTransformer);
 	}
+
+	public function includeChildren(\App\Models\User $user)
+	{
+		return $this->collection($user->children, new \App\Transformers\StudentParentTransformer);
+	}
+
 }

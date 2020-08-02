@@ -42,92 +42,37 @@ class StudentActivityScoreController extends Controller
     }
 
     /**
-     * Set Activity Score
+     * Seatworks
      *
-     * @api {get} HOST/class/activity/set-score Set Activity Score
+     * @api {post} <HOST>/api/class/seatwork/set-score Set Seatwork Score
      * @apiVersion 1.0.0
-     * @apiName SetActivityScore
-     * @apiDescription Set activity score of a student.
-     * @apiGroup Activities
+     * @apiName SetSeatworkScore
+     * @apiDescription Sets a student seatwork score
+     * @apiGroup Seatworks
      *
-     * @apiParam {Number} id Activity ID
-     * @apiParam {Number} student_id Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID
+     * @apiUse JWTHeader
      *
-     * @apiSuccess {Number} id Activity Answer ID
-     * @apiSuccess {String} assignment_id Activity ID
-     * @apiSuccess {String} answer_media download link of the answer file
-     * @apiSuccess {Object} student 
-     * @apiSuccess {Number} student.id ID of Student 
-     * @apiSuccess {Number} student.first_name First Name of Student 
-     * @apiSuccess {Number} student.last_name Last Name of Student 
+     * @apiParam {Number} score score of the student
+     * @apiParam {Number} student_id user ID of the student
+     * @apiParam {Number} activity_id activity ID
+     *
+     * @apiSuccess {Number} id the user's ID
+     * @apiSuccess {DateTime} published_at
+     * @apiSuccess {String} title
+     * @apiSuccess {Number} perfect_score the expected total score of the project
+     * @apiSuccess {Number} student_score the score achieved by the student
+     * @apiSuccess {Number} rating the percentage rate
+     * 
      * 
      * @apiSuccessExample {json} Sample Response
-        [
-            {
-                "id": 1,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/1",
-                "student": {
-                    "id": 1,
-                    "first_name": "jayson",
-                    "last_name": "barino"
-                }
-            },
-            {
-                "id": 2,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/2",
-                "student": {
-                    "id": 2,
-                    "first_name": "grace",
-                    "last_name": "ungui"
-                }
-            }
-        ]
-     *
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
      * 
-     * 
-     */
-
-    /**
-     * Show Activity Answers
-     *
-     * @api {get} HOST/student/activity-answers/:id Show Activity Answer
-     * @apiVersion 1.0.0
-     * @apiName ShowActivityAnswer
-     * @apiDescription Get student's activity answers.
-     * @apiGroup Student Classes
-     *
-     * @apiParam {Number} id Activity ID
-     *
-     * @apiSuccess {Number} id Activity Answer ID
-     * @apiSuccess {String} assignment_id Activity ID
-     * @apiSuccess {String} answer_media download link of the answer file
-     * @apiSuccess {Object} student 
-     * @apiSuccess {Number} student.id ID of Student 
-     * @apiSuccess {Number} student.first_name First Name of Student 
-     * @apiSuccess {Number} student.last_name Last Name of Student 
-     * 
-     * @apiSuccessExample {json} Sample Response
-        [
-            {
-                "id": 1,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/1",
-                "student": {
-                    "id": 1,
-                    "first_name": "jayson",
-                    "last_name": "barino"
-                }
-            }
-        ]
-     *
-     * 
-     * 
-     */
-    /**
-     * @apiDefine JWTHeader
-     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
      */
     public function setScore(Request $request, $activity_type)
     {

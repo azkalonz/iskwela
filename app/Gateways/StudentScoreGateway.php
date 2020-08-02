@@ -122,7 +122,7 @@ class StudentScoreGateway
     {
         $activity = Assignment::selectRaw(
             'assignments.id,
-            assignments.available_from as published_at,
+            concat(assignments.available_from," 00:00:00") as published_at,
             assignments.title,
             assignments.total_score as perfect_score,
             sum(student_activity_scores.score) as total_score,
@@ -130,6 +130,7 @@ class StudentScoreGateway
         )
         ->score($activity_type, $this->class_id, $user_id)
         ->whereBetween('assignments.available_from', [$this->from, $this->to])
+        ->wherePublished(1)
         ->groupBy([
             'assignments.id',
             'assignments.available_from',

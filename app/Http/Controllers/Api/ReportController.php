@@ -21,6 +21,8 @@ class ReportController extends Controller
 	const QUIZ = 1;
 	const PERIODICAL = 2;
 	const ASSIGNMENT = 3;
+	const SEATWORK = 1;
+	const PROJECT = 2;
 
 	/**
      * Reports
@@ -265,7 +267,107 @@ class ReportController extends Controller
         return response()->json($fractal->toArray());
 	}
 
+	/**
+     * Reports
+     *
+     * @api {get} <HOST>/api/reports/seatworks Seatwork scores
+     * @apiVersion 1.0.0
+     * @apiName SeatworkScores
+     * @apiDescription Returns scores of individual seatworks
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} class_id the class ID
+     * @apiParam {Number} user_id the user ID
+     * @apiParam {Date=YYYY-mm-dd} [from] date filter; default value = class start_date
+     * @apiParam {Date=YYYY-mm-dd} [to] date filter; default value = class end_date
+     *
+     * @apiSuccess {Number} id the user's ID
+     * @apiSuccess {DateTime} published_at
+     * @apiSuccess {String} title
+     * @apiSuccess {Number} perfect_score the expected total score of the seatwork
+     * @apiSuccess {Number} student_score the score achieved by the student
+     * @apiSuccess {Number} rating the percentage rate
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"id": 4,
+				"published_at": "2020-06-30 00:00:00",
+				"title": "New Seatwork Test",
+				"perfect_score": 100,
+				"student_score": "76",
+				"rating": "0.7600"
+			},
+			{
+				"id": 9,
+				"published_at": "2020-06-30 00:00:00",
+				"title": "New Seatwork Test - min score",
+				"perfect_score": 1,
+				"student_score": 0,
+				"rating": 0
+			}
+		]
+     * 
+     */
 	public function seatworks(Request $request)
+	{
+		return $this->getClassActivityScores($request, self::SEATWORK);
+	}
+
+	/**
+     * Reports
+     *
+     * @api {get} <HOST>/api/reports/projects Project scores
+     * @apiVersion 1.0.0
+     * @apiName ProjectScores
+     * @apiDescription Returns scores of individual projects
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} class_id the class ID
+     * @apiParam {Number} user_id the user ID
+     * @apiParam {Date=YYYY-mm-dd} [from] date filter; default value = class start_date
+     * @apiParam {Date=YYYY-mm-dd} [to] date filter; default value = class end_date
+     *
+     * @apiSuccess {Number} id the user's ID
+     * @apiSuccess {DateTime} published_at
+     * @apiSuccess {String} title
+     * @apiSuccess {Number} perfect_score the expected total score of the project
+     * @apiSuccess {Number} student_score the score achieved by the student
+     * @apiSuccess {Number} rating the percentage rate
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		[
+			{
+				"id": 4,
+				"published_at": "2020-06-30 00:00:00",
+				"title": "New Project Test",
+				"perfect_score": 100,
+				"student_score": "76",
+				"rating": "0.7600"
+			},
+			{
+				"id": 9,
+				"published_at": "2020-06-30 00:00:00",
+				"title": "New Project Test - min score",
+				"perfect_score": 1,
+				"student_score": 0,
+				"rating": 0
+			}
+		]
+     * 
+     */
+	public function projects(Request $request)
+	{
+		return $this->getClassActivityScores($request, self::PROJECT);
+	}
+
+	private function getClassActivityScores(Request $request, $activity_type)
 	{
 		$this->validate($request, [
 			'class_id' => 'integer|integer',
@@ -286,9 +388,7 @@ class ReportController extends Controller
 
 		$sg = new StudentScoreGateway($request->class_id, $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'));
 
-		$activity_type = 1;
-
-		$student_scores = $sg->getSeatworksScores($request->user_id, $activity_type);
+		$student_scores = $sg->getClassActivityScores($request->user_id, $activity_type);
 		$fractal = fractal()->collection($student_scores, new ActivityScoreDataTransformer);
 
         return response()->json($fractal->toArray());

@@ -178,6 +178,7 @@ Route::middleware('jwt')->group(function () {
     Route::delete('/schooladmin/subject-grading-category/remove/{id}', 'Api\\SubjectGradingCategoryController@remove');
     Route::get('/schooladmin/school-grading-categories', 'Api\\SchoolGradingCategoryController@show');
     Route::get('/schooladmin/subject-grading-categories/{id}', 'Api\\SubjectGradingCategoryController@show');
+    Route::post('schooladmin/parent/add-child', 'Api\\StudentParentController@save');
 
     //reports
     Route::get('/reports/activity-scores', 'Api\\ReportController@activities');
