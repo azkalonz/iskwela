@@ -104,7 +104,7 @@ class StudentScoreGateway
             )
             ->type($activity_type, $this->class_id, $user_id)
             ->whereBetween('class_activities.published_at', [$this->from, $this->to])
-            ->groupBy(['class_activities.student_activity_id', 'class_activities.published_at', 'student_activity_records.batch'])
+            ->groupBy(['student_activities.id','class_activities.student_activity_id', 'class_activities.published_at', 'student_activity_records.batch'])
             ->get();
 
         $activity = $activity->map(function($act) {

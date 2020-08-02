@@ -14,7 +14,7 @@ use App\Gateways\StudentScoreGateway;
 use App\Transformers\StudentScoreGatewayTransformer;
 use App\Transformers\ActivityScoreDataTransformer;
 
-use App\Models\Classes;
+use App\Models\Schedule;
 
 class ReportController extends Controller
 {
@@ -79,10 +79,10 @@ class ReportController extends Controller
 		]);
 
 		if(!$request->from || !$request->to) {
-			$class = Classes::find($request->class_id);
-
-			$request->from = $class->date_from;
-			$request->to = $class->date_to;
+			$schedule = Schedule::selectRaw("MIN(date_from) AS start, MAX(date_to) AS end")
+					->whereClassId($request->class_id)->first();
+			$request->from = $schedule->start;
+			$request->to = $schedule->end;
 		} 
 
 		$sg = new StudentScoreGateway($request->class_id, $request->from, $request->to);
@@ -246,11 +246,11 @@ class ReportController extends Controller
 		]);
 
 		if(!$request->from || !$request->to) {
-			$class = Classes::find($request->class_id);
-
-			$request->from = $class->date_from;
-			$request->to = $class->date_to;
-		}
+			$schedule = Schedule::selectRaw("MIN(date_from) AS start, MAX(date_to) AS end")
+					->whereClassId($request->class_id)->first();
+			$request->from = $schedule->start;
+			$request->to = $schedule->end;
+		} 
 		$sg = new StudentScoreGateway($request->class_id, $request->from, $request->to);
 		$student_scores = $sg->getScores($request->user_id, $activity_type);
 		$fractal = fractal()->collection($student_scores, new ActivityScoreDataTransformer);
