@@ -2,6 +2,14 @@
 
 return [
     'tables' => [
-        // table names for generating bread seeders.
+        'admins',
+        'data_types',
+        'data_rows',
+        'menus',
+        'menu_items',
+        'roles',
+        'permissions',
+        'permission_role',
+        'settings'
     ],
 ];
