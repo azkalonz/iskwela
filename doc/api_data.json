@@ -1,98 +1,5 @@
 [
   {
-    "type": "get",
-    "url": "HOST/class/activity/set-score",
-    "title": "Set Activity Score",
-    "version": "1.0.0",
-    "name": "SetActivityScore",
-    "description": "<p>Set activity score of a student.</p>",
-    "group": "Activities",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Activity ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "student_id",
-            "description": "<p>Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Activity Answer ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "assignment_id",
-            "description": "<p>Activity ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "answer_media",
-            "description": "<p>download link of the answer file</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "student",
-            "description": ""
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.id",
-            "description": "<p>ID of Student</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.first_name",
-            "description": "<p>First Name of Student</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.last_name",
-            "description": "<p>Last Name of Student</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    },\n    {\n        \"id\": 2,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/2\",\n        \"student\": {\n            \"id\": 2,\n            \"first_name\": \"grace\",\n            \"last_name\": \"ungui\"\n        }\n    }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/StudentActivityScoreController.php",
-    "groupTitle": "Activities"
-  },
-  {
     "type": "POST",
     "url": "HOST/api/class/activity/:id",
     "title": "Activity Detail",
@@ -7268,6 +7175,125 @@
   },
   {
     "type": "get",
+    "url": "<HOST>/api/reports/projects",
+    "title": "Project scores",
+    "version": "1.0.0",
+    "name": "ProjectScores",
+    "description": "<p>Returns scores of individual projects</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 4,\n\t\t\"published_at\": \"2020-06-30 00:00:00\",\n\t\t\"title\": \"New Project Test\",\n\t\t\"perfect_score\": 100,\n\t\t\"student_score\": \"76\",\n\t\t\"rating\": \"0.7600\"\n\t},\n\t{\n\t\t\"id\": 9,\n\t\t\"published_at\": \"2020-06-30 00:00:00\",\n\t\t\"title\": \"New Project Test - min score\",\n\t\t\"perfect_score\": 1,\n\t\t\"student_score\": 0,\n\t\t\"rating\": 0\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
     "url": "<HOST>/api/reports/quizzes",
     "title": "Quiz Scores",
     "version": "1.0.0",
@@ -7505,6 +7531,125 @@
     },
     "filename": "app/Http/Controllers/Api/AttendanceController.php",
     "groupTitle": "Reports"
+  },
+  {
+    "type": "get",
+    "url": "<HOST>/api/reports/seatworks",
+    "title": "Seatwork scores",
+    "version": "1.0.0",
+    "name": "SeatworkScores",
+    "description": "<p>Returns scores of individual seatworks</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "from",
+            "description": "<p>date filter; default value = class start_date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "allowedValues": [
+              "YYYY-mm-dd"
+            ],
+            "optional": true,
+            "field": "to",
+            "description": "<p>date filter; default value = class end_date</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the seatwork</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 4,\n\t\t\"published_at\": \"2020-06-30 00:00:00\",\n\t\t\"title\": \"New Seatwork Test\",\n\t\t\"perfect_score\": 100,\n\t\t\"student_score\": \"76\",\n\t\t\"rating\": \"0.7600\"\n\t},\n\t{\n\t\t\"id\": 9,\n\t\t\"published_at\": \"2020-06-30 00:00:00\",\n\t\t\"title\": \"New Seatwork Test - min score\",\n\t\t\"perfect_score\": 1,\n\t\t\"student_score\": 0,\n\t\t\"rating\": 0\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/ReportController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "POST",
@@ -7990,6 +8135,112 @@
     },
     "filename": "app/Http/Controllers/Api/ScheduleController.php",
     "groupTitle": "Schedule",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/class/seatwork/set-score",
+    "title": "Set Seatwork Score",
+    "version": "1.0.0",
+    "name": "SetSeatworkScore",
+    "description": "<p>Sets a student seatwork score</p>",
+    "group": "Seatworks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>score of the student</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>user ID of the student</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>activity ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the user's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "published_at",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the expected total score of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_score",
+            "description": "<p>the score achieved by the student</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>the percentage rate</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "\t\t{\n            \"id\": 2,\n            \"student_id\": \"2\",\n            \"activity_id\": \"4\",\n            \"score\": \"80\",\n            \"score_percentage\": 0.8\n        }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityScoreController.php",
+    "groupTitle": "Seatworks",
     "header": {
       "fields": {
         "Header": [
@@ -9062,92 +9313,6 @@
       ]
     },
     "filename": "app/Http/Controllers/Api/AssignmentAnswerController.php",
-    "groupTitle": "Student_Classes"
-  },
-  {
-    "type": "get",
-    "url": "HOST/student/activity-answers/:id",
-    "title": "Show Activity Answer",
-    "version": "1.0.0",
-    "name": "ShowActivityAnswer",
-    "description": "<p>Get student's activity answers.</p>",
-    "group": "Student_Classes",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Activity ID</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Activity Answer ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "assignment_id",
-            "description": "<p>Activity ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "answer_media",
-            "description": "<p>download link of the answer file</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "student",
-            "description": ""
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.id",
-            "description": "<p>ID of Student</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.first_name",
-            "description": "<p>First Name of Student</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "student.last_name",
-            "description": "<p>Last Name of Student</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 1,\n        \"assignment_id\": 1,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/1\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/Http/Controllers/Api/StudentActivityScoreController.php",
     "groupTitle": "Student_Classes"
   },
   {
