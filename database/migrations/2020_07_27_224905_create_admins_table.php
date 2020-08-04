@@ -23,7 +23,6 @@ class CreateAdminsTable extends Migration
             $table->string('remember_token')->nullable();
             $table->text('settings')->nullable()->default(null);
             $table->timestamps();
-            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
