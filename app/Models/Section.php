@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-    protected $fillable = ['name', 'year_id'];
+    protected $fillable = ['name', 'year_id', 'school_id'];
 
     /**
      * User that is assigned to the class

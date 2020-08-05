@@ -34,7 +34,7 @@ class SchoolDataImport implements WithMultipleSheets, SkipsUnknownSheets
             'Year Levels'       => new YearsImport(),
             'Subjects'          => new SubjectsImport(),
             'Teachers'          => new TeachersImport($this->school),
-            'SectionsGroups'    => new SectionsImport(),
+            'SectionsGroups'    => new SectionsImport($this->school),
             'Class Schedule'    => new ClassSchedulesImport($this->ay),
             'Students'          => new StudentsImport($this->school),
         ];

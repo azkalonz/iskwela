@@ -19,7 +19,9 @@ class StudentsImport extends UsersImport
         $user = parent::model($row);
 
         // get section
-        $section = Section::whereName($row[7])->first();
+        $section = Section::whereName($row[7])
+            ->whereSchoolId($user->school->id)
+            ->first();
 
         // add student in section
         $section_student = SectionStudent::firstOrCreate([

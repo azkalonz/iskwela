@@ -21,22 +21,22 @@ class SchoolDataController extends Controller
         try {
             $this->validate($request, [
                 'file' => 'required',
-                'school_name' => 'required',
+                'school_name' => 'string',
                 'school_code' => 'required',
                 'school_logo' => 'file|image',
-                'academic_year_name' => 'required',
-                'academic_year_from' => 'required|date_format:Y/m/d',
-                'academic_year_to' => 'required|date_format:Y/m/d'
+                'academic_year_name' => 'required_with:academic_year_from,academic_year_to',
+                'academic_year_from' => 'required_with:academic_year_name,academic_year_to|date_format:Y/m/d',
+                'academic_year_to' => 'required_with:academic_year_name,academic_year_from|date_format:Y/m/d'
             ]);
 
-            $academic_year_from = Carbon::createFromFormat('Y/m/d', $request->academic_year_from);
-            $academic_year_to = Carbon::createFromFormat('Y/m/d', $request->academic_year_to);
-
-            // create new or update school
-            $school = School::firstOrCreate([
-                'school_name' => $request->school_name,
-                'school_code' => strtoupper($request->school_code)
-            ]);
+            // create new or get school
+            $school = School::where('school_code', '=', strtoupper($request->school_code))->first();
+            if (!$school) {
+                $school = School::create([
+                    'school_name' => $request->school_name,
+                    'school_code' => strtoupper($request->school_code)
+                ]);
+            }
 
             if (isset($request->school_logo)) {
                 // upload logo to new root path
@@ -47,18 +47,23 @@ class SchoolDataController extends Controller
                 $school->save();
             }
 
-            // create academic year
-            $academic_year = AcademicYear::updateOrCreate([
-                'name' => $request->academic_year_name,
-                'date_from' => $academic_year_from,
-                'date_to' => $academic_year_to,
-                'school_id' => $school->id
-            ], [
-                'name' => $request->academic_year_name,
-                'date_from' => $academic_year_from,
-                'date_to' => $academic_year_to,
-                'school_id' => $school->id
-            ]);
+            // create academic year if set or get the first record
+            if($request->academic_year_name) {
+                $academic_year_from = Carbon::createFromFormat('Y/m/d', $request->academic_year_from);
+                $academic_year_to = Carbon::createFromFormat('Y/m/d', $request->academic_year_to);
+                $academic_year = AcademicYear::create([
+                    'name' => $request->academic_year_name,
+                    'date_from' => $academic_year_from,
+                    'date_to' => $academic_year_to,
+                    'school_id' => $school->id
+                ]);
+            } else {
+                $academic_year = AcademicYear::whereSchoolId($school->id)->first();
+
+                if(!$academic_year) {
+                    return response()->error("At least one Academic Year should exist for the school.");
+                }
+            }
 
             $schoolimport = new SchoolDataImport($school, $academic_year);
             $schoolimport->onlySheets(

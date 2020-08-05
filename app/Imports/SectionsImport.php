@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\School;
 use App\Models\Section;
 use App\Models\Year;
 
@@ -12,6 +13,12 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class SectionsImport implements ToModel, WithStartRow, WithCalculatedFormulas
 {
+    var $school = null;
+
+    public function __construct(School $school)
+    {
+        $this->school = $school;
+    }
 
     /**
      * @return int
@@ -31,9 +38,17 @@ class SectionsImport implements ToModel, WithStartRow, WithCalculatedFormulas
         // get Year first
         $year = Year::whereName($row[1])->first();
 
-        return Section::firstOrCreate([
-            'name'    => $row[0],
-            'year_id'   => $year->id
-        ]);
+        $section = Section::whereYearId($year->id)
+            ->whereSchoolId($this->school->id)->first();
+
+        if($section) {
+            return $section;
+        } else {
+            return Section::firstOrCreate([
+                'name'    => $row[0],
+                'year_id'   => $year->id,
+                'school_id' => $this->school->id
+            ]);
+        }
     }
 }
