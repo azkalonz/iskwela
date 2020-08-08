@@ -51,7 +51,7 @@ class CreateScoreReportsRecordView extends Migration
                     coalesce(a.total_score,0) as perfect_score,
                     sum(coalesce(sas.score,0)) as score,
                     if(a.activity_type  = 1, 4, IF(a.activity_type = 2, 5, 0)) as activity_type,
-                    a.available_from as date_created
+                    a.due_date as date_created
                 from classes c
                 inner join sections_students ss2 on ss2.section_id = c.section_id 
                 inner join users u on u.id = ss2.user_id
