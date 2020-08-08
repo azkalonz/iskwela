@@ -98,4 +98,24 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(StudentParent::class, 'parent_id', 'id');
     }
+
+    public function scopeAttendances($builder, int $class_id, int $user_id)
+    {
+        return $builder->join('sections_students', function($join) use ($class_id, $user_id) {
+            $join->on('sections_students.user_id', '=', 'users.id')
+                 ->where('sections_students.user_id', '=', $user_id);
+        })
+        ->join('classes', function($join) use ($class_id) {
+            $join->on('classes.section_id', '=', 'sections_students.section_id')
+                 ->where('classes.id','=', $class_id);
+        })
+        ->join('schedules', function($join) use ($class_id) {
+            $join->on('schedules.class_id', '=', 'classes.id')
+                 ->where('schedules.class_id', '=', $class_id);
+        })
+        ->leftJoin('attendances', function($join) use ($user_id) {
+            $join->on('attendances.schedule_id', '=', 'schedules.id')
+                 ->where('attendances.user_id', '=', $user_id);
+        });
+    }
 }

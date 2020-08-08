@@ -5,13 +5,25 @@ namespace App\TransferObjects;
 class AttendanceData extends TransferObjectAbstract
 {
     protected $class_id;
-    protected $attendance_count;
-    protected $students;
+    protected $schedule_id;
+    protected $attendance_status;
+    protected $reason;
+    protected $from;
+    protected $to;
 
     public function __construct(
         int $class_id,
-        int $attendance_count,
-        array $students)
-    {dd(1);
+        int $schedule_id,
+        int $attendance_status,
+        int $reason,
+        int $to,
+        string $from)
+    {
+        $this->class_id = $class_id;
+        $this->schedule_id = $schedule_id;
+        $this->attendance_status;
+        $this->reason = $reason;
+        $this->reason = $to;
+        $this->reason = $from;
     }
 }

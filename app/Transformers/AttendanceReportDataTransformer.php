@@ -4,9 +4,9 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 
-class AttendanceReportTransformer extends TransformerAbstract
+class AttendanceReportDataTransformer extends TransformerAbstract
 {
-    public function transform(\App\TransferObjects\AttendanceData $data)
+    public function transform(\App\TransferObjects\AttendanceReportData $data)
     {
 
         $students = $data->students->map(function($stud) use ($data){

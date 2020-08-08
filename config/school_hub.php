@@ -48,6 +48,11 @@ return [
         "Eden" => "#0E6352",
         "Meteorite" => "#492885",
         "iSkwela Purple" => "#7539FF"
+    ],
+    'attendance_status' => [
+        0 => 'No record',
+        1 => 'Present',
+        2 => 'Absent'
     ]
 
 ];

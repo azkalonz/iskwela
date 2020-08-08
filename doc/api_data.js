@@ -7442,6 +7442,24 @@ define({ "api": [
             "optional": false,
             "field": "class_id",
             "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "allowedValues": [
+              "1",
+              "2"
+            ],
+            "optional": false,
+            "field": "status",
+            "description": "<p>default is 1 if not specified <br> 1: Present, 2: Absent</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "reason",
+            "description": ""
           }
         ]
       }
@@ -7749,6 +7767,97 @@ define({ "api": [
         ]
       }
     }
+  },
+  {
+    "type": "get",
+    "url": "HOST/api/class/my-attendance",
+    "title": "User class attendance",
+    "version": "1.0.0",
+    "name": "UserClassAttendance",
+    "description": "<p>List of user's class attendance</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>the user_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "NumberOrNull",
+            "allowedValues": [
+              "1",
+              "2",
+              "null"
+            ],
+            "optional": false,
+            "field": "status_flag",
+            "description": "<p>the attendance status</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>Values: Present, Absent, No record</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "from",
+            "description": "<p>schedule start date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "to",
+            "description": "<p>schedule end date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reason",
+            "description": "<p>reasons of absence if any</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"schedule_id\": 2,\n        \"status_flag\": 1,\n        \"remark\": \"Present\",\n        \"from\": \"2020-05-18 09:00:00\",\n        \"to\": \"2020-05-18 10:00:00\",\n        \"reason\": null\n    },\n    {\n        \"schedule_id\": 1,\n        \"status_flag\": 2,\n        \"remark\": \"Absent\",\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\",\n        \"reason\": \"family gathering\"\n    },\n    {\n        \"schedule_id\": 3,\n        \"status_flag\": 2,\n        \"remark\": \"Absent\",\n        \"from\": \"2020-05-19 09:00:00\",\n        \"to\": \"2020-05-19 10:00:00\",\n        \"reason\": \"sick\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AttendanceController.php",
+    "groupTitle": "Reports"
   },
   {
     "type": "post",

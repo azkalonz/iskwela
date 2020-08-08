@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
-    protected $fillable = ['class_id', 'user_id', 'schedule_id'];
+    protected $fillable = ['class_id', 'user_id', 'schedule_id', 'reason', 'status'];
     public $timestamps = true;
     /**
     * @return Relation

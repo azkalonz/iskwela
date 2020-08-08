@@ -11,11 +11,14 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
 use App\Transformers\AttendanceTransformer;
-use App\Transformers\AttendanceReportTransformer;
+use App\Transformers\AttendanceReportDataTransformer;
+use App\Transformers\AttendanceDataTransformer;
 
 use App\Models\Attendance;
 use App\Models\Classes;
+use App\Models\User;
 use App\Models\SectionStudent;
+use App\TransferObjects\AttendanceReportData;
 use App\TransferObjects\AttendanceData;
 
 class AttendanceController extends Controller
@@ -32,6 +35,8 @@ class AttendanceController extends Controller
      * @apiParam {Number} student_id the student ID
      * @apiParam {Number} schedule_id the schedule ID
      * @apiParam {Number} class_id the class ID
+     * @apiParam {Number=1,2} status default is 1 if not specified <br> 1: Present, 2: Absent
+     * @apiParam {String} reason
      *
      * @apiSuccess {Number} student_id the class ID
      * @apiSuccess {String} username
@@ -64,14 +69,18 @@ class AttendanceController extends Controller
         $this->validate($request, [
             'class_id' => 'required|integer',
             'schedule_id' => 'required|integer',
-            'student_id' => 'integer|required'
+            'student_id' => 'integer|required',
+            'status' => 'integer|in:1,2',
+            'reason' => 'string'
         ]);
 
 
         $attendance = Attendance::updateOrCreate([
             'user_id' => $request->student_id,
             'schedule_id' => $request->schedule_id,
-            'class_id' => $request->class_id
+            'class_id' => $request->class_id,
+            'status' => $request->status ?? 1,
+            'reason' => $request->reason ?? ''
         ]);
 
         $fractal = fractal()->item($attendance, new AttendanceTransformer);
@@ -144,6 +153,7 @@ class AttendanceController extends Controller
             'sectionStudents' => function($students) use($id) {
                 $students->withCount(['attendance' => function($a) use ($id){
                     $a->where('class_id', $id);
+                    $a->whereStatus(1);
                 }]);
             }])
         ->withCount(['schedules' => function($sched) {
@@ -153,15 +163,91 @@ class AttendanceController extends Controller
         }])   
         ->whereId($request->id)->first();
 
-        $attendance_report = AttendanceData::create([
+        $attendance_report = AttendanceReportData::create([
             'class_id' => $class->id,
             'attendance_count' => $class->schedules_count,
             'students' => $class->sectionStudents
         ]);
 
-        $fractal = fractal()->item($attendance_report, new AttendanceReportTransformer);
+        $fractal = fractal()->item($attendance_report, new AttendanceReportDataTransformer);
         return response()->json($fractal->toArray());
 
+    }
+
+    /**
+     * Class Attendance
+     *
+     * @api {get} HOST/api/class/my-attendance User class attendance
+     * @apiVersion 1.0.0
+     * @apiName UserClassAttendance
+     * @apiDescription List of user's class attendance
+     * @apiGroup Reports
+     *
+     * @apiParam {Number} class_id the class ID
+     * @apiParam {Number} user_id the user_id
+     *
+     * @apiSuccess {Number} schedule_id the schedule id
+     * @apiSuccess {NumberOrNull=1,2,null} status_flag the attendance status
+     * @apiSuccess {String} remark Values: Present, Absent, No record
+     * @apiSuccess {DateTime} from schedule start date/time
+     * @apiSuccess {DateTime} to schedule end date/time
+     * @apiSuccess {String} reason reasons of absence if any
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "schedule_id": 2,
+                "status_flag": 1,
+                "remark": "Present",
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "reason": null
+            },
+            {
+                "schedule_id": 1,
+                "status_flag": 2,
+                "remark": "Absent",
+                "from": "2020-05-15 09:00:00",
+                "to": "2020-05-15 10:00:00",
+                "reason": "family gathering"
+            },
+            {
+                "schedule_id": 3,
+                "status_flag": 2,
+                "remark": "Absent",
+                "from": "2020-05-19 09:00:00",
+                "to": "2020-05-19 10:00:00",
+                "reason": "sick"
+            }
+        ]
+     *
+     * 
+     * 
+     */
+    public function details(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'class_id' => 'required|integer'
+        ]);
+
+        $attendances = User::selectRaw(
+                'classes.id as class_id,
+                schedules.id as schedule_id,
+                schedules.date_from as `from`,
+                schedules.date_to as `to`,
+                attendances.status as attendance_status,
+                attendances.reason as reason'
+            )
+            ->attendances($request->class_id, $request->user_id)
+            ->get();
+
+        $details = $attendances->map(function($a) {
+            return AttendanceData::create($a->toArray());
+        });
+
+        $fractal = fractal()->collection($details, new AttendanceDataTransformer);
+        return response()->json($fractal->toArray());
     }
 
     /**

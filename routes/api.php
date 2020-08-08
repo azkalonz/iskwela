@@ -57,6 +57,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/student/class-materials/{id}', 'Api\\ScheduleController@classMaterialsStudentsBySchedule');
     Route::post('/class/attendance/save', 'Api\\AttendanceController@record');
     Route::get('/class/attendance/{id}', 'Api\\AttendanceController@attendance');
+    Route::get('/class/my-attendance/', 'Api\\AttendanceController@details');
     Route::get('/student/seatwork-answers/{id}', 'Api\\AssignmentAnswerController@showSeatworkAnswer');
     Route::get('/student/project-answers/{id}', 'Api\\AssignmentAnswerController@showProjectAnswer');
 
