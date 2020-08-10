@@ -11,10 +11,18 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\ArraySerializer;
 
 use \App\Models\User;
+use \App\Models\UserPreference;
 use \App\Transformers\UserTransformer;
 
 class UserController extends Controller
 {
+
+	const ADMIN = 'a';
+    const PARENTS = 'p';
+    const TEACHER = 't';
+    const STUDENT = 's';
+	const SUPER_ADMIN = 'su';
+
     /**
      * User Detail
      *
@@ -76,6 +84,85 @@ class UserController extends Controller
 		}
 		
         $fractal = fractal()->item($user, new UserTransformer);
+
+        return response()->json($fractal->toArray());
+	}
+	
+
+    public function registerParent(Request $request)
+    {
+        return $this->register($request, self::PARENTS);
+    }
+    
+    public function registerAdmin(Request $request)
+    {
+        return $this->register($request, self::ADMIN);
+    }
+
+    public function registerStudent(Request $request)
+    {
+        return $this->register($request, self::STUDENT);
+    }
+
+    public function registerTeacher(Request $request)
+    {
+        return $this->register($request, self::TEACHER);
+    }
+
+    public function registerSuperAdmin(Request $request)
+    {
+        return $this->register($request, self::SUPER_ADMIN);
+    }
+
+    private function register(Request $request, $user_type)
+    {
+
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'school_id' => 'integer'
+        ]);
+
+        $admin = Auth::user();
+		
+        if ($admin->user_type == 'su')
+        {
+            $school_id = $request->school_id;
+        }else
+        {
+            $school_id = $admin->school_id;
+        }
+
+        $user = User::create(
+            [
+            'username'    => $request->username,
+            'password'      => $request->password,
+            'first_name'      => $request->first_name,
+            'middle_name'      => $request->middle_name,
+            'last_name'      => $request->last_name,
+            'gender'      => $request->gender ?? 'u',
+            'email'      => $request->email,
+            'phone_number'      => $request->phone_number,
+			'school_id'      => $school_id,
+			'change_password_required'      => 1,
+			'user_type'      => $user_type,
+            'created_by'      => $admin->id,
+			'status'      => $request->status ?? 1
+            ]
+        );
+
+        $user_preference = UserPreference::Create(
+            [
+                'user_id' => $user->id,
+                'push_notifications' => $request->push_notification ?? 1,
+                'email_subscription' => $request->email_subscription ?? 0
+            ]
+		);
+		$user_response = User::find($user->id);
+		//$token = auth()->login($user);
+		$fractal = fractal()->item($user_response, new UserTransformer);
 
         return response()->json($fractal->toArray());
     }

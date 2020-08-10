@@ -53,6 +53,26 @@ class StudentParentController extends Controller
         return response()->json($fractal->toArray());
     }
 
+    public function show(Request $request)
+    {
+        $this->validate($request, [
+            'parent_id' => 'integer'
+        ]);
+
+        if($request->parent_id)
+        {
+            $parent = User::findOrFail($request->parent_id);
+        }else{
+            $parent = Auth::user();
+        }
+
+        $fractal = fractal()->collection($parent->get(), new UserTransformer);
+
+        $fractal->includeChildren();
+
+        return response()->json($fractal->toArray());
+    }
+
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"

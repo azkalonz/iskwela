@@ -19,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', 'AuthController@register');
 Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
@@ -27,6 +26,7 @@ Route::middleware('jwt')->group(function () {
 
     //jitsi auth
     Route::post('/auth/jitsi', 'AuthController@jitsiLogin');
+
 
     //classes - teachers
     Route::get('/teacher/classes', 'Api\\ClassController@teacherClasses');
@@ -181,6 +181,14 @@ Route::middleware('jwt')->group(function () {
     Route::get('/schooladmin/subject-grading-categories/{id}', 'Api\\SubjectGradingCategoryController@show');
     Route::get('/schooladmin/teachers', 'Api\\SchoolController@teachers');
     Route::post('schooladmin/parent/add-child', 'Api\\StudentParentController@save');
+    Route::post('/schooladmin/parent/add-child', 'Api\\StudentParentController@save');
+    Route::get('/schooladmin/parent/show', 'Api\\StudentParentController@show');
+
+    Route::post('/admin/register/parent', 'Api\\UserController@registerParent');
+    Route::post('/admin/register/student', 'Api\\UserController@registerStudent');
+    Route::post('/admin/register/teacher', 'Api\\UserController@registerTeacher');
+    Route::post('/admin/register/admin', 'Api\\UserController@registerAdmin');
+    Route::post('/admin/register/super-admin', 'Api\\UserController@registerSuperAdmin');
 
 
     //reports

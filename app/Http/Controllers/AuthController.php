@@ -13,20 +13,6 @@ class AuthController extends Controller
 
     use ResetsPasswords;
 
-    public function register(Request $request)
-    {
-        $user = User::create(
-            [
-            'username'    => $request->username,
-            'password'      => $request->password,
-            'name'      => $request->name
-            ]
-        );
-
-        $token = auth()->login($user);
-
-        return $this->respondWithToken($token);
-    }
 
     /**
      * User Login
