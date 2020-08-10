@@ -48,19 +48,30 @@ class AttendanceController extends Controller
      * @apiSuccess {Number} schedule.id the schedule ID
      * @apiSuccess {DateTime} schedule.date_from session start date/time
      * @apiSuccess {DateTime} schedule.date_to session end date/time
+     * @apiSuccess {Object} schedule.attendance
+     * @apiSuccess {Number} schedule.attendance.attendance_id the attendance record ID
+     * @apiSuccess {Number} schedule.attendance.status 1:Present 2:Absent
+     * @apiSuccess {String} schedule.attendance.remark
+     * @apiSuccess {String} schedule.attendance.reason
      * 
      * @apiSuccessExample {json} Sample Response
         {
-            "student_id": 1,
-            "username": "jayson",
-            "first_name": "jayson",
-            "last_name": "barino",
+            "student_id": 2,
+            "username": "grace",
+            "first_name": "grace",
+            "last_name": "ungui",
             "user_type": "s",
             "class_id": 1,
             "schedule": {
-                "id": 1,
-                "from": "2020-05-15 09:00:00",
-                "to": "2020-05-15 10:00:00"
+                "id": 3,
+                "from": "2020-05-19 09:00:00",
+                "to": "2020-05-19 10:00:00",
+                "attendance": {
+                    "attendance_id": 20,
+                    "status": 2,
+                    "remark": "Absent",
+                    "reason": "tired3"
+                }
             }
         }
     */
@@ -71,17 +82,31 @@ class AttendanceController extends Controller
             'schedule_id' => 'required|integer',
             'student_id' => 'integer|required',
             'status' => 'integer|in:1,2',
-            'reason' => 'string'
+            'reason' => 'string',
+            'id' => 'integer'
         ]);
 
-
-        $attendance = Attendance::updateOrCreate([
-            'user_id' => $request->student_id,
-            'schedule_id' => $request->schedule_id,
-            'class_id' => $request->class_id,
-            'status' => $request->status ?? 1,
-            'reason' => $request->reason ?? ''
-        ]);
+        if($request->id) {
+            $attendance = Attendance::find($request->id);
+            $attendance->status = $request->status ?? $attendance->status;
+            $attendance->reason = $request->reason ?? $attendance->reason;
+            $attendance->save();
+        }
+        else {
+            try{
+                $attendance = Attendance::updateOrCreate([
+                'user_id' => $request->student_id,
+                'schedule_id' => $request->schedule_id,
+                'class_id' => $request->class_id,
+                'status' => $request->status ?? 1,
+                'reason' => $request->reason ?? ''
+                ]);
+            }
+            catch(\Exception $e)
+            {
+                return response('Unable to record the attendance', 500);
+            }
+        }
 
         $fractal = fractal()->item($attendance, new AttendanceTransformer);
         return response()->json($fractal->toArray());
