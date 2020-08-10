@@ -8260,6 +8260,127 @@
   },
   {
     "type": "post",
+    "url": "HOST/api/schooladmin/teachers",
+    "title": "School Teachers",
+    "version": "1.0.0",
+    "name": "SchoolTeachers",
+    "description": "<p>Get List of school teachers</p>",
+    "group": "School_Admin",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>teacher's ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_type",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "phone_number",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "preferences",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "preferences.profile_picture",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "preferences.push_notifications",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "preferences.email_subscription",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n\t{\n\t\t\"id\": 8,\n\t\t\"first_name\": \"teacher tom\",\n\t\t\"last_name\": \"cruz\",\n\t\t\"school_id\": 1,\n\t\t\"user_type\": \"t\",\n\t\t\"username\": \"ttom\",\n\t\t\"email\": \"xxx@gamil.com\",\n\t\t\"phone_number\": 111,\n\t\t\"status\": 1,\n\t\t\"preferences\": {\n\t\t\t\"profile_picture\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg\",\n\t\t\t\"push_notification\": 1,\n\t\t\t\"email_subscription\": 0\n\t\t}\n\t},\n\t{}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/SchoolController.php",
+    "groupTitle": "School_Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
     "url": "<HOST>/api/class/seatwork/set-score",
     "title": "Set Seatwork Score",
     "version": "1.0.0",
