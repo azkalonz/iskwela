@@ -162,8 +162,9 @@ class StudentActivityController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
-     * @apiParam {Number} class_id filter the list to return published quizzes to the class.<br> OPTIONAL for teacher; and if not specified, returns all the quizzes created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} class_id filter the list to return published quizzes to the class.<br> OPTIONAL for teacher; and if not specified, returns all the quizzes created by the logged in teacher<br><br> REQUIRED for school admin andstudents.
      * @apiParam {Number} subject_id filter the list to return quizzes of the specified subject only.
+     * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of quizzes published by the specified teacher_id)
      *
 	 * 
      * @apiSuccess {Number} id the quiz ID
@@ -675,8 +676,9 @@ class StudentActivityController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
-     * @apiParam {Number} class_id filter the list to return published periodicals to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} class_id filter the list to return published periodicals to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for school admin and students.
      * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
+	 * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of periodicals published by the specified teacher_id)
      *
 	 * 
      * @apiSuccess {Number} the periodical ID
@@ -1200,8 +1202,9 @@ class StudentActivityController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
-     * @apiParam {Number} class_id filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for students.
+     * @apiParam {Number} class_id filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for school admin and students.
      * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
+	 * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of assignments published by the specified teacher_id)
      *
 	 * 
      * @apiSuccess {Number} the assignment ID
@@ -1681,6 +1684,14 @@ class StudentActivityController extends Controller
 
 			$student_activities->whereCreatedBy($user->getKey());
 			$published_by = $user->getKey();
+		}
+		else if ($user->user_type == 'a') {
+			$this->validate($request, [
+				'class_id' => 'integer|required',
+				'subject_id' => 'integer',
+				'teacher_id' => 'integer|required'
+			]);
+			$published_by = $request->teacher_id;
 		}
 		else {
 			$this->validate($request, [
