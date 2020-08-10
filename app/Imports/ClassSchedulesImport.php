@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Schedule;
+use App\Models\School;
 use App\Models\Subject;
 use App\Models\Year;
 use App\Models\User;
@@ -21,9 +22,11 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormulas
 {
     var $ay = null;
+    var $school = null;
 
-    public function __construct(AcademicYear $ay)
+    public function __construct(School $school, AcademicYear $ay)
     {
+        $this->school = $school;
         $this->ay = $ay;
     }
     /**
@@ -43,8 +46,10 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
     {
         $subject = Subject::whereName($row[1])->first();
         $year = Year::whereName($row[2])->first();
-        $section = Section::whereName($row[3])->first();
+        $section = Section::whereName($row[3])->whereSchoolId($this->school->id)->first();
         $teacher = User::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), "=", $row[4])->first();
+        $frequency_array = explode(',', $row[5]);
+        $create_schedules_for_days = array_intersect_key(Classes::WEEKDAYS, array_flip($frequency_array) );
 
         $class = Classes::where('name', $row[0])
                     ->where('section_id', $section->id)
@@ -78,7 +83,7 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             ]);
     
             // generate class schedules from today til end of academic year
-            $schedules = $this->createClassSchedules($class, $teacher);
+            $schedules = $this->createClassSchedules($class, $teacher, $create_schedules_for_days);
         }
         
         return $class;
@@ -89,7 +94,7 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
         return Str::random(32);
     }
 
-    private function createClassSchedules(Classes $class, User $teacher)
+    private function createClassSchedules(Classes $class, User $teacher, array $create_for_days)
     {
         $time_from = explode(':', $class->time_from);
         $time_to = explode(':', $class->time_to);
@@ -99,8 +104,8 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             $day_from = Carbon::today()->addDay($i)->setHour($time_from[0])->setMinutes($time_from[1]);
             $day_to = Carbon::today()->addDay($i)->setHour($time_to[0])->setMinutes($time_to[1]);
 
-            if ($day_from->dayOfWeek >= 1 && $day_from->dayOfWeek <= 5 ) { // generate Mon-Fri only
-                $schedule = Schedule::firstOrCreate([
+            if ( in_array($day_from->dayOfWeek, $create_for_days) ) { // generate only for selected days of the week
+                $schedules[] = Schedule::firstOrCreate([
                     'class_id' => $class->id, // refactor alert! this needs to use Laravel's relationship implementation
                     'teacher_id' => $teacher->id,
                     'date_from' => $day_from->format('y-m-d H:i:s'),
@@ -109,5 +114,7 @@ class ClassSchedulesImport implements ToModel, WithStartRow, WithCalculatedFormu
             }
 
         }
+
+        return $schedules;
     }
 }

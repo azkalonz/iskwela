@@ -31,6 +31,16 @@ class Classes extends Model
         'color'
     ];
 
+    public const WEEKDAYS = [
+        'su' => 0,
+        'm' => 1,
+        't' => 3,
+        'w' => 3,
+        'th' => 4,
+        'f' => 5,
+        'sa' => 6
+    ];
+
     /**
      * User that is assigned to the class
      */
