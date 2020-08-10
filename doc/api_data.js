@@ -7557,13 +7557,48 @@ define({ "api": [
             "optional": false,
             "field": "schedule.date_to",
             "description": "<p>session end date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "schedule.attendance",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule.attendance.attendance_id",
+            "description": "<p>the attendance record ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule.attendance.status",
+            "description": "<p>1:Present 2:Absent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "schedule.attendance.remark",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "schedule.attendance.reason",
+            "description": ""
           }
         ]
       },
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n    \"student_id\": 1,\n    \"username\": \"jayson\",\n    \"first_name\": \"jayson\",\n    \"last_name\": \"barino\",\n    \"user_type\": \"s\",\n    \"class_id\": 1,\n    \"schedule\": {\n        \"id\": 1,\n        \"from\": \"2020-05-15 09:00:00\",\n        \"to\": \"2020-05-15 10:00:00\"\n    }\n}",
+          "content": "{\n    \"student_id\": 2,\n    \"username\": \"grace\",\n    \"first_name\": \"grace\",\n    \"last_name\": \"ungui\",\n    \"user_type\": \"s\",\n    \"class_id\": 1,\n    \"schedule\": {\n        \"id\": 3,\n        \"from\": \"2020-05-19 09:00:00\",\n        \"to\": \"2020-05-19 10:00:00\",\n        \"attendance\": {\n            \"attendance_id\": 20,\n            \"status\": 2,\n            \"remark\": \"Absent\",\n            \"reason\": \"tired3\"\n        }\n    }\n}",
           "type": "json"
         }
       ]
