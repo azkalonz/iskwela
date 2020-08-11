@@ -348,6 +348,8 @@ class ClassController extends Controller
      *
      * @apiUse JWTHeader
      *
+     * @apiParam {Number} student_id User ID of the student. Required if logged in as a parent
+     * 
      * @apiSuccess {id} id the student ID
      * @apiSuccess {String} first_name 
      * @apiSuccess {String} last_name 
@@ -425,9 +427,19 @@ class ClassController extends Controller
      */
     public function studentClasses(Request $request)
     {
-        $user_id = Auth::user()->getKey();
+        $currentUser = Auth::user();
 
-        $user = User::whereId($user_id)->with('classes')->first();
+        if($currentUser->user_type == 'p')
+        {
+            $this->validate($request, [
+                'student_id' => 'integer|required'
+            ]);
+            $student_id = $request->student_id;
+        }else{
+            $student_id = $currentUser->id;
+        }
+
+        $user = User::whereId($student_id)->with('classes')->first();
         $fractal = fractal()->item($user, new UserTransformer);
         $fractal->includeClasses();
 

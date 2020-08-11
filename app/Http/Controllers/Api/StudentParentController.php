@@ -66,7 +66,7 @@ class StudentParentController extends Controller
             $parent = Auth::user();
         }
 
-        $fractal = fractal()->collection($parent->get(), new UserTransformer);
+        $fractal = fractal()->item($parent, new UserTransformer);
 
         $fractal->includeChildren();
 

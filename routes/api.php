@@ -182,7 +182,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/schooladmin/teachers', 'Api\\SchoolController@teachers');
     Route::post('schooladmin/parent/add-child', 'Api\\StudentParentController@save');
     Route::post('/schooladmin/parent/add-child', 'Api\\StudentParentController@save');
-    Route::get('/schooladmin/parent/show', 'Api\\StudentParentController@show');
+    Route::get('/parent/show', 'Api\\StudentParentController@show');
 
     Route::post('/admin/register/parent', 'Api\\UserController@registerParent');
     Route::post('/admin/register/student', 'Api\\UserController@registerStudent');
