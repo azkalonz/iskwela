@@ -39,6 +39,7 @@ class SectionsImport implements ToModel, WithStartRow, WithCalculatedFormulas
         $year = Year::whereName($row[1])->first();
 
         $section = Section::whereYearId($year->id)
+            ->whereName($row[0])
             ->whereSchoolId($this->school->id)->first();
 
         if($section) {
