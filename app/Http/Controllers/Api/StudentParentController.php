@@ -29,6 +29,7 @@ class StudentParentController extends Controller
         $user =  Auth::user();
 
         $parent = User::findOrFail($request->parent_id);
+        $student = User::whereId($request->student_id)->whereUserType('s')->firstOrFail();
 
         if($request->id)
         {
@@ -66,6 +67,24 @@ class StudentParentController extends Controller
             $parent = Auth::user();
         }
 
+        $fractal = fractal()->item($parent, new UserTransformer);
+
+        $fractal->includeChildren();
+
+        return response()->json($fractal->toArray());
+    }
+
+    public function remove(Request $request)
+    {
+        $this->validate($request, [
+            'parent_id' => 'integer|required',
+            'student_id' => 'integer|required'
+        ]);
+
+        $studentParent = StudentParent::whereParentId($request->parent_id)->whereStudentId($request->student_id)->firstOrFail();
+        $studentParent->delete();
+
+        $parent = Auth::user();
         $fractal = fractal()->item($parent, new UserTransformer);
 
         $fractal->includeChildren();

@@ -180,7 +180,7 @@ Route::middleware('jwt')->group(function () {
     Route::get('/schooladmin/school-grading-categories', 'Api\\SchoolGradingCategoryController@show');
     Route::get('/schooladmin/subject-grading-categories/{id}', 'Api\\SubjectGradingCategoryController@show');
     Route::get('/schooladmin/teachers', 'Api\\SchoolController@teachers');
-    Route::post('schooladmin/parent/add-child', 'Api\\StudentParentController@save');
+    Route::delete('/schooladmin/parent/remove-child', 'Api\\StudentParentController@remove');
     Route::post('/schooladmin/parent/add-child', 'Api\\StudentParentController@save');
     Route::get('/parent/show', 'Api\\StudentParentController@show');
 
@@ -203,6 +203,12 @@ Route::middleware('jwt')->group(function () {
     Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
     Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
     Route::post('/schooladmin/section/add-student', 'Api\\SectionStudentController@add');
+    Route::get('/schooladmin/students', 'Api\\UserController@students');
+
+    Route::get('/schooladmin/sections', 'Api\\SectionController@show');
+    Route::post('/schooladmin/section/save', 'Api\\SectionController@add');
+    Route::delete('/schooladmin/section/remove/{id}', 'Api\\SectionController@remove');
+    Route::get('/years', 'Api\\YearController@show');
 
     // posts and comments
     Route::get('/post/{itemable_type}/{itemable_id}', 'Api\\PostController@getPostsOfItemable');

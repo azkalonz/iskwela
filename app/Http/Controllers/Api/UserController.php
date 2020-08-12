@@ -21,7 +21,7 @@ class UserController extends Controller
     const PARENTS = 'p';
     const TEACHER = 't';
     const STUDENT = 's';
-	const SUPER_ADMIN = 'su';
+	const SUPER_USER = 'su';
 
     /**
      * User Detail
@@ -86,7 +86,31 @@ class UserController extends Controller
         $fractal = fractal()->item($user, new UserTransformer);
 
         return response()->json($fractal->toArray());
-	}
+    }
+
+
+    public function students(Request $request)
+    {
+        $this->validate($request, [
+            'school_id' => 'integer'
+        ]);
+        
+        $user = Auth::user();
+
+        if($user->user_type == self::SUPER_USER)
+        {
+            $school_id = $request->school_id ?? $user->school_id;
+        }
+        else{
+            $school_id = $user->school_id;
+        }
+
+        $students = User::whereSchoolId($school_id)->whereUserType(self::STUDENT);
+
+        $fractal = fractal()->collection($students->get(), new UserTransformer);
+
+        return response()->json($fractal->toArray());
+    }
 	
 
     public function registerParent(Request $request)
@@ -111,7 +135,7 @@ class UserController extends Controller
 
     public function registerSuperAdmin(Request $request)
     {
-        return $this->register($request, self::SUPER_ADMIN);
+        return $this->register($request, self::SUPER_USER);
     }
 
     private function register(Request $request, $user_type)
@@ -127,7 +151,7 @@ class UserController extends Controller
 
         $admin = Auth::user();
 		
-        if ($admin->user_type == 'su')
+        if ($admin->user_type == self::SUPER_USER)
         {
             $school_id = $request->school_id;
         }else
