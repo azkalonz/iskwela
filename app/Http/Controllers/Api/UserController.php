@@ -88,8 +88,17 @@ class UserController extends Controller
         return response()->json($fractal->toArray());
     }
 
-
     public function students(Request $request)
+    {
+        return $this->getUsers($request, self::STUDENT);
+    }
+
+    public function parents(Request $request)
+    {
+        return $this->getUsers($request, self::PARENTS);
+    }
+
+    public function getUsers(Request $request, $user_type)
     {
         $this->validate($request, [
             'school_id' => 'integer'
@@ -105,7 +114,7 @@ class UserController extends Controller
             $school_id = $user->school_id;
         }
 
-        $students = User::whereSchoolId($school_id)->whereUserType(self::STUDENT);
+        $students = User::whereSchoolId($school_id)->whereUserType($user_type);
 
         $fractal = fractal()->collection($students->get(), new UserTransformer);
 

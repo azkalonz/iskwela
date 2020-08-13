@@ -204,6 +204,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
     Route::post('/schooladmin/section/add-student', 'Api\\SectionStudentController@add');
     Route::get('/schooladmin/students', 'Api\\UserController@students');
+    Route::get('/schooladmin/parents', 'Api\\UserController@parents');
 
     Route::get('/schooladmin/sections', 'Api\\SectionController@show');
     Route::post('/schooladmin/section/save', 'Api\\SectionController@add');
