@@ -31,14 +31,15 @@ class Classes extends Model
         'color'
     ];
 
+    // Academic week day codes are M, T, W, R, F, S, U i.e. Mon, Tue, Wed, Thu, Sat, Sun
     public const WEEKDAYS = [
-        'su' => 0,
+        'u' => 0, // Carbon->dayOfWeek starts with 0 = Sunday 
         'm' => 1,
         't' => 3,
         'w' => 3,
-        'th' => 4,
+        'r' => 4,
         'f' => 5,
-        'sa' => 6
+        's' => 6
     ];
 
     /**
