@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Year;
+use App\Models\Section;
 
 class Classes extends Model
 {
@@ -79,6 +80,22 @@ class Classes extends Model
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
+    }
+
+        /**
+    * @return Relation
+    */
+    public function years()
+    {
+        return $this->hasOne(Year::class);
+    }
+
+            /**
+    * @return Relation
+    */
+    public function secetions()
+    {
+        return $this->hasOne(Section::class);
     }
 
     /**

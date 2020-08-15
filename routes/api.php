@@ -210,6 +210,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/schooladmin/section/save', 'Api\\SectionController@add');
     Route::delete('/schooladmin/section/remove/{id}', 'Api\\SectionController@remove');
     Route::get('/years', 'Api\\YearController@show');
+    Route::get('/subjects', 'Api\\SubjectController@show');
 
     // posts and comments
     Route::get('/post/{itemable_type}/{itemable_id}', 'Api\\PostController@getPostsOfItemable');
