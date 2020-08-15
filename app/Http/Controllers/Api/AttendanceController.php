@@ -12,14 +12,17 @@ use League\Fractal\Serializer\ArraySerializer;
 
 use App\Transformers\AttendanceTransformer;
 use App\Transformers\AttendanceReportDataTransformer;
-use App\Transformers\AttendanceDataTransformer;
+use App\Transformers\UserAttendanceDataTransformer;
+use App\Transformers\ScheduleAttendanceDataTransformer;
 
 use App\Models\Attendance;
 use App\Models\Classes;
 use App\Models\User;
+use App\Models\Schedule;
 use App\Models\SectionStudent;
 use App\TransferObjects\AttendanceReportData;
-use App\TransferObjects\AttendanceData;
+use App\TransferObjects\UserAttendanceData;
+use App\TransferObjects\ScheduleAttendanceData;
 
 class AttendanceController extends Controller
 {
@@ -268,10 +271,103 @@ class AttendanceController extends Controller
             ->get();
 
         $details = $attendances->map(function($a) {
-            return AttendanceData::create($a->toArray());
+            return UserAttendanceData::create($a->toArray());
         });
 
-        $fractal = fractal()->collection($details, new AttendanceDataTransformer);
+        $fractal = fractal()->collection($details, new UserAttendanceDataTransformer);
+        return response()->json($fractal->toArray());
+    }
+
+    /**
+     * Class Attendance
+     *
+     * @api {get} HOST/api/class/schedule-attendance Schedule attendance
+     * @apiVersion 1.0.0
+     * @apiName ScheduleClassAttendance
+     * @apiDescription Get attendances of the given schedule ID
+     * @apiGroup Reports
+     *
+     * @apiParam {Number} class_id the class ID
+     * @apiParam {Number} schedule_id the schedule_id
+     *
+     * @apiSuccess {Number} class_id the class ID
+     * @apiSuccess {Number} schedule_id the schedule id
+     * @apiSuccess {DateTime} from schedule start date/time
+     * @apiSuccess {DateTime} to schedule end date/time
+     * @apiSuccess {Object} attendance_records list of attendances for this schedule
+     * @apiSuccess {Number} attendance_records.user_id
+     * @apiSuccess {String} attendance_records.first_name
+     * @apiSuccess {String} attendance_records.last_name
+     * @apiSuccess {NumberOrNull=1,2,null} attendance_records.status_flag the attendance status
+     * @apiSuccess {String} attendance_records.remark Values: Present, Absent, No record
+     * @apiSuccess {String} attendance_records.reason reasons of absence if any
+     * @apiSuccessExample {json} Sample Response
+        {
+            "class_id": 2,
+            "schedule_id": 2,
+            "from": "2020-05-18 09:00:00",
+            "to": "2020-05-18 10:00:00",
+            "attendance_records": [
+                {
+                    "user_id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino",
+                    "status": 1,
+                    "remark": "Present",
+                    "reason": null
+                },
+                {},
+                {}
+            ]
+        }
+     *
+     * 
+     * 
+     */
+    public function scheduleAttendance(Request $request)
+    {
+        $this->validate($request, [
+            'schedule_id' => 'required|integer|exists:schedules,id',
+            'class_id' => 'required|integer|exists:classes,id'
+        ]);
+
+        $attendances = User::selectRaw(
+            'users.id as user_id, users.first_name, users.last_name,
+            classes.id as class_id,
+            schedules.id as schedule_id,
+            schedules.date_from as `from`,
+            schedules.date_to as `to`,
+            attendances.status as attendance_status,
+            attendances.reason as reason'
+        )
+        ->attendances($request->class_id, null, $request->schedule_id)
+        ->get();
+
+        if(!count($attendances)) {
+            return response('Unable to retrieve attendance records', 500);
+        }
+
+        $records = $attendances->map(function($a) {
+            return [
+                'user_id' => $a->user_id,
+                'first_name' => $a->first_name,
+                'last_name' => $a->last_name,
+                'status_flag' => $a->attendance_status,
+                'remark' => $a->attendance_status ? config('school_hub.attendance_status')[$a->attendance_status] : config('school_hub.attendance_status')[0],
+                'reason' => $a->reason
+            ];
+        });
+        $sched = $attendances->first();
+
+        $data = [
+            'class_id' => $sched->class_id,
+            'schedule_id' => $sched->schedule_id,
+            'from' => $sched->from,
+            'to' => $sched->to,
+            'attendance_records' => $records
+        ];
+
+        $fractal = fractal()->item(ScheduleAttendanceData::create($data), new ScheduleAttendanceDataTransformer);
         return response()->json($fractal->toArray());
     }
 

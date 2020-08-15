@@ -7608,6 +7608,132 @@
   },
   {
     "type": "get",
+    "url": "HOST/api/class/schedule-attendance",
+    "title": "Schedule attendance",
+    "version": "1.0.0",
+    "name": "ScheduleClassAttendance",
+    "description": "<p>Get attendances of the given schedule ID</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "class_id",
+            "description": "<p>the class ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>the schedule id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "from",
+            "description": "<p>schedule start date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "to",
+            "description": "<p>schedule end date/time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "attendance_records",
+            "description": "<p>list of attendances for this schedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "attendance_records.user_id",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "attendance_records.first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "attendance_records.last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "NumberOrNull",
+            "allowedValues": [
+              "1",
+              "2",
+              "null"
+            ],
+            "optional": false,
+            "field": "attendance_records.status_flag",
+            "description": "<p>the attendance status</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "attendance_records.remark",
+            "description": "<p>Values: Present, Absent, No record</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "attendance_records.reason",
+            "description": "<p>reasons of absence if any</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"class_id\": 2,\n    \"schedule_id\": 2,\n    \"from\": \"2020-05-18 09:00:00\",\n    \"to\": \"2020-05-18 10:00:00\",\n    \"attendance_records\": [\n        {\n            \"user_id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\",\n            \"status\": 1,\n            \"remark\": \"Present\",\n            \"reason\": null\n        },\n        {},\n        {}\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/AttendanceController.php",
+    "groupTitle": "Reports"
+  },
+  {
+    "type": "get",
     "url": "<HOST>/api/reports/seatworks",
     "title": "Seatwork scores",
     "version": "1.0.0",
@@ -9609,6 +9735,19 @@
     "name": "StudentClassList",
     "description": "<p>Returns array of classes where the logged in student is currently enrolled</p>",
     "group": "Student_Classes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>User ID of the student. Required if logged in as a parent</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [

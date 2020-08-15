@@ -4,9 +4,9 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 
-class AttendanceDataTransformer extends TransformerAbstract
+class UserAttendanceDataTransformer extends TransformerAbstract
 {
-    public function transform(\App\TransferObjects\AttendanceData $data)
+    public function transform(\App\TransferObjects\UserAttendanceData $data)
     {
         return [
             'schedule_id' => $data->schedule_id,
