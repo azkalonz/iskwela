@@ -117,6 +117,11 @@ class UserController extends Controller
         $students = User::whereSchoolId($school_id)->whereUserType($user_type);
 
         $fractal = fractal()->collection($students->get(), new UserTransformer);
+        
+        if($user_type == self::PARENTS)
+        {
+            $fractal->includeChildren();
+        }
 
         return response()->json($fractal->toArray());
     }
