@@ -85,17 +85,9 @@ class Classes extends Model
         /**
     * @return Relation
     */
-    public function years()
+    public function year()
     {
-        return $this->hasOne(Year::class);
-    }
-
-            /**
-    * @return Relation
-    */
-    public function secetions()
-    {
-        return $this->hasOne(Section::class);
+        return $this->hasOne(Year::class, 'id', 'year_id');
     }
 
     /**

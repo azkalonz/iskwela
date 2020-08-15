@@ -7,6 +7,7 @@ use League\Fractal\TransformerAbstract;
 class ClassesTransformer extends TransformerAbstract
 {
     protected $availableIncludes = ['schedules', 'students'];
+    protected $defaultIncludes = ['section', 'year'];
 
     public function transform(\App\Models\Classes $class)
     {
@@ -40,6 +41,16 @@ class ClassesTransformer extends TransformerAbstract
     public function includeSchedules(\App\Models\Classes $class)
     {
         return $this->collection($class->schedules, new \App\Transformers\ScheduleTransformer);
+    }
+
+    public function includeSection(\App\Models\Classes $class)
+    {
+        return $this->item($class->section, new \App\Transformers\SectionTransformer);
+    }
+
+    public function includeYear(\App\Models\Classes $class)
+    {
+        return $this->item($class->year, new \App\Transformers\YearTransformer);
     }
 
     public function includeStudents(\App\Models\Classes $class)
