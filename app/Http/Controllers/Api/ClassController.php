@@ -126,6 +126,44 @@ class ClassController extends Controller
        return response()->json($fractal->toArray());
     }
 
+    public function adminClasses(Request $request)
+    {
+        //$admin = array('a', 'su'); 
+        $user = Auth::user();
+
+        if($user->user_type == 'a')
+        {
+            $school_id = $user->school_id;
+        }
+        else if ($user->user_type == 'su')
+        {
+            $school_id = $request->school_id ?? $user->school_id;
+        }
+        else{
+            return response('Unauthorized', 401);
+        }
+        
+        $teacher_id = $request->teacher_id ?? 0;
+
+        $class = Classes::with([
+                'teacher' => function($query) use ($school_id) {
+                $query->whereSchoolId($school_id);
+            }
+        ])->inSchool($school_id);
+
+        if($teacher_id > 0)
+        {
+            $class = $class->whereTeacherId($teacher_id);
+        }
+
+        //$class = Classes::whereTeacherId(8);
+
+        //dd($class->toSql());
+
+        $fractal = fractal()->collection($class->get(), new ClassesTransformer);
+        return response()->json($fractal->toArray());
+    }
+
     /**
      * Class Details
      *

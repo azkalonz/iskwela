@@ -107,6 +107,15 @@ class Classes extends Model
         return $this->hasManyThrough(User::class, SectionStudent::class, 'user_id', 'id', 'id', 'user_id');
     }
 
+    public function scopeInSchool($builder, int $school_id)
+    {
+        return $builder->whereIn('teacher_id', function($query) use ($school_id) {
+            $query->from((new User)->getTable())
+                ->select('id')
+                ->whereSchoolId($school_id);
+        });
+    }
+
     /**
      * Classes will have posts, but posts can be owned by classes or other models.
      * This is why it is implemented as itemable.
