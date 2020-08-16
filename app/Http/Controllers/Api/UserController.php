@@ -167,10 +167,13 @@ class UserController extends Controller
 		
         if ($admin->user_type == self::SUPER_USER)
         {
-            $school_id = $request->school_id;
-        }else
+            $school_id = $request->school_id ?? $admin->school_id;
+        }else if ($admin->user_type == self::ADMIN)
         {
             $school_id = $admin->school_id;
+        }
+        else{
+            return response("Unauthorized", 401);
         }
 
         $user = User::create(
