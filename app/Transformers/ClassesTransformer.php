@@ -61,12 +61,17 @@ class ClassesTransformer extends TransformerAbstract
     private function getNextSchedule(Array $schedules)
     {
         $next = [];
+
+        usort($schedules, function($a, $b){
+            return strtotime($a['date_from']) - strtotime($b['date_from']);
+        });
+
         foreach($schedules as $sched)
         {
             $from = date('Y-m-d', strtotime($sched['date_from']));
             $now = date('Y-m-d', strtotime('now'));
-
-            if($now == $from) {
+            
+            if($now == $from || $now < $from) {
                 $next = [
                     'id' => $sched['id'],
                     'from' => $sched['date_from'],
@@ -74,7 +79,6 @@ class ClassesTransformer extends TransformerAbstract
                     'status' => config('school_hub.schedule_status')[$sched['status']]
                 ];
                 break;
-
             }
             continue;
         }
