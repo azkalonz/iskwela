@@ -863,7 +863,7 @@ class ClassController extends Controller
             if(!in_array($dow, $new_dow))
             {
                 //previous schedule exist but is no longer needed
-                $schedule = Schedule::whereClassId($class_id)->whereRaw('WEEKDAY(date_from)='.$dow_code_arr[$dow])->delete();
+                $schedule = Schedule::whereClassId($class_id)->where('date_from', '>=', date("Y-m-d"))->whereRaw('WEEKDAY(date_from)='.$dow_code_arr[$dow])->delete();
             }
         }
     }
