@@ -708,12 +708,13 @@ class ClassController extends Controller
 
         $user = Auth::user();
         $previous_dow = Array();
+        $mysql_dow = array("", "u", "m", "t", "w", "r", "f", "s");
 
         if($request->id)
         {
             $class = Classes::findOrFail($request->id);
             $class->updated_by = $user->id;
-            $previous_dow = explode(',', $class->frequency);
+            //$previous_dow = explode(',', $class->frequency);
             $previous_date_to = $class->date_to;
         }
         else
@@ -745,7 +746,17 @@ class ClassController extends Controller
         if($request->date_from && $request->date_to && $request->time_from && $request->time_to && $request->frequency)
         {
             //if schedule info is given in the request, generate schedules
-            $this->generateClassSchedules($class, $request->teacher_id, $previous_dow, $previous_date_to);
+
+            $schedules_dow = DB::table('schedules')
+            ->select(DB::raw('DISTINCT DAYOFWEEK(date_from) as day_of_week'))
+            ->where('class_id', '=', $class->id)
+            ->get()->toArray();
+            //dd($previous_dow);
+            foreach($schedules_dow as $dow){
+                array_push($previous_dow, $mysql_dow[$dow->day_of_week]);
+            }
+            //dd($previous_dow);
+            $this->generateClassSchedules($class, $class->teacher_id, $previous_dow, $previous_date_to);
         }
 
         $fractal = fractal()->item($class, new ClassesTransformer);

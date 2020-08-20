@@ -60,7 +60,7 @@ class SectionController extends Controller
         return response()->json($fractal->toArray());
     }
 
-    public function add(Request $request)
+    public function save(Request $request)
     {
         $this->validate($request, [
             'year_id' => 'required|integer',

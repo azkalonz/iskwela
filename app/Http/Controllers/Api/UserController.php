@@ -209,6 +209,37 @@ class UserController extends Controller
     }
 
 
+    public function deactivate(Request $request)
+    {
+        return $this->setUserStatus($request, 0);
+    }
+
+    public function activate(Request $request)
+    {
+        return $this->setUserStatus($request, 1);
+    }
+
+    private function setUserStatus(Request $request, $status)
+    {
+        $admin = Auth::user();
+
+        $user = User::whereId($request->id);
+
+        if($admin->user_type == 'a'){
+            $user = $user->whereSchoolId($admin->school_id);
+        }
+        else if ($admin->user_type != 'su')
+        {
+            return response('Unauthorized', 401);
+        }
+
+        $user = $user->firstOrFail();
+
+        $user->status = $status;
+        $user->save();
+
+        return response('Success');
+    }
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"

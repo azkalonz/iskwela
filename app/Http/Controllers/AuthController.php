@@ -55,6 +55,11 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        if((\Auth::user())->status != 1)
+        {
+            return response()->json(['error' => 'Account is locked. Please contact School Administrator.'], 401);
+        }
+
         return $this->respondWithToken($token);
     }
 

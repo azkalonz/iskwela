@@ -39,6 +39,21 @@ class SectionStudentController extends Controller
 
     }
 
+
+    public function remove(Request $request)
+    {
+
+        $section_student = SectionStudent::whereSectionId($request->section_id)->whereUserId($request->student_id)->firstOrFail();
+        $section_student->delete();
+
+        $section = Section::find($request->section_id);
+
+        $fractal = fractal()->item($section, new SectionTransformer);
+        $fractal->includeStudents();
+        return response()->json($fractal->toArray());
+
+    }
+
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"

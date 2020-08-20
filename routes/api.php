@@ -190,6 +190,8 @@ Route::middleware('jwt')->group(function () {
     Route::post('/admin/register/teacher', 'Api\\UserController@registerTeacher');
     Route::post('/admin/register/admin', 'Api\\UserController@registerAdmin');
     Route::post('/admin/register/super-admin', 'Api\\UserController@registerSuperAdmin');
+    Route::post('/admin/user/deactivate/{id}', 'Api\\UserController@deactivate');
+    Route::post('/admin/user/activate/{id}', 'Api\\UserController@activate');
 
 
     //reports
@@ -204,11 +206,12 @@ Route::middleware('jwt')->group(function () {
     Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
     Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
     Route::post('/schooladmin/section/add-student', 'Api\\SectionStudentController@add');
+    Route::delete('/schooladmin/section/remove-student/', 'Api\\SectionStudentController@remove');
     Route::get('/schooladmin/students', 'Api\\UserController@students');
     Route::get('/schooladmin/parents', 'Api\\UserController@parents');
 
     Route::get('/schooladmin/sections', 'Api\\SectionController@show');
-    Route::post('/schooladmin/section/save', 'Api\\SectionController@add');
+    Route::post('/schooladmin/section/save', 'Api\\SectionController@save');
     Route::delete('/schooladmin/section/remove/{id}', 'Api\\SectionController@remove');
     Route::get('/years', 'Api\\YearController@show');
     Route::get('/subjects', 'Api\\SubjectController@show');
