@@ -750,6 +750,7 @@ class ClassController extends Controller
             $schedules_dow = DB::table('schedules')
             ->select(DB::raw('DISTINCT DAYOFWEEK(date_from) as day_of_week'))
             ->where('class_id', '=', $class->id)
+            ->where('date_from', '>=', DATE('Y-m-d'))
             ->get()->toArray();
             //dd($previous_dow);
             foreach($schedules_dow as $dow){
