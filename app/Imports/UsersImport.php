@@ -51,7 +51,8 @@ class UsersImport implements ToModel, WithStartRow, WithCalculatedFormulas
             'email'         => $row[5],
             'user_type'     => $this::USER_TYPE,
             'password'      => str_replace(' ', '', strtolower($row[2])),
-            'school_id'     => $this->school->id
+            'school_id'     => $this->school->id,
+            'change_password_required' => 1
         ]);
     }
 
