@@ -23,8 +23,8 @@ class PostController extends Controller
      *
      * @apiParam {Number} id ID of Post. If exists, updates the specified post, otherwise, creates new.
      * @apiParam {Text} body Content of the post.
-     * @apiParam {String=class} itemable_type The type of item the post belongs to
-     * @apiParam {Number} itemable_id ID of the item the post belongs to. E.g. class ID
+     * @apiParam {String=class,school} itemable_type The type of item the post belongs to
+     * @apiParam {Number} itemable_id ID of the item the post belongs to. E.g. class ID, school ID
      *
      * @apiSuccess {Number} id Post ID
      * @apiSuccess {Text} body content of the post
@@ -56,7 +56,7 @@ class PostController extends Controller
     	$request->validate([
             'id' => 'integer',
             'body'=>'required',
-            'itemable_type'=>'required|in:class',
+            'itemable_type'=>'required|in:class,school',
             'itemable_id'=>'required|integer'
         ]);
 
@@ -169,15 +169,16 @@ class PostController extends Controller
     /**
      * Get detail of Post
      *
-     * @api {GET} HOST/api/post/class/:id?include=comments Get posts of a class
+     * @api {GET} HOST/api/post/:itemable_type/:id?include=comments Get posts of an itemable type
      * @apiVersion 1.0.0
-     * @apiName getPostsOfClass
-     * @apiDescription Get posts of selected class
+     * @apiName getPostsOfAnItem
+     * @apiDescription Get posts of selected itemable type
      * @apiGroup Post
      *
      * @apiUse JWTHeader
      *
-     * @apiParam {Number} id ID of class
+     * @apiParam {String=class,school} itemable_type Itemable type to refer the ID
+     * @apiParam {Number} id ID of an item
      * @apiParam {String=comments} [include] if specified, includes the comments in response data
      *
      * @apiSuccess {Array} posts list of Posts
