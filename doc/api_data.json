@@ -4625,21 +4625,32 @@
   },
   {
     "type": "GET",
-    "url": "HOST/api/post/class/:id?include=comments",
-    "title": "Get posts of a class",
+    "url": "HOST/api/post/:itemable_type/:id?include=comments",
+    "title": "Get posts of an itemable type",
     "version": "1.0.0",
-    "name": "getPostsOfClass",
-    "description": "<p>Get posts of selected class</p>",
+    "name": "getPostsOfAnItem",
+    "description": "<p>Get posts of selected itemable type</p>",
     "group": "Post",
     "parameter": {
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "class",
+              "school"
+            ],
+            "optional": false,
+            "field": "itemable_type",
+            "description": "<p>Itemable type to refer the ID</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of class</p>"
+            "description": "<p>ID of an item</p>"
           },
           {
             "group": "Parameter",
@@ -4979,7 +4990,8 @@
             "group": "Parameter",
             "type": "String",
             "allowedValues": [
-              "class"
+              "class",
+              "school"
             ],
             "optional": false,
             "field": "itemable_type",
@@ -4990,7 +5002,7 @@
             "type": "Number",
             "optional": false,
             "field": "itemable_id",
-            "description": "<p>ID of the item the post belongs to. E.g. class ID</p>"
+            "description": "<p>ID of the item the post belongs to. E.g. class ID, school ID</p>"
           }
         ]
       }
