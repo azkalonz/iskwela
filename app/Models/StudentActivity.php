@@ -40,4 +40,12 @@ class StudentActivity extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
+
+    public function scopeSubmissionStatus($builder, $user_id)
+    {
+        return $builder->leftJoin('student_activity_submission', function($join) use ($user_id) {
+            $join->on('student_activity_submission.activity_id', '=', 'student_activities.id')
+            ->where('student_activity_submission.user_id', '=', $user_id);
+        });
+    }
 }

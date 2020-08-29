@@ -146,6 +146,7 @@ Route::middleware('jwt')->group(function () {
     Route::delete('/quiz/delete/{id}', 'Api\\StudentActivityController@deleteQuiz');
     Route::post('/quiz/questionnaire/add', 'Api\\StudentActivityController@addQuizQuestionnaire');
     Route::post('/quiz/questionnaire/remove', 'Api\\StudentActivityController@removeQuizQuestionnaire');
+    Route::post('/quiz/close/{id}', 'Api\\StudentActivityController@closeQuiz');
 
     // periodical
     Route::post('/periodical/save', 'Api\\StudentActivityController@savePeriodical');
@@ -156,6 +157,7 @@ Route::middleware('jwt')->group(function () {
     Route::delete('/periodical/delete/{id}', 'Api\\StudentActivityController@deletePeriodical');
     Route::post('/periodical/questionnaire/add', 'Api\\StudentActivityController@addPeriodicalQuestionnaire');
     Route::post('/periodical/questionnaire/remove', 'Api\\StudentActivityController@removePeriodicalQuestionnaire');
+    Route::post('/periodical/close/{id}', 'Api\\StudentActivityController@closePeriodical');
 
     // assignment
     Route::post('/assignment/save', 'Api\\StudentActivityController@saveAssignment');
@@ -166,11 +168,15 @@ Route::middleware('jwt')->group(function () {
     Route::delete('/assignment/delete/{id}', 'Api\\StudentActivityController@deleteAssignment');
     Route::post('/assignment/questionnaire/add', 'Api\\StudentActivityController@addAssignmentQuestionnaire');
     Route::post('/assignment/questionnaire/remove', 'Api\\StudentActivityController@removeAssignmentQuestionnaire');
+    Route::post('/assignment/close/{id}', 'Api\\StudentActivityController@closeAssignment');
 
     // student submission
     Route::post('/quiz/answer/submit', 'Api\\StudentActivityAnswerController@submitQuizAnswer');
     Route::post('/periodical/answer/submit', 'Api\\StudentActivityAnswerController@submitPeriodicalAnswer');
     Route::post('/assignment/answer/submit', 'Api\\StudentActivityAnswerController@submitAssignmentAnswer');
+    Route::post('/quiz/complete/{id}', 'Api\\StudentActivityController@completeQuiz');
+    Route::post('/assignment/complete/{id}', 'Api\\StudentActivityController@completeAssignment');
+    Route::post('/periodical/complete/{id}', 'Api\\StudentActivityController@completePeriodical');
 
 
     //SchoolAdmin

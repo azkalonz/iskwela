@@ -14,6 +14,7 @@ use App\Models\StudentActivity;
 use App\Models\Questionnaire;
 use App\Models\StudentActivityQuestionnaire;
 use App\Models\ClassActivity;
+use App\Models\StudentActivitySubmission;
 use App\Transformers\StudentActivityTransformer;
 
 class StudentActivityController extends Controller
@@ -48,6 +49,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN by default
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -68,6 +70,7 @@ class StudentActivityController extends Controller
 				"id": 2,
 				"subject_name": "Filipino"
 			},
+			"activity_availability_status": "OPEN",
 			"category": {
 				"id": 1,
 				"school_id": 1,
@@ -171,6 +174,9 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+	 * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -188,6 +194,9 @@ class StudentActivityController extends Controller
 				"title": "quiz3 - written",
 				"instruction": "answer this",
 				"duration": 60,
+				"activity_availability_status": "OPEN",
+				"submission_status": "DONE",
+    			"submission_date": "2020-08-29 10:56:18",
 				"subject": {
 					"id": 2,
 					"subject_name": "Filipino"
@@ -431,6 +440,9 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -447,6 +459,9 @@ class StudentActivityController extends Controller
 			"title": "quiz2 - written",
 			"instruction": "answer this",
 			"duration": 60,
+			"activity_availability_status": "OPEN",
+			"submission_status": "DONE",
+    		"submission_date": "2020-08-29 10:56:18",
 			"subject": {
 				"id": 1,
 				"subject_name": "English"
@@ -561,6 +576,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN by default
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -577,6 +593,7 @@ class StudentActivityController extends Controller
 			"title": "Periodical - written",
 			"instruction": "answer this",
 			"duration": 60,
+			"activity_availability_status": "OPEN",
 			"subject": {
 				"id": 2,
 				"subject_name": "Filipino"
@@ -684,7 +701,10 @@ class StudentActivityController extends Controller
      * @apiSuccess {Number} the periodical ID
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
-     * @apiSuccess {Number} duration
+	 * @apiSuccess {Number} duration
+	 * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -702,6 +722,9 @@ class StudentActivityController extends Controller
 				"title": "periodical - written",
 				"instruction": "answer this",
 				"duration": 60,
+				"activity_availability_status": "CLOSED",
+				"submission_status": "DONE",
+				"submission_date": "2020-08-29 10:56:18",
 				"subject": {
 					"id": 2,
 					"subject_name": "Filipino"
@@ -953,6 +976,9 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -969,6 +995,9 @@ class StudentActivityController extends Controller
 			"title": "quiz2 - written",
 			"instruction": "answer this",
 			"duration": 60,
+			"activity_availability_status": "OPEN",
+			"submission_status": "DONE",
+    		"submission_date": "2020-08-29 10:56:18",
 			"subject": {
 				"id": 1,
 				"subject_name": "English"
@@ -1085,6 +1114,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN by default
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -1101,6 +1131,7 @@ class StudentActivityController extends Controller
 			"title": "assignment - written",
 			"instruction": "answer this",
 			"duration": 60,
+			"activity_availability_status": "OPEN",
 			"subject": {
 				"id": 2,
 				"subject_name": "Filipino"
@@ -1211,6 +1242,9 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+	 * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -1228,6 +1262,9 @@ class StudentActivityController extends Controller
 				"title": "assignment - written",
 				"instruction": "answer this",
 				"duration": 60,
+				"activity_availability_status": "CLOSED",
+				"submission_status": "DONE",
+				"submission_date": "2020-08-29 10:56:18",
 				"subject": {
 					"id": 2,
 					"subject_name": "Filipino"
@@ -1486,6 +1523,9 @@ class StudentActivityController extends Controller
      * @apiSuccess {String} title
      * @apiSuccess {String} instruction
      * @apiSuccess {Number} duration
+     * @apiSuccess {String} activity_availability_status OPEN/CLOSED
+     * @apiSuccess {String} submission_status available in student profile only. Values: TO DO/ONGOING/DONE
+     * @apiSuccess {DateTimeOrNull} submission_date available in student profile only
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
@@ -1502,6 +1542,9 @@ class StudentActivityController extends Controller
 			"title": "quiz2 - written",
 			"instruction": "answer this",
 			"duration": 60,
+			"activity_availability_status": "OPEN",
+			"submission_status": "DONE",
+    		"submission_date": "2020-08-29 10:56:18",
 			"subject": {
 				"id": 1,
 				"subject_name": "English"
@@ -1709,7 +1752,9 @@ class StudentActivityController extends Controller
 			$student_activities->whereSubjectId($request->subject_id);
 		}
 
-		$fractal = fractal()->collection($student_activities->get(), new StudentActivityTransformer);
+		$student_activities->submissionStatus($user->getKey());
+
+		$fractal = fractal()->collection($student_activities->get(['student_activities.*', 'student_activity_submission.status', 'student_activity_submission.created_at as submitted_date']), new StudentActivityTransformer);
 
         return response()->json($fractal->toArray());
 	}
@@ -1773,7 +1818,11 @@ class StudentActivityController extends Controller
 
 	private function details(Request $request, int $activity_type, string $activity_name = "Activity")
 	{
-		$student_activity = StudentActivity::whereId($request->id)->whereActivityType($activity_type)->first();
+		$user = Auth::user();
+		$student_activity = StudentActivity::select(['student_activities.*', 'student_activity_submission.status', 'student_activity_submission.created_at as submitted_date'])
+				->where('student_activities.id', '=', $request->id)->whereActivityType($activity_type)
+				->submissionStatus($user->getKey())->first();
+
 		if(!$student_activity) {
 			return response("$activity_name not found", 404);
 		}
@@ -1807,7 +1856,7 @@ class StudentActivityController extends Controller
 		$student_activity->school_id = $user->school_id;
 		$student_activity->activity_type = $activity_type;
 		$student_activity->perfect_score = $this->getActivityTotalScore($request->questionnaires);
-		
+		$student_activity->availability_status = 1;
 		if($student_activity->save() && $request->questionnaires) {
 			$this->attachQuestionnaireToActivity($request->questionnaires, $student_activity);
 		}
@@ -1839,6 +1888,173 @@ class StudentActivityController extends Controller
 		});
 
         return $perfect_score;
+	}
+
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/quiz/complete/:id Complete Quiz (for Student)
+     * @apiVersion 1.0.0
+     * @apiName QuizComplete
+     * @apiDescription Mark quiz as complete (student side)
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the quiz ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function completeQuiz(Request $request)
+	{
+		return $this->completeActivity($request, self::QUIZ, 'Quiz');
+	}
+
+	/**
+     * Quizzes
+     *
+     * @api {post} <HOST>/quiz/close/:id Close Quiz (for Teacher)
+     * @apiVersion 1.0.0
+     * @apiName QuizClose
+     * @apiDescription Close the quiz to prevent the student from taking the quiz
+     * @apiGroup Quizzes
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the quiz ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function closeQuiz(Request $request)
+	{
+		return $this->closeActivity($request, self::QUIZ, 'Quiz');
+	}
+
+
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/assignment/complete/:id Complete Assignment (for Student)
+     * @apiVersion 1.0.0
+     * @apiName AssignmentComplete
+     * @apiDescription Mark assignment as complete (student side)
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the assignment ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function completeAssignment(Request $request)
+	{
+		return $this->completeActivity($request, self::ASSIGNMENT, 'Assignment');
+	}
+
+	/**
+     * Assignments
+     *
+     * @api {post} <HOST>/assignment/close/:id Close Assignment (for Teacher)
+     * @apiVersion 1.0.0
+     * @apiName AssignmentClose
+     * @apiDescription Close the assignment to prevent the student from taking the assignment
+     * @apiGroup Assignments
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the assingment ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function closeAssignment(Request $request)
+	{
+		return $this->closeActivity($request, self::ASSIGNMENT, 'Assignment');
+	}
+
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/periodical/complete/:id Complete Periodical (for Student)
+     * @apiVersion 1.0.0
+     * @apiName PeriodicalComplete
+     * @apiDescription Mark periodical as complete (student side)
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the quiz ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function completePeriodical(Request $request)
+	{
+		return $this->completeActivity($request, self::PERIODICAL, 'Periodical');
+	}
+
+	/**
+     * Periodicals
+     *
+     * @api {post} <HOST>/quiz/close/:id Close Periodical (for Teacher)
+     * @apiVersion 1.0.0
+     * @apiName PeriodicalClose
+     * @apiDescription Close the periodical to prevent the student from taking the periodical
+     * @apiGroup Periodicals
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the periodical ID
+     * @apiSuccessExample {json} Sample Response
+		{"success": true}
+	*/ 
+	public function closePeriodical(Request $request)
+	{
+		return $this->closeActivity($request, self::PERIODICAL, 'Periodical');
+	}
+
+	public function closeActivity(Request $request, int $activity_type, string $activity_name = 'Activity')
+	{
+		$user = Auth::user();
+		$activity = StudentActivity::whereId($request->id)->whereActivityType($activity_type);
+		if($user->user_type != 'a') {
+			$activity->whereCreatedBy($user->getKey());
+		}
+
+		$activity = $activity->first();
+		if(!$activity) {
+			return response("Unable to close $activity_name. Please contact your administrator", 403);
+		}
+		$success = false;
+		$activity->availability_status = 0;
+		if($activity->save()) {
+			$success = true;
+		}
+		return response()->json(['success' => $success]);
+	}
+
+	private function completeActivity(Request $request, int $activity_type, string $activity_name = 'Activity')
+	{
+		$user = Auth::user();
+		$activity = StudentActivity::whereId($request->id)->whereActivityType($activity_type)->first();
+		if(!$activity) {
+			return response("$activity_name not found", 404);
+		}
+
+		$success = false;
+		$activitySubmit = StudentActivitySubmission::whereActivityId($request->id)
+						  ->whereUserId($user->getKey())->first();
+
+		if(!$activitySubmit) {
+			$activitySubmit = new StudentActivitySubmission();
+		}
+
+		$activitySubmit->user_id = $user->getKey();
+		$activitySubmit->activity_id = $request->id;
+		$activitySubmit->status = 1;
+
+		if($activitySubmit->save()) {
+			$success = true;
+		}
+		return response()->json(['success' => $success]);
 	}
 
 	/**

@@ -53,6 +53,15 @@ return [
         0 => 'No record',
         1 => 'Present',
         2 => 'Absent'
-    ]
+    ],
+    'activity_submission' => [
+        0 => 'TO DO',
+        1 => 'DONE',
+        2 => 'ONGOING'
+    ],
+    'activity_availablity' => [
+        0 => 'CLOSED',
+        1 => 'OPEN'
+    ],
 
 ];

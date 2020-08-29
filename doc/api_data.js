@@ -742,6 +742,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN by default</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -808,7 +815,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 21,\n\t\"title\": \"assignment - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"assignment - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"activity_availability_status\": \"OPEN\",\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
           "type": "json"
         }
       ]
@@ -901,6 +908,98 @@ define({ "api": [
     }
   },
   {
+    "type": "post",
+    "url": "<HOST>/assignment/close/:id",
+    "title": "Close Assignment (for Teacher)",
+    "version": "1.0.0",
+    "name": "AssignmentClose",
+    "description": "<p>Close the assignment to prevent the student from taking the assignment</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the assingment ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/assignment/complete/:id",
+    "title": "Complete Assignment (for Student)",
+    "version": "1.0.0",
+    "name": "AssignmentComplete",
+    "description": "<p>Mark assignment as complete (student side)</p>",
+    "group": "Assignments",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the assignment ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Assignments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "get",
     "url": "<HOST>/api/assignment/:id",
     "title": "Get Assignment Detail",
@@ -954,6 +1053,27 @@ define({ "api": [
             "optional": false,
             "field": "duration",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
           },
           {
             "group": "Success 200",
@@ -1023,7 +1143,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"title\": \"quiz2 - written\",\n\t\t\t\"instruction\": \"answer this\",\n\t\t\t\"duration\": 60,\n\t\t\t\"activity_availability_status\": \"OPEN\",\n\t\t\t\"submission_status\": \"DONE\",\n    \t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\t\"subject\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"subject_name\": \"English\"\n\t\t\t},\n\t\t\t\"category\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"school_id\": 1,\n\t\t\t\t\"category\": \"Written Works\",\n\t\t\t\t\"category_percentage\": \"0.3\"\n\t\t\t},\n\t\t\t\"questionnaires\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\t\"school_published\": 0,\n\t\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\t\"author\": {\n\t\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t\t},\n\t\t\t\t\t\"questions\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}",
           "type": "json"
         }
       ]
@@ -1166,6 +1286,27 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -1232,7 +1373,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"assignment - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"assignment - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"activity_availability_status\": \"CLOSED\",\n\t\t\"submission_status\": \"DONE\",\n\t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
           "type": "json"
         }
       ]
@@ -3519,6 +3660,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN by default</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -3585,7 +3733,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 21,\n\t\"title\": \"Periodical - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"Periodical - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"activity_availability_status\": \"OPEN\",\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
           "type": "json"
         }
       ]
@@ -3799,6 +3947,27 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -3865,7 +4034,99 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"periodical - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"periodical - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"activity_availability_status\": \"CLOSED\",\n\t\t\"submission_status\": \"DONE\",\n\t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/quiz/close/:id",
+    "title": "Close Periodical (for Teacher)",
+    "version": "1.0.0",
+    "name": "PeriodicalClose",
+    "description": "<p>Close the periodical to prevent the student from taking the periodical</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the periodical ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Periodicals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/periodical/complete/:id",
+    "title": "Complete Periodical (for Student)",
+    "version": "1.0.0",
+    "name": "PeriodicalComplete",
+    "description": "<p>Mark periodical as complete (student side)</p>",
+    "group": "Periodicals",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
           "type": "json"
         }
       ]
@@ -3943,6 +4204,27 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -4009,7 +4291,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"title\": \"quiz2 - written\",\n\t\t\t\"instruction\": \"answer this\",\n\t\t\t\"duration\": 60,\n\t\t\t\"activity_availability_status\": \"OPEN\",\n\t\t\t\"submission_status\": \"DONE\",\n    \t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\t\"subject\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"subject_name\": \"English\"\n\t\t\t},\n\t\t\t\"category\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"school_id\": 1,\n\t\t\t\t\"category\": \"Written Works\",\n\t\t\t\t\"category_percentage\": \"0.3\"\n\t\t\t},\n\t\t\t\"questionnaires\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\t\"school_published\": 0,\n\t\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\t\"author\": {\n\t\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t\t},\n\t\t\t\t\t\"questions\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}",
           "type": "json"
         }
       ]
@@ -5919,6 +6201,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN by default</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -5985,7 +6274,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 21,\n\t\"title\": \"quiz3 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "{\n\t\"id\": 21,\n\t\"title\": \"quiz3 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 2,\n\t\t\"subject_name\": \"Filipino\"\n\t},\n\t\"activity_availability_status\": \"OPEN\",\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
           "type": "json"
         }
       ]
@@ -6199,6 +6488,27 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "subject",
@@ -6265,7 +6575,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n\t{\n\t\t\"id\": 21,\n\t\t\"title\": \"quiz3 - written\",\n\t\t\"instruction\": \"answer this\",\n\t\t\"duration\": 60,\n\t\t\"subject\": {\n\t\t\t\"id\": 2,\n\t\t\t\"subject_name\": \"Filipino\"\n\t\t},\n\t\t\"category\": {\n\t\t\t\"id\": 1,\n\t\t\t\"school_id\": 1,\n\t\t\t\"category\": \"Written Works\",\n\t\t\t\"category_percentage\": \"0.3\"\n\t\t},\n\t\t\"questionnaires\": [\n\t\t\t{\n\t\t\t\t\"id\": 2,\n\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\"school_published\": 0,\n\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\"author\": {\n\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t},\n\t\t\t\t\"questions\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{}\n\t\t]\n\t}\n]",
+          "content": "\t\t[\n\t\t\t{\n\t\t\t\t\"id\": 21,\n\t\t\t\t\"title\": \"quiz3 - written\",\n\t\t\t\t\"instruction\": \"answer this\",\n\t\t\t\t\"duration\": 60,\n\t\t\t\t\"activity_availability_status\": \"OPEN\",\n\t\t\t\t\"submission_status\": \"DONE\",\n    \t\t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\t\t\"subject\": {\n\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\"subject_name\": \"Filipino\"\n\t\t\t\t},\n\t\t\t\t\"category\": {\n\t\t\t\t\t\"id\": 1,\n\t\t\t\t\t\"school_id\": 1,\n\t\t\t\t\t\"category\": \"Written Works\",\n\t\t\t\t\t\"category_percentage\": \"0.3\"\n\t\t\t\t},\n\t\t\t\t\"questionnaires\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\t\t\"school_published\": 0,\n\t\t\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\t\t\"author\": {\n\t\t\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"questions\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t]\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t]\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t{}\n\t\t\t\t]\n\t\t\t}\n\t\t]",
           "type": "json"
         }
       ]
@@ -6358,6 +6668,98 @@ define({ "api": [
     }
   },
   {
+    "type": "post",
+    "url": "<HOST>/quiz/close/:id",
+    "title": "Close Quiz (for Teacher)",
+    "version": "1.0.0",
+    "name": "QuizClose",
+    "description": "<p>Close the quiz to prevent the student from taking the quiz</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/quiz/complete/:id",
+    "title": "Complete Quiz (for Student)",
+    "version": "1.0.0",
+    "name": "QuizComplete",
+    "description": "<p>Mark quiz as complete (student side)</p>",
+    "group": "Quizzes",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the quiz ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\"success\": true}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityController.php",
+    "groupTitle": "Quizzes",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "get",
     "url": "<HOST>/api/quiz/:id",
     "title": "Get Quiz Detail",
@@ -6411,6 +6813,27 @@ define({ "api": [
             "optional": false,
             "field": "duration",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "activity_availability_status",
+            "description": "<p>OPEN/CLOSED</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "submission_status",
+            "description": "<p>available in student profile only. Values: TO DO/ONGOING/DONE</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTimeOrNull",
+            "optional": false,
+            "field": "submission_date",
+            "description": "<p>available in student profile only</p>"
           },
           {
             "group": "Success 200",
@@ -6480,7 +6903,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Sample Response",
-          "content": "{\n\t\"id\": 17,\n\t\"title\": \"quiz2 - written\",\n\t\"instruction\": \"answer this\",\n\t\"duration\": 60,\n\t\"subject\": {\n\t\t\"id\": 1,\n\t\t\"subject_name\": \"English\"\n\t},\n\t\"category\": {\n\t\t\"id\": 1,\n\t\t\"school_id\": 1,\n\t\t\"category\": \"Written Works\",\n\t\t\"category_percentage\": \"0.3\"\n\t},\n\t\"questionnaires\": [\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\"subject_id\": 1,\n\t\t\t\"school_published\": 0,\n\t\t\t\"school_published_date\": null,\n\t\t\t\"author\": {\n\t\t\t\t\"id\": 8,\n\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t},\n\t\t\t\"questions\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+          "content": "\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"title\": \"quiz2 - written\",\n\t\t\t\"instruction\": \"answer this\",\n\t\t\t\"duration\": 60,\n\t\t\t\"activity_availability_status\": \"OPEN\",\n\t\t\t\"submission_status\": \"DONE\",\n    \t\t\"submission_date\": \"2020-08-29 10:56:18\",\n\t\t\t\"subject\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"subject_name\": \"English\"\n\t\t\t},\n\t\t\t\"category\": {\n\t\t\t\t\"id\": 1,\n\t\t\t\t\"school_id\": 1,\n\t\t\t\t\"category\": \"Written Works\",\n\t\t\t\t\"category_percentage\": \"0.3\"\n\t\t\t},\n\t\t\t\"questionnaires\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\t\"school_published\": 0,\n\t\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\t\"author\": {\n\t\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t\t},\n\t\t\t\t\t\"questions\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}",
           "type": "json"
         }
       ]
