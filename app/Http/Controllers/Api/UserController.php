@@ -208,6 +208,39 @@ class UserController extends Controller
         return response()->json($fractal->toArray());
     }
 
+    public function updateUser(Request $request)
+    {
+        $this->validate($request, [
+            'school_id' => 'integer',
+            'phone_number' => 'integer',
+        ]);
+
+        $admin = Auth::user();
+
+        $user = User::findOrFail($request->id);
+
+        $user->username = $request->username ?? $user->username;
+        $user->first_name = $request->first_name ?? $user->first_name;
+        $user->middle_name = $request->middle_name ?? $user->middle_name;
+        $user->last_name = $request->last_name ?? $user->last_name;
+        $user->gender = $request->gender ?? $user->gender;
+        $user->email = $request->email ?? $user->email;
+        $user->phone_number = $request->phone_number ?? $user->phone_number;
+
+        if($admin->user_type == 'su')
+        {
+            $user->school_id = $request->school_id ?? $user->school_id;
+            $user->user_type = $request->user_type ?? $user->user_type;
+        }
+
+        $user->updated_by = $admin->id;
+
+        $user->save();
+
+        $fractal = fractal()->item($user, new UserTransformer);
+
+        return response()->json($fractal->toArray());
+    }
 
     public function deactivate(Request $request)
     {
@@ -236,6 +269,7 @@ class UserController extends Controller
         $user = $user->firstOrFail();
 
         $user->status = $status;
+        $user->updated_by = $admin->id;
         $user->save();
 
         return response('Success');

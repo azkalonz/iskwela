@@ -193,6 +193,7 @@ Route::middleware('jwt')->group(function () {
     Route::post('/admin/user/deactivate/{id}', 'Api\\UserController@deactivate');
     Route::post('/admin/user/activate/{id}', 'Api\\UserController@activate');
 
+    Route::post('/admin/user/update/{id}', 'Api\\UserController@updateUser');
 
     //reports
     Route::get('/reports/activity-scores', 'Api\\ReportController@activities');
