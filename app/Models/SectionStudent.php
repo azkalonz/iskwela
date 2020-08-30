@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 
 class SectionStudent extends Model
 {
+
     protected $table = 'sections_students';
 
     protected $fillable = ['section_id', 'user_id'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new UserScope());
+    }
 
     public function user()
     {

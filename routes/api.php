@@ -233,6 +233,7 @@ Route::middleware('jwt')->group(function () {
     //school admin user settings
     Route::post('/schooladmin/change-user-password', 'AuthController@adminChangePassword');
     Route::post('/schooladmin/class/save', 'Api\\ClassController@saveClass');
+    Route::delete('/schooladmin/class/remove/{id}', 'Api\\ClassController@adminRemoveClass');
     Route::post('/schooladmin/section/add-student', 'Api\\SectionStudentController@add');
     Route::delete('/schooladmin/section/remove-student/', 'Api\\SectionStudentController@remove');
     Route::get('/schooladmin/students', 'Api\\UserController@students');

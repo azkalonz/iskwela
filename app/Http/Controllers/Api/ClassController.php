@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Classes;
+use App\Models\Section;
 use App\Transformers\ClassesTransformer;
 use App\Transformers\ScheduleTransformer;
 use App\Transformers\ScheduleAttendanceTransformer;
@@ -124,6 +125,26 @@ class ClassController extends Controller
         $fractal = fractal()->collection($class, new ClassesTransformer);
 
        return response()->json($fractal->toArray());
+    }
+
+    public function adminRemoveClass(Request $request)
+    {
+        $user = Auth::user();
+
+        $class = Classes::findOrFail($request->id);
+        if($user->user_type == 'a')
+        {
+            $section = Section::whereId($class->section_id)->whereSchoolId($user->school_id)->firstOrFail();
+        }
+        else if ($user->user_type != 'su')
+        {
+            return response('Unauthorized', 401);
+        }
+
+        $class->delete();
+
+        return response()->json(['success' => true]);
+
     }
 
     public function adminClasses(Request $request)
@@ -673,6 +694,7 @@ class ClassController extends Controller
      */
     public function removeClass(Request $request)
     {
+        return response()->json(['error' => 'API is deprecated.']);
         //to do: policy on who can remove classes
 		$class = Classes::with('schedules')->findOrFail($request->id);
 
