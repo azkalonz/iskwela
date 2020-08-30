@@ -16,80 +16,37 @@ use \App\Transformers\AssignmentAnswerTransformer;
 
 class AssignmentAnswerController extends Controller
 {
+    const ASSIGNMENT = 3;
+    const SEATWORK = 1;
+    const PROJECT = 2;
 
-    /**
-     * Show Activity Answers
-     *
-     * @api {get} HOST/teacher/activity-answers/:id Show Activity Answers
-     * @apiVersion 1.0.0
-     * @apiName ShowActivityAnswers
-     * @apiDescription Get activity answers.
-     * @apiGroup Teacher Classes
-     *
-     * @apiParam {Number} id Activity ID
-     * @apiParam {Number} student_id Student ID - if passed, will return all answers for this activity, otherwise, returns all answers of the specified student ID
-     *
-     * @apiSuccess {Number} id Activity Answer ID
-     * @apiSuccess {String} assignment_id Activity ID
-     * @apiSuccess {String} answer_media download link of the answer file
-     * @apiSuccess {Object} student 
-     * @apiSuccess {Number} student.id ID of Student 
-     * @apiSuccess {Number} student.first_name First Name of Student 
-     * @apiSuccess {Number} student.last_name Last Name of Student 
-     * 
-     * @apiSuccessExample {json} Sample Response
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/teacher/seatwork-answers/:id View Answers (for teacher)
+    * @apiVersion 1.0.0
+    * @apiName ShowSeatworkAnswerTeacher
+    * @apiDescription Show the student's answer of the given seatwork
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the seatwork ID
+    * @apiParam {Number} [student_id] if supplied, returns the answer of the specific student only
+    *
+    * @apiSuccess {Number} id record ID of the answer
+    * @apiSuccess {Number} assignment_id the seatwork ID
+    * @apiSuccess {String} answer_media link to the uploaded answer 
+    * @apiSuccess {Object} student student details who submitted the answer 
+    * @apiSuccess {Number} student.id
+    * @apiSuccess {String} student.first_name
+    * @apiSuccess {String} student.last_name
+    * 
+    * @apiSuccessExample {json} Sample Response
         [
             {
-                "id": 1,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/1",
-                "student": {
-                    "id": 1,
-                    "first_name": "jayson",
-                    "last_name": "barino"
-                }
-            },
-            {
-                "id": 2,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/2",
-                "student": {
-                    "id": 2,
-                    "first_name": "grace",
-                    "last_name": "ungui"
-                }
-            }
-        ]
-     *
-     * 
-     * 
-     */
-
-    /**
-     * Show Activity Answers
-     *
-     * @api {get} HOST/student/activity-answers/:id Show Activity Answer
-     * @apiVersion 1.0.0
-     * @apiName ShowActivityAnswer
-     * @apiDescription Get student's activity answers.
-     * @apiGroup Student Classes
-     *
-     * @apiParam {Number} id Seatwork ID
-     *
-     * @apiSuccess {Number} id Activity Answer ID
-     * @apiSuccess {String} assignment_id Activity ID
-     * @apiSuccess {String} answer_media download link of the answer file
-     * @apiSuccess {Object} student 
-     * @apiSuccess {Number} student.id ID of Student 
-     * @apiSuccess {Number} student.first_name First Name of Student 
-     * @apiSuccess {Number} student.last_name Last Name of Student 
-     * 
-     * @apiSuccessExample {json} Sample Response
-        [
-            {
-                "id": 1,
-                "assignment_id": 1,
-                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/1",
+                "id": 3,
+                "assignment_id": 6,
+                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",
@@ -97,19 +54,168 @@ class AssignmentAnswerController extends Controller
                 }
             }
         ]
-     *
-     * 
-     * 
-     */
-
+    *
+    * 
+   */
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/student/seatwork-answers/:id View Answers (for student)
+    * @apiVersion 1.0.0
+    * @apiName ShowSeatworkAnswerStudent
+    * @apiDescription Show the current student's answer of the given seatwork
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the seatwork ID
+    *
+    * @apiSuccess {Number} id record ID of the answer
+    * @apiSuccess {Number} assignment_id the seatwork ID
+    * @apiSuccess {String} answer_media link to the uploaded answer 
+    * @apiSuccess {Object} student student details who submitted the answer 
+    * @apiSuccess {Number} student.id
+    * @apiSuccess {String} student.first_name
+    * @apiSuccess {String} student.last_name
+    * 
+    * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 3,
+                "assignment_id": 6,
+                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "student": {
+                    "id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino"
+                }
+            }
+        ]
+    *
+    * 
+   */
     public function showSeatworkAnswer(Request $request)
     {
-        return $this->show($request, 1);
+        return $this->show($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/view-answers/:id View Answers
+    * @apiVersion 1.0.0
+    * @apiName ShowFreeStyleAssignmentAnswer
+    * @apiDescription Show the student's answer of the given assignment
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the assignment ID
+    * @apiParam {Number} [student_id] if supplied, returns the answer of the specific student only
+    *
+    * @apiSuccess {Number} id record ID of the answer
+    * @apiSuccess {Number} assignment_id the assignment ID
+    * @apiSuccess {String} answer_media link to the uploaded answer 
+    * @apiSuccess {Object} student student details who submitted the answer 
+    * @apiSuccess {Number} student.id
+    * @apiSuccess {String} student.first_name
+    * @apiSuccess {String} student.last_name
+    * 
+    * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 3,
+                "assignment_id": 6,
+                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "student": {
+                    "id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino"
+                }
+            }
+        ]
+    *
+    * 
+   */
+    public function showAssigmentAnswer(Request $request)
+    {
+        return $this->show($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/teacher/project-answers/:id View Answers (for teacher)
+    * @apiVersion 1.0.0
+    * @apiName ShowProjectAnswerTeacher
+    * @apiDescription Show the student's answer of the given project
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the project ID
+    * @apiParam {Number} [student_id] if supplied, returns the answer of the specific student only
+    *
+    * @apiSuccess {Number} id record ID of the answer
+    * @apiSuccess {Number} assignment_id the project ID
+    * @apiSuccess {String} answer_media link to the uploaded answer 
+    * @apiSuccess {Object} student student details who submitted the answer 
+    * @apiSuccess {Number} student.id
+    * @apiSuccess {String} student.first_name
+    * @apiSuccess {String} student.last_name
+    * 
+    * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 3,
+                "assignment_id": 6,
+                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "student": {
+                    "id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino"
+                }
+            }
+        ]
+    *
+    * 
+   */
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/student/project-answers/:id View Answers (for student)
+    * @apiVersion 1.0.0
+    * @apiName ShowProjectAnswerStudent
+    * @apiDescription Show the current student's answer of the given project
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the project ID
+    *
+    * @apiSuccess {Number} id record ID of the answer
+    * @apiSuccess {Number} assignment_id the project ID
+    * @apiSuccess {String} answer_media link to the uploaded answer 
+    * @apiSuccess {Object} student student details who submitted the answer 
+    * @apiSuccess {Number} student.id
+    * @apiSuccess {String} student.first_name
+    * @apiSuccess {String} student.last_name
+    * 
+    * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 3,
+                "assignment_id": 6,
+                "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "student": {
+                    "id": 1,
+                    "first_name": "jayson",
+                    "last_name": "barino"
+                }
+            }
+        ]
+    *
+    * 
+   */
     public function showProjectAnswer(Request $request)
     {
-        return $this->show($request, 2);
+        return $this->show($request, self::PROJECT);
     }
 
     public function show(Request $request, int $activity_type)

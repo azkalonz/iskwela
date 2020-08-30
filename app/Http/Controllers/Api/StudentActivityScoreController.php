@@ -19,27 +19,8 @@ class StudentActivityScoreController extends Controller
 {
 
     const SEATWORK = 1;
-	const PROJECT = 2;
-
-    public function setSeatworkScore(Request $request)
-    {
-        return $this->setScore($request, self::SEATWORK);
-    }
-
-    public function showSeatworkScore(Request $request)
-    {
-        return $this->show($request, self::SEATWORK);
-    }
-
-    public function setProjectScore(Request $request)
-    {
-        return $this->setScore($request, self::PROJECT);
-    }
-
-    public function showProjectScore(Request $request)
-    {
-        return $this->show($request, self::PROJECT);
-    }
+    const PROJECT = 2;
+    const ASSIGNMENT = 3;
 
     /**
      * Seatworks
@@ -56,12 +37,11 @@ class StudentActivityScoreController extends Controller
      * @apiParam {Number} student_id user ID of the student
      * @apiParam {Number} activity_id activity ID
      *
-     * @apiSuccess {Number} id the user's ID
-     * @apiSuccess {DateTime} published_at
-     * @apiSuccess {String} title
-     * @apiSuccess {Number} perfect_score the expected total score of the project
-     * @apiSuccess {Number} student_score the score achieved by the student
-     * @apiSuccess {Number} rating the percentage rate
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the seatwork ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
      * 
      * 
      * @apiSuccessExample {json} Sample Response
@@ -73,7 +53,191 @@ class StudentActivityScoreController extends Controller
             "score_percentage": 0.8
         }
      * 
-     */
+    */
+    public function setSeatworkScore(Request $request)
+    {
+        return $this->setScore($request, self::SEATWORK);
+    }
+
+    /**
+     * Assignment Free-Style
+     *
+     * @api {post} <HOST>/api/assignment/v2/set-score Set Assignment Score
+     * @apiVersion 1.0.0
+     * @apiName SetFreeStyleAssignmentScore
+     * @apiDescription Sets a student assignment score
+     * @apiGroup Assignments: Free-Style
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} score score of the student
+     * @apiParam {Number} student_id user ID of the student
+     * @apiParam {Number} activity_id activity ID
+     *
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the assignment ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
+     * 
+    */
+    public function setAssignmentScore(Request $request)
+    {
+        return $this->setScore($request, self::ASSIGNMENT);
+    }
+
+    /**
+     * Seatworks
+     *
+     * @api {get} <HOST>/api/class/seatwork/get-score/:id Get Seatwork Score
+     * @apiVersion 1.0.0
+     * @apiName GetSeatworkScore
+     * @apiDescription Shows the score of student(s) of the given seatwork ID
+     * @apiGroup Seatworks
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} student_id the student ID. If not provided, displays scores of all students in the class
+     *
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the seatwork ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
+     * 
+    */
+    public function showSeatworkScore(Request $request)
+    {
+        return $this->show($request, self::SEATWORK);
+    }
+
+    /**
+     * Assignment Free-Style
+     *
+     * @api {get} <HOST>/api/assignment/v2/get-score/:id Get Assignment Score
+     * @apiVersion 1.0.0
+     * @apiName GetFreeStyleAssignmentScore
+     * @apiDescription Shows the score of student(s) of the given assignment ID
+     * @apiGroup Assignments: Free-Style
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} student_id the student ID. If not provided, displays scores of all students in the class
+     *
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the assignment ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
+     * 
+    */
+    public function showAssignmentScore(Request $request)
+    {
+        return $this->show($request, self::ASSIGNMENT);
+    }
+
+    /**
+     * Projects
+     *
+     * @api {post} <HOST>/api/class/project/set-score Set Project Score
+     * @apiVersion 1.0.0
+     * @apiName SetProjectScore
+     * @apiDescription Sets a student project score
+     * @apiGroup Projects
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} score score of the student
+     * @apiParam {Number} student_id user ID of the student
+     * @apiParam {Number} activity_id activity ID
+     *
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the project ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
+     * 
+    */
+    public function setProjectScore(Request $request)
+    {
+        return $this->setScore($request, self::PROJECT);
+    }
+
+    /**
+     * Projects
+     *
+     * @api {get} <HOST>/api/class/project/get-score/:id Get Project Score
+     * @apiVersion 1.0.0
+     * @apiName GetProjectScore
+     * @apiDescription Shows the score of student(s) of the given project ID
+     * @apiGroup Projects
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} student_id the student ID. If not provided, displays scores of all students in the class
+     *
+     * @apiSuccess {Number} id score record ID
+     * @apiSuccess {Number} student_id
+     * @apiSuccess {Number} activity_id the project ID
+     * @apiSuccess {Number} score achieved points
+     * @apiSuccess {Double} score_percentage score rating
+     * 
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+            "id": 2,
+            "student_id": "2",
+            "activity_id": "4",
+            "score": "80",
+            "score_percentage": 0.8
+        }
+     * 
+    */
+    public function showProjectScore(Request $request)
+    {
+        return $this->show($request, self::PROJECT);
+    }
+
     public function setScore(Request $request, $activity_type)
     {
 

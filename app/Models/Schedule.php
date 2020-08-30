@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+
+    const ASSIGNMENT = 3;
     protected $fillable = [
         'name',
         'class_id',
@@ -31,6 +33,10 @@ class Schedule extends Model
     {
         return $this->hasMany(Assignment::class)->where('published', 1)->whereActivityType(1);
     }
+    public function unpublishedSeatworks()
+    {
+        return $this->hasMany(Assignment::class)->where('published', 0)->whereActivityType(1);
+    }
 
     public function seatworks()
     {
@@ -40,6 +46,21 @@ class Schedule extends Model
     public function publishedProjects()
     {
         return $this->hasMany(Assignment::class)->where('published', 1)->whereActivityType(2);
+    }
+
+    public function unpublishedProjects()
+    {
+        return $this->hasMany(Assignment::class)->where('published', 0)->whereActivityType(2);
+    }
+
+    public function publishedAssignments()
+    {
+        return $this->hasMany(Assignment::class)->where('published', 1)->whereActivityType(self::ASSIGNMENT);
+    }
+
+    public function unpublishedAssignments()
+    {
+        return $this->hasMany(Assignment::class)->where('published', 0)->whereActivityType(self::ASSIGNMENT);
     }
 
     public function projects()

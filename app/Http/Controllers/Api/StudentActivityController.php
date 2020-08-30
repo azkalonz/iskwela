@@ -1096,7 +1096,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName AddAssignment
      * @apiDescription Saves a new assignment with attached questionnaires
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1228,7 +1228,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName ListAssignments
      * @apiDescription Returns array of assignments
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1364,7 +1364,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName PublishAssignment
      * @apiDescription Publishes the assignment to class
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1396,7 +1396,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName UnpublishAssignment
      * @apiDescription Removes the assignment from the class
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1427,7 +1427,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName DeleteAssignment
      * @apiDescription Delete the assignment from the assignment bank
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1453,7 +1453,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName AddAssignmentQuestionnaire
      * @apiDescription Allows adding more questionnaires to the existing assignment
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1484,7 +1484,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName RemoveAssignmentQuestionnaire
      * @apiDescription Allows removing questionnaires to the existing assignment. Only one questionnaire can be removed at a time
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1513,7 +1513,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName AssignmentDetail
      * @apiDescription Returns details of the specified assignment ID
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1938,7 +1938,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName AssignmentComplete
      * @apiDescription Mark assignment as complete (student side)
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *
@@ -1958,7 +1958,7 @@ class StudentActivityController extends Controller
      * @apiVersion 1.0.0
      * @apiName AssignmentClose
      * @apiDescription Close the assignment to prevent the student from taking the assignment
-     * @apiGroup Assignments
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *

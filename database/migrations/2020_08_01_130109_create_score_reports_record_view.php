@@ -48,16 +48,16 @@ class CreateScoreReportsRecordView extends Migration
                 select c.id as class_id,
                     u.id as user_id,
                     u.first_name, u.last_name,
-                    coalesce(a.total_score,0) as perfect_score,
+                    sum(coalesce(a.total_score,0)) as perfect_score,
                     sum(coalesce(sas.score,0)) as score,
-                    if(a.activity_type  = 1, 4, IF(a.activity_type = 2, 5, 0)) as activity_type,
+                    if(a.activity_type  = 1, 4, IF(a.activity_type = 2, 5, if(a.activity_type = 3, a.activity_type, 0))) as activity_type,
                     a.due_date as date_created
                 from classes c
                 inner join sections_students ss2 on ss2.section_id = c.section_id 
                 inner join users u on u.id = ss2.user_id
                 left join assignments a  on a.class_id = c.id and a.published = 1
                 left join student_activity_scores sas on sas.activity_id = a.id and sas.student_id = u.id
-                group by 1,2,3,4,5,7,8
+                group by 1,2,3,4,7,8
             
             )a
             group by 1,2,3,4,7,8

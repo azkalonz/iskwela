@@ -170,6 +170,27 @@ Route::middleware('jwt')->group(function () {
     Route::post('/assignment/questionnaire/remove', 'Api\\StudentActivityController@removeAssignmentQuestionnaire');
     Route::post('/assignment/close/{id}', 'Api\\StudentActivityController@closeAssignment');
 
+    /** FREE-STYLE ASSIGNMENT */
+    //common
+    Route::get('/assignments/v2/{id}', 'Api\\ScheduleController@assignmentsBySchedule');
+    Route::get('/assignment/v2/{id}', 'Api\\AssignmentController@showAssignment');
+    Route::get('/assignment/v2/get-score/{id}', 'Api\\StudentActivityScoreController@showAssignmentScore');
+    Route::get('/assignment/v2/view-answers/{id}', 'Api\\AssignmentAnswerController@showAssigmentAnswer');
+    // for teachers
+    Route::post('/assignment/v2/save', 'Api\\AssignmentController@addAssignment');
+    Route::post('/assignment/v2/publish/{id}', 'Api\\AssignmentController@publishAssignment');
+    Route::post('/assignment/v2/material/save', 'Api\\AssignmentController@saveAssignmentMaterial');
+    Route::post('/assignment/v2/mark-done/{id}', 'Api\\AssignmentController@markAssignmentDone');
+    Route::post('/assignment/v2/mark-not-done/{id}', 'Api\\AssignmentController@markAssignmentNotDone');
+    Route::post('/assignment/v2/set-score', 'Api\\StudentActivityScoreController@setAssignmentScore');
+    Route::post('/assignment/v2/upload/material', 'Api\\FileController@addAssignmentMaterial');
+    Route::post('/assignment/v2/remove/material/{id}', 'Api\\AssignmentController@removeFreeStyleAssignmentMaterial');
+    Route::post('/assignment/v2/remove/{id}', 'Api\\AssignmentController@removeFreeStyleAssignment');
+    //for students
+    Route::post('/assignment/v2/upload/answer', 'Api\\FileController@submitAssignmentAnswer');
+
+    /** END FREE-STYLE ASSIGNMENT */
+
     // student submission
     Route::post('/quiz/answer/submit', 'Api\\StudentActivityAnswerController@submitQuizAnswer');
     Route::post('/periodical/answer/submit', 'Api\\StudentActivityAnswerController@submitPeriodicalAnswer');

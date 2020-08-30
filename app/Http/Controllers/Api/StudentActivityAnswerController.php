@@ -24,11 +24,11 @@ class StudentActivityAnswerController extends Controller
 	/**
      * Submit QuizAnswer
      *
-     * @api {post} <HOST>/api/quiz/answer/submit Submit Quiz
+     * @api {post} <HOST>/api/quiz/answer/submit Submit Quiz Questionnaire (answers)
      * @apiVersion 1.0.0
      * @apiName SubmitQuiz
      * @apiDescription Allows submission of quiz answer
-     * @apiGroup Submit Activity Answer
+     * @apiGroup Quizzes
      *
      * @apiUse JWTHeader
      *
@@ -119,11 +119,11 @@ class StudentActivityAnswerController extends Controller
 	/**
      * Submit PeriodicalAnswer
      *
-     * @api {post} <HOST>/api/periodical/answer/submit Submit Periodical
+     * @api {post} <HOST>/api/periodical/answer/submit Submit Periodical Questionnaire (answers)
      * @apiVersion 1.0.0
      * @apiName SubmitPeriodical
      * @apiDescription Allows submission of periodical answer
-     * @apiGroup Submit Activity Answer
+     * @apiGroup Periodicals
      *
      * @apiUse JWTHeader
      *
@@ -194,11 +194,11 @@ class StudentActivityAnswerController extends Controller
 	/**
      * Submit AssignmentAnswer
      *
-     * @api {post} <HOST>/api/assignment/answer/submit Submit Assignment
+     * @api {post} <HOST>/api/assignment/answer/submit Submit Assignment Questionnaire (answers)
      * @apiVersion 1.0.0
      * @apiName SubmitAssignment
      * @apiDescription Allows submission of assignment answer
-     * @apiGroup Submit Activity Answer
+     * @apiGroup Assignments: Questionnaire
      *
      * @apiUse JWTHeader
      *

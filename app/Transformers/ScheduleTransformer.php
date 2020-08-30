@@ -9,8 +9,12 @@ class ScheduleTransformer extends TransformerAbstract
     protected $availableIncludes = ['materials'
             , 'activities'
             , 'publishedSeatworks'
+            , 'unpublishedSeatworks'
+            , 'publishedAssignments'
+            , 'unpublishedAssignments'
             , 'lessonPlans'
             , 'publishedProjects'
+            , 'unpublishedProjects'
             , 'seatworks'
             , 'projects'];
     /**
@@ -49,6 +53,21 @@ class ScheduleTransformer extends TransformerAbstract
         return $this->collection($schedule->publishedSeatworks, new \App\Transformers\AssignmentTransformer);
     }
 
+    public function includeUnpublishedSeatworks(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->unpublishedSeatworks, new \App\Transformers\AssignmentTransformer);
+    }
+
+    public function includePublishedAssignments(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->publishedAssignments, new \App\Transformers\AssignmentTransformer);
+    }
+
+    public function includeUnpublishedAssignments(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->unpublishedAssignments, new \App\Transformers\AssignmentTransformer);
+    }
+
     public function includeSeatworks(\App\Models\Schedule $schedule)
     {
         return $this->collection($schedule->seatworks, new \App\Transformers\AssignmentTransformer);
@@ -57,6 +76,11 @@ class ScheduleTransformer extends TransformerAbstract
     public function includePublishedProjects(\App\Models\Schedule $schedule)
     {
         return $this->collection($schedule->publishedProjects, new \App\Transformers\AssignmentTransformer);
+    }
+
+    public function includeUnpublishedProjects(\App\Models\Schedule $schedule)
+    {
+        return $this->collection($schedule->unpublishedProjects, new \App\Transformers\AssignmentTransformer);
     }
 
     public function includeProjects(\App\Models\Schedule $schedule)

@@ -16,6 +16,12 @@ class StudentScoreGateway
     protected $from;
     protected $to;
 
+    const QUIZ = 1;
+    const PERIODICAL = 2;
+    const ASSIGNMENT = 3;
+    const SEATWORK = 4;
+    const PROJECT = 5;
+
     public function __construct(int $class_id, string $from, string $to)
     {
         $this->score_reports = collect();
@@ -50,19 +56,19 @@ class StudentScoreGateway
                 $activity_type = $act->activity_type;
 
                 switch($activity_type) {
-                    case 1:
+                    case self::QUIZ:
                         $quizzes->push($act);
                         break;
-                    case 2:
+                    case self::PERIODICAL:
                         $periodicals->push($act);
                         break;
-                    case 3:
+                    case self::ASSIGNMENT:
                         $assignments->push($act);
                         break;
-                    case 4:
+                    case self::SEATWORK:
                         $seatworks->push($act);
                         break;
-                    case 5:
+                    case self::PROJECT:
                         $projects->push($act);
                         break;
                 }
@@ -112,7 +118,13 @@ class StudentScoreGateway
             return ActivityScoreData::create($act->toArray());
         });
 
-        return $activity;
+        $freestyle_assignments = [];
+        if($activity_type == self::ASSIGNMENT) {
+            //union with free style assignments
+            $freestyle_assignments = $this->getClassActivityScores($user_id, $activity_type);
+        }
+
+        return $activity->merge($freestyle_assignments);
     }
 
     /**

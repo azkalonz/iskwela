@@ -169,7 +169,7 @@ class ClassMaterialController extends Controller
      * @apiVersion 1.0.0
      * @apiName SaveClassMaterial
      * @apiDescription Saves a Class Material
-     * @apiGroup ClassMaterial
+     * @apiGroup Class Materials
      *
      * @apiParam {Number} id ID of Class Material. if exists, updates the specified class Material ID, otherwise, creates new.
      * @apiParam {Number} class_id Class ID

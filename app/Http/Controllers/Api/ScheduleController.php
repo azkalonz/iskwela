@@ -16,6 +16,7 @@ use League\Fractal\Serializer\ArraySerializer;
 
 class ScheduleController extends Controller
 {
+    const ASSIGNMENT = 3;
     /**
      * @apiDefine ScheduleSampleResponse
      * @apiSuccessExample {json} Sample Response
@@ -353,99 +354,6 @@ class ScheduleController extends Controller
         return response()->json($fractal->toArray());
     }
 
-    /**
-     * Class Activities
-     *
-     * @api <HOST>/api/teacher/class-activities/:id Get class activities (by schedule)
-     * @apiVersion 1.0.0
-     * @apiName ClassActivities
-     * @apiDescription Returns list of class activities classified by (array of)schedules
-     * @apiGroup Teacher Classes
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} id the class ID
-     *
-     * @apiSuccess {Number} id the schedule ID
-     * @apiSuccess {Date} from date/time start of session
-     * @apiSuccess {Date} to date/time end of session
-     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
-     * @apiSuccess {Number} teacher.id
-     * @apiSuccess {String} teacher.first_name
-     * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
-     * @apiSuccess {Array} activities the activitiy list of the session (or empty)
-     * @apiSuccess {Number} activities.id the activity ID
-     * @apiSuccess {String} activities.title
-     * @apiSuccess {String} activities.desription
-     * @apiSuccess {String} activities.activit_type "class activity" or "assignment"
-     * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {String} activities.status "published" or "unpublished"
-     * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
-     * @apiSuccess {Number} activities.materials.id the material ID
-     * @apiSuccess {String} activities.materials.title Title of Activity Material
-     * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
-     * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
-     * 
-     * 
-     * @apiSuccessExample {json} Sample Response
-        [
-            {
-                "id": 1,
-                "from": "2020-05-15 09:00:00",
-                "to": "2020-05-15 10:00:00",
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                },
-                "status": "",
-                "activities": [
-                    {
-                        "id": 1,
-                        "title": "English Assignment 1",
-                        "description": "read it",
-                        "activity_type": "class activity",
-                        "available_from": "2020-05-11",
-                        "available_to": "2020-05-15",
-                        "status": "unpublished",
-                        "materials": [
-                            {
-                                "id": 1,
-                                "title": "Sample Title",
-                                "uploaded_file": "",
-                                "resource_link": "http://read-english.com/basics"
-                            },
-                            {
-                                "id": 1,
-                                "title": "Sample Title",
-                                "uploaded_file": "http://link-to-uploaded-file.com/sample",
-                                "resource_link": ""
-                            },
-                    {}
-                        ]
-                    },
-                    {}
-                ]
-            },
-            {
-                "id": 2,
-                "from": "2020-05-18 09:00:00",
-                "to": "2020-05-18 10:00:00",
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                },
-                "status": "",
-                "activities": []
-            }
-        ]
-     * 
-     * 
-     */
-    
     public function activitiesBySchedule(Request $request)
     {
         $this->validate($request, [
@@ -924,81 +832,60 @@ class ScheduleController extends Controller
 
 
     /**
-     * Class Activities
+     * Seatworks
      *
-     * @api <HOST>/api/student/class-activities/:id Get class activities (by schedule)
+     * @api {get} <HOST>/api/teacher/class-seatworks/:id List Class Seatworks by Schedule (for teacher)
      * @apiVersion 1.0.0
-     * @apiName ClassActivities
-     * @apiDescription Returns list of class activities classified by (array of)schedules
-     * @apiGroup Student Classes
+     * @apiName ClassSeatworksTeacher
+     * @apiDescription Returns list of class seatworks classified by (array of)schedules
+     * @apiGroup Seatworks
      *
      * @apiUse JWTHeader
      *
      * @apiParam {Number} id the class ID
      *
      * @apiSuccess {Number} id the schedule ID
-     * @apiSuccess {Date} from date/time start of session
-     * @apiSuccess {Date} to date/time end of session
+     * @apiSuccess {Datetime} from date/time start of session
+     * @apiSuccess {Datetime} to date/time end of session
      * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
      * @apiSuccess {Number} teacher.id
      * @apiSuccess {String} teacher.first_name
      * @apiSuccess {String} teacher.last_name
-     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status
-     * @apiSuccess {Array} activities the activitiy list of the session (or empty)
-     * @apiSuccess {Number} activities.id the activity ID
-     * @apiSuccess {String} activities.title
-     * @apiSuccess {String} activities.desription
-     * @apiSuccess {String} activities.activity_type "class activity" or "assignment"
-     * @apiSuccess {Date} activities.available_from Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {Date} activities.available_to Empty if it's a class activity. Date will be specified if given as assignment 
-     * @apiSuccess {String} activities.status "published"
-     * @apiSuccess {Array} activities.materials array of references/materials for this activity (or empty)
-     * @apiSuccess {Number} activities.materials.id the material ID
-     * @apiSuccess {Number} activities.materials.title title of the Activity Material
-     * @apiSuccess {String} activities.materials.uploaded_file link to uploaded file or
-     * @apiSuccess {String} activities.materials.resource_link a shared reference link (google docs, etc)
-     * 
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status the schedule status
+     * @apiSuccess {Array} publishedSeatworks list of published seatworks for this schedule
+     * @apiSuccess {Number} publishedSeatworks.id the seatwork ID
+     * @apiSuccess {String} publishedSeatworks.title the seatwork title
+     * @apiSuccess {String} publishedSeatworks.description
+     * @apiSuccess {String=seatwork} publishedSeatworks.activity_type
+     * @apiSuccess {Number} publishedSeatworks.grading_category the category ID
+     * @apiSuccess {Number} publishedSeatworks.total_score the expected perfect score
+     * @apiSuccess {DateTime} publishedSeatworks.due_date deadline for the seatwork to be taken
+     * @apiSuccess {String=published} publishedSeatworks.status
+     * @apiSuccess {Boolean} publishedSeatworks.done indicates whether the seatwork is open or closed. 
+     * @apiSuccess {Array} publishedSeatworks.materials list of materials attached to this seatwork
+     * @apiSuccess {Number} publishedSeatworks.materials.id the material ID
+     * @apiSuccess {String} publishedSeatworks.materials.title
+     * @apiSuccess {String} publishedSeatworks.materials.uploaded_file
+     * @apiSuccess {String} publishedSeatworks.materials.resource_link
+     * @apiSuccess {Array} unpublishedSeatworks list of published seatworks for this schedule
+     * @apiSuccess {Number} unpublishedSeatworks.id the seatwork ID
+     * @apiSuccess {String} unpublishedSeatworks.title the seatwork title
+     * @apiSuccess {String} unpublishedSeatworks.description
+     * @apiSuccess {String=seatwork} unpublishedSeatworks.activity_type
+     * @apiSuccess {Number} unpublishedSeatworks.grading_category the category ID
+     * @apiSuccess {Number} unpublishedSeatworks.total_score the expected perfect score
+     * @apiSuccess {DateTime} unpublishedSeatworks.due_date deadline for the seatwork to be taken
+     * @apiSuccess {String=unpublished} unpublishedSeatworks.status
+     * @apiSuccess {Boolean} unpublishedSeatworks.done indicates whether the seatwork is open or closed. 
+     * @apiSuccess {Array} unpublishedSeatworks.materials list of materials attached to this seatwork
+     * @apiSuccess {Number} unpublishedSeatworks.materials.id the material ID
+     * @apiSuccess {String} unpublishedSeatworks.materials.title
+     * @apiSuccess {String} unpublishedSeatworks.materials.uploaded_file link to uploaded file
+     * @apiSuccess {String} unpublishedSeatworks.materials.resource_link a shared reference link (google docs, etc)
      * 
      * @apiSuccessExample {json} Sample Response
         [
-            {
-                "id": 1,
-                "from": "2020-05-15 09:00:00",
-                "to": "2020-05-15 10:00:00",
-                "teacher": {
-                    "id": 8,
-                    "first_name": "teacher tom",
-                    "last_name": "cruz"
-                },
-                "status": "",
-                "publishedActivities": [
-                    {
-                        "id": 1,
-                        "title": "English Assignment 1",
-                        "description": "read it",
-                        "activity_type": "class activity",
-                        "available_from": "2020-05-11",
-                        "available_to": "2020-05-15",
-                        "status": "published",
-                        "materials": [
-                            {
-                                "id": 1,
-                                "title": "Sample Title",
-                                "uploaded_file": "",
-                                "resource_link": "http://read-english.com/basics"
-                            },
-                            {
-                                "id": 1,
-                                "title": NULL,
-                                "uploaded_file": "http://link-to-uploaded-file.com/sample",
-                                "resource_link": ""
-                            },
-                    {}
-                        ]
-                    },
-                    {}
-                ]
-            },
             {
                 "id": 2,
                 "from": "2020-05-18 09:00:00",
@@ -1006,21 +893,473 @@ class ScheduleController extends Controller
                 "teacher": {
                     "id": 8,
                     "first_name": "teacher tom",
-                    "last_name": "cruz"
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
                 },
-                "status": "",
-                "activities": []
-            }
+                "status": "PENDING",
+                "publishedSeatworks": [
+                    {
+                        "id": 6,
+                        "title": "New Seatwork Test",
+                        "description": "Seatwork description",
+                        "activity_type": "seatwork",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "published",
+                        "done": "false",
+                        "materials": [
+                            {
+                                "id": 6,
+                                "title": "Test Title 2",
+                                "uploaded_file": "",
+                                "resource_link": "sample-activity-material-link3.com"
+                            }
+                        ]
+                    }
+                ],
+                "unpublishedSeatworks": [
+                    {
+                        "id": 3,
+                        "title": "New assignment Test",
+                        "description": "Seatwork description",
+                        "activity_type": "seatwork",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    },
+                    {
+                        "id": 8,
+                        "title": "New Seatwork Test",
+                        "description": "Seatwork description",
+                        "activity_type": "seatwork",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    }
+                ]
+            },
+            {},
+            {}
         ]
      * 
      * 
-     */
-
+    */
+    /**
+     * Seatworks
+     *
+     * @api {get} <HOST>/api/student/class-seatworks/:id List Class Seatworks by Schedule (for student)
+     * @apiVersion 1.0.0
+     * @apiName ClassSeatworksStudent
+     * @apiDescription Returns list of published class seatworks classified by (array of)schedules
+     * @apiGroup Seatworks
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Datetime} from date/time start of session
+     * @apiSuccess {Datetime} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status the schedule status
+     * @apiSuccess {Array} publishedSeatworks list of published seatworks for this schedule
+     * @apiSuccess {Number} publishedSeatworks.id the seatwork ID
+     * @apiSuccess {String} publishedSeatworks.title the seatwork title
+     * @apiSuccess {String} publishedSeatworks.description
+     * @apiSuccess {String=seatwork} publishedSeatworks.activity_type
+     * @apiSuccess {Number} publishedSeatworks.grading_category the category ID
+     * @apiSuccess {Number} publishedSeatworks.total_score the expected perfect score
+     * @apiSuccess {DateTime} publishedSeatworks.due_date deadline for the seatwork to be taken
+     * @apiSuccess {String=published} publishedSeatworks.status
+     * @apiSuccess {Boolean} publishedSeatworks.done indicates whether the seatwork is open or closed. 
+     * @apiSuccess {Array} publishedSeatworks.materials list of materials attached to this seatwork
+     * @apiSuccess {Number} publishedSeatworks.materials.id the material ID
+     * @apiSuccess {String} publishedSeatworks.materials.title
+     * @apiSuccess {String} publishedSeatworks.materials.uploaded_file
+     * @apiSuccess {String} publishedSeatworks.materials.resource_link
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
+                },
+                "status": "PENDING",
+                "publishedSeatworks": [
+                    {
+                        "id": 6,
+                        "title": "New Seatwork Test",
+                        "description": "Seatwork description",
+                        "activity_type": "seatwork",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "published",
+                        "done": "false",
+                        "materials": [
+                            {
+                                "id": 6,
+                                "title": "Test Title 2",
+                                "uploaded_file": "",
+                                "resource_link": "sample-activity-material-link3.com"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {},
+            {}
+        ]
+     * 
+     * 
+    */
     public function studentSeatworksBySchedule(Request $request)
     {
         return $this->studentActivitiesBySchedule($request, 1);
     }
 
+
+    /**
+     * Assignment Free-Style
+     *
+     * @api {get} <HOST>/api/assignments/v2/:id List Class Assignments by Schedule
+     * @apiVersion 1.0.0
+     * @apiName ClassFreeStyleAssignment
+     * @apiDescription Returns list of class assignments classified by (array of)schedules
+     * @apiGroup Assignments: Free-Style
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Datetime} from date/time start of session
+     * @apiSuccess {Datetime} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status the schedule status
+     * @apiSuccess {Array} publishedAssignments list of published assignments for this schedule
+     * @apiSuccess {Number} publishedAssignments.id the assignment ID
+     * @apiSuccess {String} publishedAssignments.title the assignment title
+     * @apiSuccess {String} publishedAssignments.description
+     * @apiSuccess {String=assignment} publishedAssignments.activity_type
+     * @apiSuccess {Number} publishedAssignments.grading_category the category ID
+     * @apiSuccess {Number} publishedAssignments.total_score the expected perfect score
+     * @apiSuccess {DateTime} publishedAssignments.due_date deadline for the assignment to be taken
+     * @apiSuccess {String=published} publishedAssignments.status
+     * @apiSuccess {Boolean} publishedAssignments.done indicates whether the assignment is open or closed. 
+     * @apiSuccess {Array} publishedAssignments.materials list of materials attached to this assignment
+     * @apiSuccess {Number} publishedAssignments.materials.id the material ID
+     * @apiSuccess {String} publishedAssignments.materials.title
+     * @apiSuccess {String} publishedAssignments.materials.uploaded_file
+     * @apiSuccess {String} publishedAssignments.materials.resource_link
+     * @apiSuccess {Array} unpublishedAssignments list of unpublished assignments for this schedule. Available to teachers only
+     * @apiSuccess {Number} unpublishedAssignments.id the assignment ID
+     * @apiSuccess {String} unpublishedAssignments.title the assignment title
+     * @apiSuccess {String} unpublishedAssignments.description
+     * @apiSuccess {String=assignment} unpublishedAssignments.activity_type
+     * @apiSuccess {Number} unpublishedAssignments.grading_category the category ID
+     * @apiSuccess {Number} unpublishedAssignments.total_score the expected perfect score
+     * @apiSuccess {DateTime} unpublishedAssignments.due_date deadline for the assignment to be taken
+     * @apiSuccess {String=unpublished} unpublishedAssignments.status
+     * @apiSuccess {Boolean} unpublishedAssignments.done indicates whether the assignment is open or closed. 
+     * @apiSuccess {Array} unpublishedAssignments.materials list of materials attached to this assignment
+     * @apiSuccess {Number} unpublishedAssignments.materials.id the material ID
+     * @apiSuccess {String} unpublishedAssignments.materials.title
+     * @apiSuccess {String} unpublishedAssignments.materials.uploaded_file link to uploaded file
+     * @apiSuccess {String} unpublishedAssignments.materials.resource_link a shared reference link (google docs, etc)
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
+                },
+                "status": "PENDING",
+                "publishedAssignments": [
+                    {
+                        "id": 6,
+                        "title": "New Assignment Test",
+                        "description": "Assignment description",
+                        "activity_type": "assignment",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "published",
+                        "done": "false",
+                        "materials": [
+                            {
+                                "id": 6,
+                                "title": "Test Title 2",
+                                "uploaded_file": "",
+                                "resource_link": "sample-activity-material-link3.com"
+                            }
+                        ]
+                    }
+                ],
+                "unpublishedAssignments": [
+                    {
+                        "id": 3,
+                        "title": "New assignment Test",
+                        "description": "Assignments description",
+                        "activity_type": "assignment",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    },
+                    {
+                        "id": 8,
+                        "title": "New Assignment Test",
+                        "description": "Assigment description",
+                        "activity_type": "assignment",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    }
+                ]
+            },
+            {},
+            {}
+        ]
+     * 
+     * 
+    */
+    public function assignmentsBySchedule(Request $request)
+    {
+        return $this->studentActivitiesBySchedule($request, self::ASSIGNMENT);
+    }
+
+    /**
+     * Projects
+     *
+     * @api {get} <HOST>/api/teacher/class-projects/:id List Class Projects by Schedule (for teacher)
+     * @apiVersion 1.0.0
+     * @apiName ClassProjectsTeacher
+     * @apiDescription Returns list of class projects classified by (array of)schedules
+     * @apiGroup Projects
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Datetime} from date/time start of session
+     * @apiSuccess {Datetime} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status the schedule status
+     * @apiSuccess {Array} publishedProjects list of published projects for this schedule
+     * @apiSuccess {Number} publishedProjects.id the project ID
+     * @apiSuccess {String} publishedProjects.title the project title
+     * @apiSuccess {String} publishedProjects.description
+     * @apiSuccess {String=project} publishedProjects.activity_type
+     * @apiSuccess {Number} publishedProjects.grading_category the category ID
+     * @apiSuccess {Number} publishedProjects.total_score the expected perfect score
+     * @apiSuccess {DateTime} publishedProjects.due_date deadline for the project to be taken
+     * @apiSuccess {String=published} publishedProjects.status
+     * @apiSuccess {Boolean} publishedProjects.done indicates whether the project is open or closed. 
+     * @apiSuccess {Array} publishedProjects.materials list of materials attached to this project
+     * @apiSuccess {Number} publishedProjects.materials.id the material ID
+     * @apiSuccess {String} publishedProjects.materials.title
+     * @apiSuccess {String} publishedProjects.materials.uploaded_file
+     * @apiSuccess {String} publishedProjects.materials.resource_link
+     * @apiSuccess {Array} unpublishedProjects list of published projects for this schedule
+     * @apiSuccess {Number} unpublishedProjects.id the project ID
+     * @apiSuccess {String} unpublishedProjects.title the project title
+     * @apiSuccess {String} unpublishedProjects.description
+     * @apiSuccess {String=project} unpublishedProjects.activity_type
+     * @apiSuccess {Number} unpublishedProjects.grading_category the category ID
+     * @apiSuccess {Number} unpublishedProjects.total_score the expected perfect score
+     * @apiSuccess {DateTime} unpublishedProjects.due_date deadline for the project to be taken
+     * @apiSuccess {String=unpublished} unpublishedProjects.status
+     * @apiSuccess {Boolean} unpublishedProjects.done indicates whether the project is open or closed. 
+     * @apiSuccess {Array} unpublishedProjects.materials list of materials attached to this project
+     * @apiSuccess {Number} unpublishedProjects.materials.id the material ID
+     * @apiSuccess {String} unpublishedProjects.materials.title
+     * @apiSuccess {String} unpublishedProjects.materials.uploaded_file link to uploaded file
+     * @apiSuccess {String} unpublishedProjects.materials.resource_link a shared reference link (google docs, etc)
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
+                },
+                "status": "PENDING",
+                "publishedProjects": [
+                    {
+                        "id": 6,
+                        "title": "New Project Test",
+                        "description": "Project description",
+                        "activity_type": "project",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "published",
+                        "done": "false",
+                        "materials": [
+                            {
+                                "id": 6,
+                                "title": "Test Title 2",
+                                "uploaded_file": "",
+                                "resource_link": "sample-activity-material-link3.com"
+                            }
+                        ]
+                    }
+                ],
+                "unpublishedProjects": [
+                    {
+                        "id": 3,
+                        "title": "New assignment Test",
+                        "description": "Project description",
+                        "activity_type": "project",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    },
+                    {
+                        "id": 8,
+                        "title": "New Project Test",
+                        "description": "Project description",
+                        "activity_type": "project",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "unpublished",
+                        "done": "false",
+                        "materials": []
+                    }
+                ]
+            },
+            {},
+            {}
+        ]
+     * 
+     * 
+    */
+    /**
+     * Projects
+     *
+     * @api {get} <HOST>/api/student/class-projects/:id List Class Projects by Schedule (for student)
+     * @apiVersion 1.0.0
+     * @apiName ClassProjectsStudent
+     * @apiDescription Returns list of published class projects classified by (array of)schedules
+     * @apiGroup Projects
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} id the class ID
+     *
+     * @apiSuccess {Number} id the schedule ID
+     * @apiSuccess {Datetime} from date/time start of session
+     * @apiSuccess {Datetime} to date/time end of session
+     * @apiSuccess {Object} teacher the teacher handling this session (could be different from the class adviser if re-assignment happens)
+     * @apiSuccess {Number} teacher.id
+     * @apiSuccess {String} teacher.first_name
+     * @apiSuccess {String} teacher.last_name
+     * @apiSuccess {String} teacher.profile_picture
+     * @apiSuccess {String=PENDING,ONGOING,DONE,CANCELED} status the schedule status
+     * @apiSuccess {Array} publishedProjects list of published projects for this schedule
+     * @apiSuccess {Number} publishedProjects.id the project ID
+     * @apiSuccess {String} publishedProjects.title the project title
+     * @apiSuccess {String} publishedProjects.description
+     * @apiSuccess {String=project} publishedProjects.activity_type
+     * @apiSuccess {Number} publishedProjects.grading_category the category ID
+     * @apiSuccess {Number} publishedProjects.total_score the expected perfect score
+     * @apiSuccess {DateTime} publishedProjects.due_date deadline for the project to be taken
+     * @apiSuccess {String=published} publishedProjects.status
+     * @apiSuccess {Boolean} publishedProjects.done indicates whether the project is open or closed. 
+     * @apiSuccess {Array} publishedProjects.materials list of materials attached to this project
+     * @apiSuccess {Number} publishedProjects.materials.id the material ID
+     * @apiSuccess {String} publishedProjects.materials.title
+     * @apiSuccess {String} publishedProjects.materials.uploaded_file
+     * @apiSuccess {String} publishedProjects.materials.resource_link
+     * 
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "id": 2,
+                "from": "2020-05-18 09:00:00",
+                "to": "2020-05-18 10:00:00",
+                "teacher": {
+                    "id": 8,
+                    "first_name": "teacher tom",
+                    "last_name": "cruz",
+                    "profile_picture": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/NuAwve8r1j20KLNde6HjFQVhxGp4Q69p0KO38wIL.jpeg"
+                },
+                "status": "PENDING",
+                "publishedProjects": [
+                    {
+                        "id": 6,
+                        "title": "New Project Test",
+                        "description": "Project description",
+                        "activity_type": "project",
+                        "grading_category": 1,
+                        "total_score": 100,
+                        "due_date": "2020-07-10 10:00:00",
+                        "status": "published",
+                        "done": "false",
+                        "materials": [
+                            {
+                                "id": 6,
+                                "title": "Test Title 2",
+                                "uploaded_file": "",
+                                "resource_link": "sample-activity-material-link3.com"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {},
+            {}
+        ]
+     * 
+     * 
+    */
     public function studentProjectsBySchedule(Request $request)
     {
         return $this->studentActivitiesBySchedule($request, 2);
@@ -1028,6 +1367,7 @@ class ScheduleController extends Controller
     
     public function studentActivitiesBySchedule(Request $request, int $activity_type)
     {
+        $user = Auth::user();
         $this->validate($request, [
             'include' => 'in:""' //not customizable
         ]);
@@ -1037,11 +1377,25 @@ class ScheduleController extends Controller
         if($activity_type == 1)
         {
             $fractal->includePublishedSeatworks();
+            if(in_array($user->user_type, ['t','a'])) {
+                $fractal->includeUnpublishedSeatworks();
+            }
         }
         else if($activity_type == 2)
         {
             $fractal->includePublishedProjects();
+            if(in_array($user->user_type, ['t','a'])) {
+                $fractal->includeUnpublishedProjects();
+            }
         }
+        else if($activity_type == self::ASSIGNMENT)
+        {
+            $fractal->includePublishedAssignments();
+            if(in_array($user->user_type, ['t','a'])) {
+                $fractal->includeUnpublishedAssignments();
+            }
+        }
+
         return response()->json($fractal->toArray());
     }
 

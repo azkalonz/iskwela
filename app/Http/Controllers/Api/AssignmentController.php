@@ -21,147 +21,715 @@ class AssignmentController extends Controller
 {
 	const SEATWORK = 1;
 	const PROJECT = 2;
+	const ASSIGNMENT = 3;
 
+   /** 
+    * Seatworks
+    *
+    * @api {POST} HOST/api/class/seatwork/save Add/Edit Seatwork
+    * @apiVersion 1.0.0
+    * @apiName addSeatwork
+    * @apiDescription Add new seatwork
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    *
+    * @apiParam {String} title title of seatwork
+    * @apiParam {String} description
+    * @apiParam {DateTime} due_date deadline of seatwork to be submitted
+    * @apiParam {Number=0,1} published 0: not published, 1:published
+    * @apiParam {Number} subject_id
+    * @apiParam {Number} schedule_id
+    * @apiParam {Number} class_id
+    * @apiParam {Number} total_score the expected perfect score for this seatwork
+    * @apiParam {Number} grading_category the grading category ID
+    *
+    * @apiUse SeatWorkDetails
+    * 
+   */
     public function addSeatwork(Request $request)
     {
         return $this->save($request, self::SEATWORK);
     }
 
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/class/project/save Add/Edit Project
+    * @apiVersion 1.0.0
+    * @apiName addProject
+    * @apiDescription Add new project
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {String} title title of project
+    * @apiParam {String} description
+    * @apiParam {DateTime} due_date deadline of project to be submitted
+    * @apiParam {Number=0,1} published 0: not published, 1:published
+    * @apiParam {Number} subject_id
+    * @apiParam {Number} schedule_id
+    * @apiParam {Number} class_id
+    * @apiParam {Number} total_score the expected perfect score for this project
+    * @apiParam {Number} grading_category the grading category ID
+    *
+    * @apiSuccess {Number} id ID of the created project
+    * @apiSuccess {String} title
+    * @apiSuccess {String} description
+    * @apiSuccess {String=project} activity_type
+    * @apiSuccess {Number} grading_category the grading category ID
+    * @apiSuccess {Number} total_score the expected perfect score for this project
+    * @apiSuccess {DateTime} due_date deadline of project to be submitted
+    * @apiSuccess {String=unpublished,published} status
+    * @apiSuccess {Boolean} done indicates if project is closed/open for takes 
+    * @apiSuccess {Array} materials array of materials attached to the assignment
+    * @apiSuccess {Number} materials.id material ID
+    * @apiSuccess {String} materials.title material title
+    * @apiSuccess {String} materials.uploaded_file link to uploaded file if any
+    * @apiSuccess {String} materials.resource_link URL link to resource
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 7,
+            "title": "Cross Stitch",
+            "description": "Create a beautiful cross stitch.",
+            "activity_type": "project",
+            "grading_category": 1,
+            "total_score": 50,
+            "due_date": "2020-07-10 10:00:00",
+            "status": "unpublished",
+            "done": "false",
+            "materials": [
+                {
+                    "id": 4,
+                    "title": "Test assignment 2",
+                    "uploaded_file": "",
+                    "resource_link": "sample-activity-material-link3.com"
+                }
+            ]
+        }
+    *
+    * 
+    * 
+   */
     public function addProject(Request $request)
     {
         return $this->save($request, self::PROJECT);
     }
 
+   /**
+    * Assignment Free-style
+    *
+    * @api {POST} HOST/api/assignment/v2/save Add/Edit Assignment
+    * @apiVersion 1.0.0
+    * @apiName addFreeStyleAssignment
+    * @apiDescription Add new free-style assignment
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {String} title title of assignment
+    * @apiParam {String} description
+    * @apiParam {DateTime} due_date deadline of assignment to be submitted
+    * @apiParam {Number=0,1} published 0: not published, 1:published
+    * @apiParam {Number} subject_id
+    * @apiParam {Number} schedule_id
+    * @apiParam {Number} class_id
+    * @apiParam {Number} total_score the expected perfect score for this assignment
+    * @apiParam {Number} grading_category the grading category ID
+    *
+    * @apiSuccess {Number} id ID of the created assignment
+    * @apiSuccess {String} title
+    * @apiSuccess {String} description
+    * @apiSuccess {String=assignment} activity_type
+    * @apiSuccess {Number} grading_category the grading category ID
+    * @apiSuccess {Number} total_score the expected perfect score for this assignment
+    * @apiSuccess {DateTime} due_date deadline of assignment to be submitted
+    * @apiSuccess {String=unpublished,published} status
+    * @apiSuccess {Boolean} done indicates if assignment is closed/open for takes
+    * @apiSuccess {Array} materials array of materials attached to the assignment
+    * @apiSuccess {Number} materials.id material ID
+    * @apiSuccess {String} materials.title material title
+    * @apiSuccess {String} materials.uploaded_file link to uploaded file if any
+    * @apiSuccess {String} materials.resource_link URL link to resource
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 5,
+            "title": "New assignment Test",
+            "description": "assignment free description",
+            "activity_type": "assignment",
+            "grading_category": 1,
+            "total_score": 100,
+            "due_date": "2020-07-10 10:00:00",
+            "status": "unpublished",
+            "done": "false",
+            "materials": [
+                {
+                    "id": 4,
+                    "title": "Test assignment 2",
+                    "uploaded_file": "",
+                    "resource_link": "sample-activity-material-link3.com"
+                }
+            ]
+        }
+    *
+    * 
+    * 
+   */
+    public function addAssignment(Request $request)
+    {
+        return $this->save($request, self::ASSIGNMENT);
+    }
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/class/seatwork/publish/:id Publish Seatwork
+    * @apiVersion 1.0.0
+    * @apiName publishSeatworks
+    * @apiDescription Publish seatwork to be available for students
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of seatwork to be published
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function publishSeatwork(Request $request)
     {
         return $this->publish($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-style
+    *
+    * @api {POST} HOST/api/assignment/v2/publish/:id Publish Assignment
+    * @apiVersion 1.0.0
+    * @apiName publishFreeStyleAssignment
+    * @apiDescription Publish seatwork to be available for students
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of assignment to be published
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function publishAssignment(Request $request)
+    {
+        return $this->publish($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/class/project/publish/:id Publish Project
+    * @apiVersion 1.0.0
+    * @apiName publishProject
+    * @apiDescription Publish project to be available for students
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of project to be published
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function publishProject(Request $request)
     {
         return $this->publish($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {get} HOST/api/class/seatwork/:id Seatwork Details
+    * @apiVersion 1.0.0
+    * @apiName showSeatwork
+    * @apiDescription Show seatwork details
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of seatwork to be viewed
+    *
+    * @apiUse SeatWorkDetails
+    * 
+   */
     public function showSeatwork(Request $request)
     {
         return $this->show($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {get} HOST/api/assignment/v2/:id Assignment Details
+    * @apiVersion 1.0.0
+    * @apiName showFreeStyleAssignment
+    * @apiDescription Show assignment details
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of assignment to be viewed
+    *
+    * @apiUse AssignmentDetails
+    * 
+   */
+    public function showAssignment(Request $request)
+    {
+        return $this->show($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {get} HOST/api/class/project/:id Project Details
+    * @apiVersion 1.0.0
+    * @apiName showProject
+    * @apiDescription Show project details
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of project to be viewed
+    *
+    * @apiUse ProjectDetails
+    * 
+   */
     public function showProject(Request $request)
     {
         return $this->show($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/teacher/remove/class-seatwork-material/:id Delete Seatwork Material
+    * @apiVersion 1.0.0
+    * @apiName removeSeatworkMaterial
+    * @apiDescription Remove attached material from the seatwork
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the seatwork ID
+    *
+    * @apiSuccess {Boolean=true,false} success
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function removeSeatworkMaterial(Request $request)
     {
         return $this->removeAssignmentMaterial($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/remove/material/:id Delete Assignment Material
+    * @apiVersion 1.0.0
+    * @apiName removeFreeStyleAssignmentMaterial
+    * @apiDescription Remove attached material from the assignment
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the assignment ID
+    *
+    * @apiSuccess {Boolean=true,false} success
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function removeFreeStyleAssignmentMaterial(Request $request)
+    {
+        return $this->removeAssignmentMaterial($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/teacher/remove/class-project-material/:id Delete Project Material
+    * @apiVersion 1.0.0
+    * @apiName removeProjectMaterial
+    * @apiDescription Remove attached material from the project
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id the project ID
+    *
+    * @apiSuccess {Boolean=true,false} success
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function RemoveProjectMaterial(Request $request)
     {
         return $this->removeAssignmentMaterial($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/class/seatwork-material/save Add/Edit Material (URL)
+    * @apiVersion 1.0.0
+    * @apiName addSeatworkMaterialUrl
+    * @apiDescription Add a link to seatwork's material
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} [id] if supplied, edits the existing material
+    * @apiParam {Number} activity_id ID of seatwork
+    * @apiParam {String} url link to resource
+    * @apiParam {String} title
+    *
+    * @apiSuccess {Number} id the ID of added material
+    * @apiSuccess {String} title
+    * @apiSuccess {String} uploaded_file link to uploaded file if any
+    * @apiSuccess {String} resource_link URL to resource
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 7,
+            "title": "Test Title 2",
+            "uploaded_file": "",
+            "resource_link": "sample-activity-material-link3.com"
+        }
+    *
+    * 
+   */
     public function saveSeatworkMaterial(Request $request)
     {
         return $this->saveActivityMaterial($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/material/save Add/Edit Material (URL)
+    * @apiVersion 1.0.0
+    * @apiName addFreeStyleAssignmentMaterialUrl
+    * @apiDescription Add a link to assignments's material
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} [id] if supplied, edits the existing material
+    * @apiParam {Number} activity_id ID of assignment
+    * @apiParam {String} url link to resource
+    * @apiParam {String} title
+    *
+    * @apiSuccess {Number} id the ID of added material
+    * @apiSuccess {String} title
+    * @apiSuccess {String} uploaded_file link to uploaded file if any
+    * @apiSuccess {String} resource_link URL to resource
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 7,
+            "title": "Test Title 2",
+            "uploaded_file": "",
+            "resource_link": "sample-activity-material-link3.com"
+        }
+    *
+    * 
+   */
+    public function saveAssignmentMaterial(Request $request)
+    {
+        return $this->saveActivityMaterial($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/class/project-material/save Add/Edit Material (URL)
+    * @apiVersion 1.0.0
+    * @apiName addProjectMaterialUrl
+    * @apiDescription Add a link to projects's material
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} [id] if supplied, edits the existing material
+    * @apiParam {Number} activity_id ID of project
+    * @apiParam {String} url link to resource
+    * @apiParam {String} title
+    *
+    * @apiSuccess {Number} id the ID of added material
+    * @apiSuccess {String} title
+    * @apiSuccess {String} uploaded_file link to uploaded file if any
+    * @apiSuccess {String} resource_link URL to resource
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 7,
+            "title": "Test Title 2",
+            "uploaded_file": "",
+            "resource_link": "sample-activity-material-link3.com"
+        }
+    *
+    * 
+   */
     public function saveProjectMaterial(Request $request)
     {
         return $this->saveActivityMaterial($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/class/seatwork/mark-done/:id Mark Done
+    * @apiVersion 1.0.0
+    * @apiName SeatworkDone
+    * @apiDescription Mark seatwork to done
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of seatwork to be done/closed
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function markSeatworkDone(Request $request)
     {
         return $this->markDone($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/mark-done/:id Mark Done
+    * @apiVersion 1.0.0
+    * @apiName FreeStyleAssignmentDone
+    * @apiDescription Mark assignment to done
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of assignment to be done/closed
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function markAssignmentDone(Request $request)
+    {
+        return $this->markDone($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/class/project/mark-done/:id Mark Done
+    * @apiVersion 1.0.0
+    * @apiName ProjectDone
+    * @apiDescription Mark project to done
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of project to be done/closed
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function markProjectDone(Request $request)
     {
         return $this->markDone($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/class/seatwork/mark-not-done/:id Mark Undone
+    * @apiVersion 1.0.0
+    * @apiName SeatworkUndone
+    * @apiDescription Mark seatwork to undone
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of seatwork to be undone/open
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function markSeatworkNotDone(Request $request)
     {
         return $this->markNotDone($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/mark-not-done/:id Mark Undone
+    * @apiVersion 1.0.0
+    * @apiName FreeStyleAssignmentUndone
+    * @apiDescription Mark assignment to undone
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of assignment to be undone/open
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function markAssignmentNotDone(Request $request)
+    {
+        return $this->markNotDone($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/class/project/mark-not-done/:id Mark Undone
+    * @apiVersion 1.0.0
+    * @apiName ProjectUndone
+    * @apiDescription Mark project to undone
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of project to be undone/open
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function markProjectNotDone(Request $request)
     {
         return $this->markNotDone($request, self::PROJECT);
     }
 
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/teacher/remove/class-seatwork/:id Delete Seatwork
+    * @apiVersion 1.0.0
+    * @apiName SeatworkDelete
+    * @apiDescription Delete the seatwork
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of seatwork to be deleted
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function removeSeatwork(Request $request)
     {
         return $this->remove($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/remove/:id Delete Assigment
+    * @apiVersion 1.0.0
+    * @apiName FreeStyleAssignmentDelete
+    * @apiDescription Delete the assignment
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of assignment to be deleted
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function removeFreeStyleAssignment(Request $request)
+    {
+        return $this->remove($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/teacher/remove/class-project/:id Delete Project
+    * @apiVersion 1.0.0
+    * @apiName ProjectDelete
+    * @apiDescription Delete the project
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {Number} id ID of project to be deleted
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function removeProject(Request $request)
     {
         return $this->remove($request, self::PROJECT);
     }
 
-    /**
-     * Add Activity
-     *
-     * @api {post} HOST/api/class/activity/save Add/Edit Activity
-     * @apiVersion 1.0.0
-     * @apiName AddActivity
-     * @apiDescription Save class activity and returns the activity details
-     * @apiGroup Activity
-     *
-     * @apiParam {Number} id Activity ID. If specified, edits the existing activity, otherwise, creates a new record
-     * @apiParam {String} title
-     * @apiParam {String} description
-     * @apiParam {Date=YYYY-mm-dd} available_from If set as assignment, can be null if session activity
-     * @apiParam {Datetime=YYYY-mm-dd h:i:s} due date 
-     * @apiParam {Number=0,1} published 0-cannot be viewed by student, 1-publish to student
-     * @apiParam {Number} subject_id
-     * @apiParam {Number} schedule_id ID of session to which the activity will be attached
-     * @apiParam {Number} class_id Class ID to which the activity will be attached
-     *
-     * @apiSuccess {Number} id Activity ID. The activity ID
-     * @apiSuccess {String} title
-     * @apiSuccess {String} description
-     * @apiSuccess {String} activity_type seat work or project
-     * @apiSuccess {Number} total_score
-     * @apiSuccess {Datetime} due_date
-     * @apiSuccess {String} status published/unpublished 
-     * @apiSuccess {Array} materials
-     * @apiSuccess {Number} materials.id any uploaded materials
-     * @apiSuccess {String} materials.title Title of the Activity Material
-     * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
-     * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
-     * 
-     * 
-     * @apiSuccessExample {json} Sample Response
-        {
-            "id": 4,
-            "title": "New Seatwork",
-            "description": "Seatwork description",
-            "activity_type": "seatwork",
-            "total_score": 100,
-            "due_date": "2020-07-10 10:00:00",
-            "status": "published",
-            "done": "false",
-            "materials": [
-                {
-                    "id": 4,
-                    "title":"Sample Title",
-                    "uploaded_file": "SCHOOL01/2020-05-21/121026-bargram.png",
-                    "resource_link": null
-                }
-            ]
-        }
-     *
-     * 
-     * 
-     */
-    /**
-     * @apiDefine JWTHeader
-     * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
-     */
     public function save(Request $request, int $activity_type)
     {
         $this->validate($request, [
@@ -201,28 +769,6 @@ class AssignmentController extends Controller
        return response()->json($fractal->toArray());
     }
 
-    /**
-     * Publish activity
-     *
-     * @api {POST} HOST/api/class/activity/publish/:id Publish Activity
-     * @apiVersion 1.0.0
-     * @apiName PublishActivity
-     * @apiDescription Publish activity to students
-     * @apiGroup Activity
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} id ID of activity to be published
-     *
-     * @apiSuccess {Boolean} success true/false. API will return response code 404 if seatwork is not found.
-     * @apiSuccessExample {json} Sample Response
-        {
-            "success": true
-        }
-     *
-     * 
-     * 
-     */
     public function publish(Request $request, int $activity_type)
     {
         $activity = Assignment::where('id', '=', $request->id)->where('activity_type', '=', $activity_type)->firstOrFail();
@@ -236,87 +782,6 @@ class AssignmentController extends Controller
             return response()->json(['success' => false]);
         };        
     }
-    /**
-     * Activity Detail
-     *
-     * @api {POST} HOST/api/class/activity/:id Activity Detail
-     * @apiVersion 1.0.0
-     * @apiName ActivityDetail
-     * @apiDescription Get activity details
-     * @apiGroup Activity
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} id ID of activity
-     *
-     * @apiSuccess {Number} id Activity ID
-     * @apiSuccess {String} title
-     * @apiSuccess {String} description
-     * @apiSuccess {String} activity_type
-     * @apiSuccess {Date} available_from
-     * @apiSuccess {Date} available_to
-     * @apiSuccess {String} status published/unpublished
-     * @apiSuccess {Array} materials
-     * @apiSuccess {Number} materials.id any uploaded materials
-     * @apiSuccess {String} materials.uploaded_file If there's any uploaded file e.g. pdf, word, excel, ppt
-     * @apiSuccess {String} materials.resource_link Link to materials e.g google doc, website,etc
-     * @apiSuccess {Array} submissions list of students and submission status - AVAILABLE IN TEACHERS PROFILE ONLY
-     * @apiSuccess {String} submissions.first_name
-     * @apiSuccess {String} submissions.last_name
-     * @apiSuccess {String} submissions.status
-     * @apiSuccess {DateTime} submissions.date_submitted
-     * 
-     * @apiSuccessExample {json} Sample Response
-        {
-            "id": 1,
-            "title": "English Assignment 1",
-            "description": "read it",
-            "activity_type": "class activity",
-            "available_from": "2020-05-11",
-            "available_to": "2020-05-15",
-            "status": "published",
-            "materials": [
-                {
-                    "id": 1,
-                    "uploaded_file": "",
-                    "resource_link": "http://read-english.com/basics"
-                },
-                {
-                    "id": 2,
-                    "uploaded_file": "http://link-to-uploaded-file/sample"
-                }
-            ],
-            "submissions": [
-                {
-                    "first_name": "jayson",
-                    "last_name": "barino",
-                    "status": "DONE",
-                    "date_submitted": "2020-05-30 16:17:15"
-                },
-                {
-                    "first_name": "grace",
-                    "last_name": "ungui",
-                    "status": "PENDING",
-                    "date_submitted": null
-                },
-                {
-                    "first_name": "jen",
-                    "last_name": "castillo",
-                    "status": "PENDING",
-                    "date_submitted": null
-                },
-                {
-                    "first_name": "davy",
-                    "last_name": "castillo",
-                    "status": "PENDING",
-                    "date_submitted": null
-                }
-            ]
-        }
-     *
-     * 
-     * 
-     */
     public function show(Request $request, int $activity_type)
     {
         
@@ -349,28 +814,6 @@ class AssignmentController extends Controller
         return response()->json($fractal->toArray());    
     }
 
-    /**
-     * Remove Activity Material
-     *
-     * @api {post} HOST/api/teacher/remove/class-activity-material/:id Remove Activity Material
-     * @apiVersion 1.0.0
-     * @apiName RemoveActivityMaterial
-     * @apiDescription SRemove Material of an Activity
-     * @apiGroup Teacher Classes
-     *
-     * @apiParam {Number} id Activity Material ID.
-     *
-     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
-     * 
-     * 
-     * @apiSuccessExample {json} Sample Response
-        {
-            "success": true
-        }
-     *
-     * 
-     * 
-     */
     public function removeAssignmentMaterial(Request $request, int $activity_type)
     {
         //$assignment = Assignment::whereId($request->activity_id)->where('activity_type', '=', $activity_type)->firstOrFail();
@@ -383,34 +826,6 @@ class AssignmentController extends Controller
         return response()->json(['success' => true]);
     }
 
-    /**
-     * Save Activity Material
-     *
-     * @api {post} HOST/class/activity-material/save Save Activity Material
-     * @apiVersion 1.0.0
-     * @apiName SaveActivityMaterial
-     * @apiDescription Save Activity Material
-     * @apiGroup Activity
-     *
-     * @apiParam {Number} id Activity Material ID, if supplied, will update the activity material. Otherwise, will create new.
-     * @apiParam {String} url Resource Link
-     * @apiParam {Number} activity_id ID of the Activity
-     * 
-     * @apiSuccess {Number} id Activity Material ID.
-     * @apiSuccess {String} uploaded_file Uploaded file if exists.
-     * @apiSuccess {String} resource_link URL of the activity material.
-     * 
-     * @apiSuccessExample {json} Sample Response
-        {
-            "id": 3,
-            "title": "Sample Title",
-            "uploaded_file": "",
-            "resource_link": "sample-activity-material-link-2.com"
-        }
-     *
-     * 
-     * 
-     */
     public function saveActivityMaterial(Request $request, int $activity_type)
     {
         $request->validate([
@@ -436,28 +851,6 @@ class AssignmentController extends Controller
     }
 
 
-    /**
-     * Remove Class Activity
-     *
-     * @api {post} HOST/api/teacher/remove/class-activity/:id Remove Class Activity
-     * @apiVersion 1.0.0
-     * @apiName RemoveClassActivity
-     * @apiDescription Remove Class Activity
-     * @apiGroup Activity
-     *
-     * @apiParam {Number} id Class Activity ID.
-     *
-     * @apiSuccess {String} success returns true if ID is found. Otherwise, returns error code 404.
-     *
-     *
-     * @apiSuccessExample {json} Sample Response
-        {
-            "success": true
-        }
-     *
-     *
-     *
-     */
     public function remove(Request $request, int $activity_type)
     {
         $user =  Auth::user();
@@ -469,55 +862,11 @@ class AssignmentController extends Controller
     }
 
 
-    /**
-     * Activity - Mark Done
-     *
-     * @api {POST} HOST/api/class/activity/mark-done/:id Activity Mark Done
-     * @apiVersion 1.0.0
-     * @apiName ActivityMarkDone
-     * @apiDescription Marks Activity as Done
-     * @apiGroup Activity
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} id ID of Activity
-     *
-     * @apiSuccess {Boolean} success true/false
-     * @apiSuccessExample {json} Sample Response
-        {
-            "success": true
-        }
-     *
-     * 
-     * 
-     */
     public function markDone(Request $request, int $activity_type)
     {
         return $this->setDoneStatus($request->id, 1, $activity_type);   
-    }
+    }   
 
-    /**
-     * Activity - Mark Not Done
-     *
-     * @api {POST} HOST/api/class/activity/mark-not-done/:id Activity Mark Not Done
-     * @apiVersion 1.0.0
-     * @apiName ActivityMarkNotDone
-     * @apiDescription Marks Activity as Not Done
-     * @apiGroup Activity
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {Number} id ID of Activity
-     *
-     * @apiSuccess {Boolean} success true/false
-     * @apiSuccessExample {json} Sample Response
-        {
-            "success": true
-        }
-     *
-     *
-     *
-     */
     public function markNotDone(Request $request, int $activity_type)
     {
         return $this->setDoneStatus($request->id, 0, $activity_type);
@@ -539,5 +888,125 @@ class AssignmentController extends Controller
     /**
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
-     */
+    */
+
+   /**
+    * @apiDefine SeatWorkDetails
+    * @apiSuccess {Number} id ID of the created seatwork
+    * @apiSuccess {String} title
+    * @apiSuccess {String} description
+    * @apiSuccess {String=seatwork} activity_type
+    * @apiSuccess {Number} grading_category the grading category ID
+    * @apiSuccess {Number} total_score the expected perfect score for this seatwork
+    * @apiSuccess {DateTime} due_date deadline of seatwork to be submitted
+    * @apiSuccess {String=unpublished,published} status
+    * @apiSuccess {Boolean} done indicates if seatwork is closed/open for takes 
+    * @apiSuccess {Array} materials array of materials attached to the assignment
+    * @apiSuccess {Number} materials.id material ID
+    * @apiSuccess {String} materials.title material title
+    * @apiSuccess {String} materials.uploaded_file link to uploaded file if any
+    * @apiSuccess {String} materials.resource_link URL link to resource
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 6,
+            "title": "New Seatwork Test",
+            "description": "Seatwork description",
+            "activity_type": "seatwork",
+            "grading_category": 1,
+            "total_score": 100,
+            "due_date": "2020-07-10 10:00:00",
+            "status": "unpublished",
+            "done": "false",
+            "materials": [
+                {
+                    "id": 4,
+                    "title": "Test assignment 2",
+                    "uploaded_file": "",
+                    "resource_link": "sample-activity-material-link3.com"
+                }
+            ]
+        }
+    *
+    * 
+   */
+
+   /**
+    * @apiDefine AssignmentDetails
+    * @apiSuccess {Number} id ID of the created assignment
+    * @apiSuccess {String} title
+    * @apiSuccess {String} description
+    * @apiSuccess {String=assignment} activity_type
+    * @apiSuccess {Number} grading_category the grading category ID
+    * @apiSuccess {Number} total_score the expected perfect score for this assignment
+    * @apiSuccess {DateTime} due_date deadline of assignment to be submitted
+    * @apiSuccess {String=unpublished,published} status
+    * @apiSuccess {Boolean} done indicates if assignment is closed/open for takes 
+    * @apiSuccess {Array} materials array of materials attached to the assignment
+    * @apiSuccess {Number} materials.id material ID
+    * @apiSuccess {String} materials.title material title
+    * @apiSuccess {String} materials.uploaded_file link to uploaded file if any
+    * @apiSuccess {String} materials.resource_link URL link to resource
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 6,
+            "title": "New Assignment Test",
+            "description": "Assignment description",
+            "activity_type": "assignment",
+            "grading_category": 1,
+            "total_score": 100,
+            "due_date": "2020-07-10 10:00:00",
+            "status": "unpublished",
+            "done": "false",
+            "materials": [
+                {
+                    "id": 4,
+                    "title": "Test assignment 2",
+                    "uploaded_file": "",
+                    "resource_link": "sample-activity-material-link3.com"
+                }
+            ]
+        }
+    *
+    * 
+   */
+
+   /**
+    * @apiDefine ProjectDetails
+    * @apiSuccess {Number} id ID of the created project
+    * @apiSuccess {String} title
+    * @apiSuccess {String} description
+    * @apiSuccess {String=project} activity_type
+    * @apiSuccess {Number} grading_category the grading category ID
+    * @apiSuccess {Number} total_score the expected perfect score for this project
+    * @apiSuccess {DateTime} due_date deadline of project to be submitted
+    * @apiSuccess {String=unpublished,published} status
+    * @apiSuccess {Boolean} done indicates if project is closed/open for takes 
+    * @apiSuccess {Array} materials array of materials attached to the assignment
+    * @apiSuccess {Number} materials.id material ID
+    * @apiSuccess {String} materials.title material title
+    * @apiSuccess {String} materials.uploaded_file link to uploaded file if any
+    * @apiSuccess {String} materials.resource_link URL link to resource
+    * @apiSuccessExample {json} Sample Response
+        {
+            "id": 6,
+            "title": "New Project Test",
+            "description": "Project description",
+            "activity_type": "Project",
+            "grading_category": 1,
+            "total_score": 100,
+            "due_date": "2020-07-10 10:00:00",
+            "status": "unpublished",
+            "done": "false",
+            "materials": [
+                {
+                    "id": 4,
+                    "title": "Test project 2",
+                    "uploaded_file": "",
+                    "resource_link": "sample-activity-material-link3.com"
+                }
+            ]
+        }
+    *
+    * 
+   */
 }

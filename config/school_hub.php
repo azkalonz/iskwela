@@ -18,7 +18,8 @@ return [
     ],
     'activity_type' => [
         1 => 'seatwork',
-        2 => 'project'
+        2 => 'project',
+        3 => 'assignment'
     ],
     'file_status' => [
         0 => 'unpublished',

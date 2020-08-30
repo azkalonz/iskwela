@@ -38,36 +38,87 @@ class FileController extends Controller
 
     const SEATWORK = 1;
 	const PROJECT = 2;
+	const ASSIGNMENT = 3;
 
-    /**
-     * Upload Assignment Material
-     *
-     * @api {POST} HOST/api/upload/activity/material Activity Material
-     * @apiVersion 1.0.0
-     * @apiName UploadActivityMaterial
-     * @apiDescription Allows adding media to activity
-     * @apiGroup File Upload
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
-     * @apiParam {Number} assignment_id the activity id
-     *
-     * @apiSuccess {Boolean} success true/false
-     * @apiSuccessExample {json} Sample Response
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/upload/seatwork/material Add Material (FILE)
+    * @apiVersion 1.0.0
+    * @apiName UploadSeatworkMaterial
+    * @apiDescription Upload seatwork material/resource for student's reference
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} title file title
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
         {
             "success": true
         }
-     *
-     * 
-     * 
-     */
-
+    *
+    * 
+   */
     public function seatworkMaterial(Request $request)
     {
         return $this->assignmentMaterial($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/upload/material Add Material (FILE)
+    * @apiVersion 1.0.0
+    * @apiName UploadFreestyleAssignmentMaterial
+    * @apiDescription Upload assignment material/resource for student's reference
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} title file title
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function addAssignmentMaterial(Request $request)
+    {
+        return $this->assignmentMaterial($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/upload/project/material Add Material (FILE)
+    * @apiVersion 1.0.0
+    * @apiName UploadProjectMaterial
+    * @apiDescription Upload project material/resource for student's reference
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} title file title
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function projectMaterial(Request $request)
     {
         return $this->assignmentMaterial($request, self::PROJECT);
@@ -97,36 +148,83 @@ class FileController extends Controller
 
         return response()->json(['success' => $response['success']]);
     }
-	
-	/**
-     * Upload Activity Answer
-     *
-     * @api {POST} HOST/api/upload/activity/answer
-     * @apiVersion 1.0.0
-     * @apiName UploadActivityAnswer
-     * @apiDescription Allows adding answers to activity
-     * @apiGroup File Upload
-     *
-     * @apiUse JWTHeader
-     *
-     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
-     * @apiParam {Number} assignment_id the activity id
-     *
-     * @apiSuccess {Boolean} success true/false
-     * @apiSuccessExample {json} Sample Response
+
+   /**
+    * Seatworks
+    *
+    * @api {POST} HOST/api/upload/seatwork/answer Upload Answer (For student)
+    * @apiVersion 1.0.0
+    * @apiName UploadSeatworkAnswer
+    * @apiDescription Upload seatwork answer
+    * @apiGroup Seatworks
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
         {
             "success": true
         }
-     *
-     * 
-     * 
-     */
-    
+    *
+    * 
+   */
     public function seatworkAnswer(Request $request)
     {
         return $this->assignmentAnswer($request, self::SEATWORK);
     }
 
+   /**
+    * Assignment Free-Style
+    *
+    * @api {POST} HOST/api/assignment/v2/upload/answer Upload Answer (For student)
+    * @apiVersion 1.0.0
+    * @apiName UploadFreeStyleAssignmentAnswer
+    * @apiDescription Upload assignment answer
+    * @apiGroup Assignments: Free-Style
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
+    public function submitAssignmentAnswer(Request $request)
+    {
+        return $this->assignmentAnswer($request, self::ASSIGNMENT);
+    }
+
+   /**
+    * Projects
+    *
+    * @api {POST} HOST/api/upload/project/answer Upload Answer (For student)
+    * @apiVersion 1.0.0
+    * @apiName UploadProjectAnswer
+    * @apiDescription Upload project answer
+    * @apiGroup Projects
+    *
+    * @apiUse JWTHeader
+    * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
+    * @apiParam {Number} assignment_id the activity id
+    *
+    * @apiSuccess {String=true,false} success
+    * 
+    * @apiSuccessExample {json} Sample Response
+        {
+            "success": true
+        }
+    *
+    * 
+   */
     public function projectAnswer(Request $request)
     {
         return $this->assignmentAnswer($request, self::PROJECT);
