@@ -26,7 +26,9 @@ class FileController extends Controller
         'docx',
         'txt',
         'mpga', // mp3
-        'wav'
+        'wav',
+        'ppt',
+        'pptx'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
