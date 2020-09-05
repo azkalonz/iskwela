@@ -33,9 +33,11 @@ class QuestionnaireController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {String} title Questionnaire title
+     * @apiParam {Number} [questionnaire_id] if supplied, edits the existing questionnaire
      * @apiParam {String} intro Questionnaire intro/instruction
      * @apiParam {Number} subject_id
      * @apiParam {Array} questions array of question object
+     * @apiParam {Number} [questions.question_id] if supplied, edits the current question
      * @apiParam {String} questions.question the question text
      * @apiParam {String=mcq} questions.question_type accepts multiple choice for now
      * @apiParam {Number} questions.weight the score of the question

@@ -27,7 +27,7 @@ class StudentActivityController extends Controller
 	/**
      * Quizzes
      *
-     * @api {post} <HOST>/api/quiz/save Add Quiz
+     * @api {post} <HOST>/api/quiz/save Add/Edit Quiz
      * @apiVersion 1.0.0
      * @apiName AddQuiz
      * @apiDescription Saves a new quiz with attached questionnaires
@@ -35,6 +35,7 @@ class StudentActivityController extends Controller
      *
      * @apiUse JWTHeader
      *
+     * @apiParam {Number} [activity_id] if provided, edits the existing record
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
      * @apiParam {String} title the quiz title
      * @apiParam {String} instruction descriptions/instructions/introduction texts
@@ -554,7 +555,7 @@ class StudentActivityController extends Controller
 	/**
      * Periodicals
      *
-     * @api {post} <HOST>/api/periodical/save Add Periodical
+     * @api {post} <HOST>/api/periodical/save Add/Edit Periodical
      * @apiVersion 1.0.0
      * @apiName AddPeriodical
      * @apiDescription Saves a new periodical with attached questionnaires
@@ -562,6 +563,7 @@ class StudentActivityController extends Controller
      *
      * @apiUse JWTHeader
      *
+	 * @apiParam {Number} [activity_id] if provided, edits the existing record
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
      * @apiParam {String} title the periodical title
      * @apiParam {String} instruction descriptions/instructions/introduction texts
@@ -1092,7 +1094,7 @@ class StudentActivityController extends Controller
 	/**
      * Assignments
      *
-     * @api {post} <HOST>/api/assignment/save Add assignment
+     * @api {post} <HOST>/api/assignment/save Add/Edit assignment
      * @apiVersion 1.0.0
      * @apiName AddAssignment
      * @apiDescription Saves a new assignment with attached questionnaires
@@ -1100,6 +1102,7 @@ class StudentActivityController extends Controller
      *
      * @apiUse JWTHeader
      *
+	 * @apiParam {Number} [activity_id] if provided, edits the existing record
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
      * @apiParam {String} title the assignment title
      * @apiParam {String} instruction descriptions/instructions/introduction texts
@@ -1846,7 +1849,19 @@ class StudentActivityController extends Controller
 		]);
 
 		$user = Auth::User();
-		$student_activity = new StudentActivity();
+		
+		if($request->activity_id) {
+			$student_activity = StudentActivity::whereId($request->activity_id)->whereActivityType($activity_type)->first();
+
+			if(!$student_activity) {
+				return response("Error editing the activity", 500);
+			}
+		}
+
+		else {
+			$student_activity = new StudentActivity();
+		}
+		
 		$student_activity->title = $request->title;
 		$student_activity->instruction = $request->instruction ?? "";
 		$student_activity->duration = $request->duration;
@@ -1869,10 +1884,15 @@ class StudentActivityController extends Controller
 	private function attachQuestionnaireToActivity(Array $questionnaires, \App\Models\StudentActivity $student_activity)
 	{
 		collect($questionnaires)->map(function($qnr) use ($student_activity) {
-			$sta = new StudentActivityQuestionnaire();
-			$sta->student_activity_id = $student_activity->id;
-			$sta->questionnaire_id = $qnr['id'];
-			$sta->save();
+			$question_is_attached = StudentActivityQuestionnaire::whereQuestionnaireId($qnr['id'])
+				->whereStudentActivityId($student_activity->id)->first();
+			
+			if(!$question_is_attached) {
+				$sta = new StudentActivityQuestionnaire();
+				$sta->student_activity_id = $student_activity->id;
+				$sta->questionnaire_id = $qnr['id'];
+				$sta->save();
+			}
 		});
 	}
 

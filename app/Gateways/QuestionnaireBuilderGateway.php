@@ -12,18 +12,25 @@ class QuestionnaireBuilderGateway
     protected $questions;
     protected $question_mapping;
     protected $user;
+    protected $questions_to_edit;
+    protected $questions_to_edit_mapping;
 
     public function __construct()
     {
         $this->questions = collect();
+        $this->questions_to_edit = collect();
+        $this->questions_to_edit_mapping = collect();
         $this->question_mapping = collect();
         $this->user = \Auth::user();
     }
 
     public function setQuestionnaireDetails(Array $params)
     {
-        if(isset($params['id'])) {
-            $this->questionnaire = Questionnaire::find($params['id']);
+        if(isset($params['questionnaire_id'])) {
+            $this->questionnaire = Questionnaire::find($params['questionnaire_id']);
+            if(!$this->questionnaire) {
+                exit('Error editing questionnaire');
+            }
         }
         else {
             $this->questionnaire = new Questionnaire();
@@ -65,37 +72,76 @@ class QuestionnaireBuilderGateway
                 break;
             }
 
-            $this->questions->push($q_data);
-
-            $this->question_mapping->push([
-                'weight' => $q['weight']
-            ]);
+            if(isset($q['question_id'])) {
+                $q_data['id'] = $q['question_id'];
+                $this->questions_to_edit->push($q_data);
+                $this->questions_to_edit_mapping->push([
+                    'weight' => $q['weight']
+                ]);
+            }
+            else {
+                $this->questions->push($q_data);
+                $this->question_mapping->push([
+                    'weight' => $q['weight']
+                ]);
+            }
         });
+
+       // dd($this->question_mapping);
     }
 
     public function save()
     {
         if($this->questionnaire->save()) {
             $this->saveQuestions();
-            $this->mapQuestionnaireQuestions();
         }
     }
 
     public function saveQuestions()
     {
-        $qm_arr = $this->question_mapping->toArray();
         $q_arr = collect();
-        for($i = 0; $i < count($this->questions); $i++) {
-            $question = Question::create($this->questions[$i]);
-            $q_arr->push($question);
+        // save the new questions
+        if($this->question_mapping) {
+            $qm_arr = $this->question_mapping->toArray();
+            for($i = 0; $i < count($this->questions); $i++) {
+                $question = Question::create($this->questions[$i]);
+                $q_arr->push($question);
+    
+                // sets the question_mapping data
+                $qm_arr[$i]['question_id'] = $question->id;
+                $qm_arr[$i]['questionnaire_id'] = $this->questionnaire->id;
+            }
 
-            // sets the question_mapping data
-            $qm_arr[$i]['question_id'] = $question->id;
-            $qm_arr[$i]['questionnaire_id'] = $this->questionnaire->id;
+            $this->question_mapping = collect($qm_arr);
+            $this->mapQuestionnaireQuestions($this->question_mapping);
         }
 
+        // edit the existing questions
+
+        if($this->questions_to_edit) {
+            $qm_arr = $this->questions_to_edit_mapping->toArray();
+            $this->questions_to_edit->map(function($q, $index) use ($qm_arr, &$q_arr) {
+                $question = Question::find($q['id']);
+
+                // in case the weight is updated
+                $qmap = QuestionnaireQuestion::whereQuestionId($q['id'])->whereQuestionnaireId($this->questionnaire->id)->first();
+                $qmap->weight = $qm_arr[$index]['weight'];
+                $qmap->save();
+
+                //remove the id from the array
+                unset($q['id']);
+
+                foreach($q as $field => $value) {
+                    $question->$field = $value;
+                }
+                $question->save();
+                $q_arr->push($question);
+            });
+        }
+
+        //collect all the questions
         $this->questions = $q_arr;
-        $this->question_mapping = collect($qm_arr);
+
     }
 
     public function mapQuestionnaireQuestions()

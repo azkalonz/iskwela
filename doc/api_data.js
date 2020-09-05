@@ -1568,7 +1568,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "<HOST>/api/assignment/save",
-    "title": "Add assignment",
+    "title": "Add/Edit assignment",
     "version": "1.0.0",
     "name": "AddAssignment",
     "description": "<p>Saves a new assignment with attached questionnaires</p>",
@@ -1576,6 +1576,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "activity_id",
+            "description": "<p>if provided, edits the existing record</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -4558,7 +4565,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "<HOST>/api/periodical/save",
-    "title": "Add Periodical",
+    "title": "Add/Edit Periodical",
     "version": "1.0.0",
     "name": "AddPeriodical",
     "description": "<p>Saves a new periodical with attached questionnaires</p>",
@@ -4566,6 +4573,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "activity_id",
+            "description": "<p>if provided, edits the existing record</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -9012,6 +9026,13 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "questionnaire_id",
+            "description": "<p>if supplied, edits the existing questionnaire</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "intro",
@@ -9030,6 +9051,13 @@ define({ "api": [
             "optional": false,
             "field": "questions",
             "description": "<p>array of question object</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "questions.question_id",
+            "description": "<p>if supplied, edits the current question</p>"
           },
           {
             "group": "Parameter",
@@ -9212,7 +9240,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "<HOST>/api/quiz/save",
-    "title": "Add Quiz",
+    "title": "Add/Edit Quiz",
     "version": "1.0.0",
     "name": "AddQuiz",
     "description": "<p>Saves a new quiz with attached questionnaires</p>",
@@ -9220,6 +9248,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "activity_id",
+            "description": "<p>if provided, edits the existing record</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
