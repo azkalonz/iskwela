@@ -14,7 +14,7 @@ class StudentActivityGatewayTransformer extends TransformerAbstract
 			'id' => $gw->getActivity()->id,
 			'score' => $gw->getOverAllStudentScore(),
 			'score_percentage' => round(($gw->getOverAllStudentScore()/$gw->getOverallPerfectScore()),2),
-			'pefect_score' => $gw->getOverallPerfectScore(),
+			'pefect_score' => (Integer)$gw->getOverallPerfectScore(),
 			'duration' => $gw->getDuration()
 		];
 	}

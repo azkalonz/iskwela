@@ -106,7 +106,7 @@ class StudentActivityGateway
 
     public function getOverAllPerfectScore()
     {
-        return $this->records->sum('perfect_score');
+        return $this->activity->perfect_score;
     }
 
     public function getOverAllStudentScore()

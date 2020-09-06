@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterStudentActivitiesTableAddColumnAvailabilityStatus extends Migration
+class AlterClassActivitiesTableNewColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterStudentActivitiesTableAddColumnAvailabilityStatus extends Migration
      */
     public function up()
     {
-        Schema::table('student_activities', function($table) {
-            $table->integer('availability_status')->default(1);
+        Schema::table('class_activities', function($table) {
+            $table->integer('draft')->default(1);
         });
     }
 
@@ -25,8 +25,8 @@ class AlterStudentActivitiesTableAddColumnAvailabilityStatus extends Migration
      */
     public function down()
     {
-        Schema::table('student_activities', function($table) {
-            $table->dropColumn('availability_status');
+        Schema::table('class_activities', function($table) {
+            $table->dropColumn('draft');
         });
     }
 }

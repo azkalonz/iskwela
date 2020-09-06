@@ -21,7 +21,7 @@ class CreateClassActivitiesTable extends Migration
             $table->integer('class_id');
             $table->integer('schedule_id');
             $table->integer('published_by');
-            $table->timestamp('published_at')->useCurrent();
+            $table->timestamp('published_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->unique(['student_activity_id', 'class_id']);
         });

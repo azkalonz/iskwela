@@ -169,6 +169,8 @@ class StudentActivityController extends Controller
      * @apiParam {Number} class_id filter the list to return published quizzes to the class.<br> OPTIONAL for teacher; and if not specified, returns all the quizzes created by the logged in teacher<br><br> REQUIRED for school admin andstudents.
      * @apiParam {Number} subject_id filter the list to return quizzes of the specified subject only.
      * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of quizzes published by the specified teacher_id)
+     * @apiParam {Number} [class_id] auto link quiz to class (but not published)
+     * @apiParam {Number} schedule_id required if class_id is provided
      *
 	 * 
      * @apiSuccess {Number} id the quiz ID
@@ -181,6 +183,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
+	 * @apiSuccess {Boolean} published flag if quiz is published to class or not
      * @apiSuccess {Object} category the category details
      * @apiSuccess {Number} category.id
      * @apiSuccess {Number} category.school_id
@@ -698,6 +701,8 @@ class StudentActivityController extends Controller
      * @apiParam {Number} class_id filter the list to return published periodicals to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for school admin and students.
      * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
 	 * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of periodicals published by the specified teacher_id)
+	 * @apiParam {Number} [class_id] auto link periodical to class (but not published)
+     * @apiParam {Number} schedule_id required if class_id is provided
      *
 	 * 
      * @apiSuccess {Number} the periodical ID
@@ -710,6 +715,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Boolean} published flag if quiz is published to class or not
      * @apiSuccess {Object} category the category details
      * @apiSuccess {Number} category.id
      * @apiSuccess {Number} category.school_id
@@ -1236,9 +1242,11 @@ class StudentActivityController extends Controller
      * @apiUse JWTHeader
      *
      * @apiParam {String=questionnaires} [include] if specified, includes the questionnaire details in response data
-     * @apiParam {Number} class_id filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for school admin and students.
+     * @apiParam {Number} class_id filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the assignments created by teacher<br><br> REQUIRED for school admin and students.
      * @apiParam {Number} subject_id filter the list to return periodiclas of the specified subject only.
 	 * @apiParam {Number} teacher_id required if logged in as school admin (for viewing the list of assignments published by the specified teacher_id)
+     * @apiParam {Number} [class_id] auto link assignment to class (but not published)
+     * @apiParam {Number} schedule_id required if class_id is provided
      *
 	 * 
      * @apiSuccess {Number} the assignment ID
@@ -1251,6 +1259,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Boolean} published flag if quiz is published to class or not
      * @apiSuccess {Object} category the category details
      * @apiSuccess {Number} category.id
      * @apiSuccess {Number} category.school_id
@@ -1532,6 +1541,7 @@ class StudentActivityController extends Controller
      * @apiSuccess {Object} subject subject details
      * @apiSuccess {Number} subject.id
      * @apiSuccess {Number} subject.subject_name
+     * @apiSuccess {Boolean} published flag if quiz is published to class or not
      * @apiSuccess {Object} category the category details
      * @apiSuccess {Number} category.id
      * @apiSuccess {Number} category.school_id
@@ -1722,11 +1732,14 @@ class StudentActivityController extends Controller
 
 		$student_activities = StudentActivity::whereActivityType($activity_type);
 
+		$all = false;
 		if ($user->user_type == 't') {
 			$this->validate($request, [
 				'class_id' => 'integer',
 				'subject_id' => 'integer'
 			]);
+
+			$all = true;
 
 			$student_activities->whereCreatedBy($user->getKey());
 			$published_by = $user->getKey();
@@ -1748,7 +1761,7 @@ class StudentActivityController extends Controller
 		}
 
 		if($request->class_id) {
-			$student_activities->inClass($published_by, $request->class_id);
+			$student_activities->inClass($published_by, $request->class_id, $all);
 		}
 
 		if($request->subject_id) {
@@ -1771,7 +1784,7 @@ class StudentActivityController extends Controller
 
 		$user = \Auth::user();
 		$activity = StudentActivity::whereId($request->id)->whereActivityType($activity_type)
-				->inClass($user->getKey(), $request->class_id)->first();
+				->inClass($user->getKey(), $request->class_id, true)->first();
 
 		if(!$activity) {
 			return response("NOT FOUND ERROR: $activity_name was not published in the specified class.", 404);
@@ -1779,12 +1792,12 @@ class StudentActivityController extends Controller
 
 		$class_activity = ClassActivity::whereStudentActivityId($request->id)
 				->whereClassId($request->class_id)->first();
+		$class_activity->draft = 1;
 
 		$success = false;
-		if($class_activity->delete()) {
+		if($class_activity->save()) {
 			$success = true;
 		}
-		
 
 		return response()->json(['success' => $success]);
 	}
@@ -1804,12 +1817,15 @@ class StudentActivityController extends Controller
 		if(!$activity) {
 			return response("$activity_name not found", 404);
 		}
+		
+		$class_activity = ClassActivity::firstOrNew(
+			['class_id' => $request->class_id, 'student_activity_id' => $request->id]
+		);
 
-		$class_activity = new ClassActivity();
-		$class_activity->student_activity_id = $request->id;
-		$class_activity->class_id = $request->class_id;
 		$class_activity->schedule_id = $request->schedule_id;
 		$class_activity->published_by = $user->getKey();
+		$class_activity->draft = 0;
+		$class_activity->save();
 		
 		$success = false;
 		if($class_activity->save()) {
@@ -1845,7 +1861,9 @@ class StudentActivityController extends Controller
 			'category_id' => 'required|integer',
 			'subject_id' => 'required|integer',
 			'questionnaires' => 'required|array',
-			'questionnaires.*.id' => 'required|integer'
+			'questionnaires.*.id' => 'required|integer',
+			'class_id' => 'integer',
+			'schedule_id' => 'integer'
 		]);
 
 		$user = Auth::User();
@@ -1874,6 +1892,22 @@ class StudentActivityController extends Controller
 		$student_activity->availability_status = 1;
 		if($student_activity->save() && $request->questionnaires) {
 			$this->attachQuestionnaireToActivity($request->questionnaires, $student_activity);
+
+			if($request->class_id) {
+				if(!$request->schedule_id) {
+					return response("Specify schedule_id if class_id is provided", 500);
+				}
+
+				// tag as class quiz but not published
+				$class_act = ClassActivity::firstOrNew(
+					['student_activity_id' => $student_activity->id, 'class_id' => $request->class_id]
+				);
+				$class_act->schedule_id = $request->schedule_id;
+				$class_act->published_by = $user->getKey();
+				$class_act->draft = 1;
+				$class_act->save();
+			}
+
 		}
 
 		$fractal = fractal()->item($student_activity, new StudentActivityTransformer);

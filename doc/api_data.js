@@ -2034,6 +2034,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "published",
+            "description": "<p>flag if quiz is published to class or not</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "category",
@@ -2170,7 +2177,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "class_id",
-            "description": "<p>filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the periodicals created by teacher<br><br> REQUIRED for school admin and students.</p>"
+            "description": "<p>filter the list to return published assignments to the class.<br> OPTIONAL for teacher; and if not specified, returns all the assignments created by teacher<br><br> REQUIRED for school admin and students.</p>"
           },
           {
             "group": "Parameter",
@@ -2185,6 +2192,13 @@ define({ "api": [
             "optional": false,
             "field": "teacher_id",
             "description": "<p>required if logged in as school admin (for viewing the list of assignments published by the specified teacher_id)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>required if class_id is provided</p>"
           }
         ]
       }
@@ -2261,6 +2275,13 @@ define({ "api": [
             "optional": false,
             "field": "subject.subject_name",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "published",
+            "description": "<p>flag if quiz is published to class or not</p>"
           },
           {
             "group": "Success 200",
@@ -4925,6 +4946,13 @@ define({ "api": [
             "optional": false,
             "field": "teacher_id",
             "description": "<p>required if logged in as school admin (for viewing the list of periodicals published by the specified teacher_id)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>required if class_id is provided</p>"
           }
         ]
       }
@@ -5001,6 +5029,13 @@ define({ "api": [
             "optional": false,
             "field": "subject.subject_name",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "published",
+            "description": "<p>flag if quiz is published to class or not</p>"
           },
           {
             "group": "Success 200",
@@ -9600,6 +9635,13 @@ define({ "api": [
             "optional": false,
             "field": "teacher_id",
             "description": "<p>required if logged in as school admin (for viewing the list of quizzes published by the specified teacher_id)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "schedule_id",
+            "description": "<p>required if class_id is provided</p>"
           }
         ]
       }
@@ -9676,6 +9718,13 @@ define({ "api": [
             "optional": false,
             "field": "subject.subject_name",
             "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "published",
+            "description": "<p>flag if quiz is published to class or not</p>"
           },
           {
             "group": "Success 200",

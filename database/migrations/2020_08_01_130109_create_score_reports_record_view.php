@@ -38,7 +38,7 @@ class CreateScoreReportsRecordView extends Migration
                 from classes c
                 inner join sections_students ss on ss.section_id = c.section_id 
                 inner join users u on u.id = ss.user_id 
-                left join class_activities ca on ca.class_id = c.id
+                left join class_activities ca on ca.class_id = c.id and ca.draft = 0
                 inner join student_activities sa on sa.id = ca.student_activity_id 
                 left join student_activity_records sar on sar.activity_id = sa.id and sar.user_id = u.id
                 group by 1,2,3,4,5,7,8, sar.batch

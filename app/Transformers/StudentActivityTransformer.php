@@ -20,7 +20,8 @@ class StudentActivityTransformer extends TransformerAbstract
 			'subject' => [
 				'id' => $student_activity->subject->id,
 				'subject_name' => $student_activity->subject->name
-			]
+			],
+			'published' => ($student_activity->classActivity->draft) ? false : true
 			//add subject
 		];
 

@@ -19,9 +19,9 @@ class StudentActivity extends Model
         return $this->belongsTo(SchoolGradingCategory::class, 'category_id');
     }
 
-    public function scopeInClass($builder, $teacher_id = null, $class_id = null)
+    public function scopeInClass($builder, $teacher_id = null, $class_id = null, $all = false)
     {
-        return $builder->whereIn('student_activities.id', function($query) use ($teacher_id, $class_id) {
+        return $builder->whereIn('student_activities.id', function($query) use ($teacher_id, $class_id, $all) {
             $query->from((new ClassActivity)
                 ->getTable())
                 ->select('student_activity_id');
@@ -33,7 +33,17 @@ class StudentActivity extends Model
             if($class_id) {
                 $query->whereClassId($class_id);
             }
+
+            if(!$all) {
+                $query->whereDraft(0);
+            }
+
         });
+    }
+
+    public function classActivity()
+    {
+        return $this->hasOne(ClassActivity::class, 'student_activity_id','id');
     }
 
     public function subject()
