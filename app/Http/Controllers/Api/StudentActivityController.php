@@ -1750,6 +1750,7 @@ class StudentActivityController extends Controller
 				'subject_id' => 'integer',
 				'teacher_id' => 'integer|required'
 			]);
+			$all = true;
 			$published_by = $request->teacher_id;
 		}
 		else {
