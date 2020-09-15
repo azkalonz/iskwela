@@ -72,7 +72,17 @@ class QuestionnaireBuilderGateway
                 break;
             }
 
+            $update = FALSE;
+
             if(isset($q['question_id'])) {
+                $questionnaireQuestion = QuestionnaireQuestion::whereQuestionId($q['question_id'])->whereQuestionnaireId($this->questionnaire->id)->first();
+                if($questionnaireQuestion)
+                {
+                    $update = TRUE;
+                }
+            }
+
+            if($update){
                 $q_data['id'] = $q['question_id'];
                 $this->questions_to_edit->push($q_data);
                 $this->questions_to_edit_mapping->push([
