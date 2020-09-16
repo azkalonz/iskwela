@@ -9,6 +9,8 @@ use App\Http\Traits\File;
 use App\Models\UserPreference;
 use App\Models\Classes;
 use App\Models\Assignment;
+use Illuminate\Http\UploadedFile;
+
 use Storage;
 use Auth;
 
@@ -694,4 +696,47 @@ class FileController extends Controller
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
      */
+
+    /**
+     * Downloads the image from a given URL and upload to DO public space
+     *
+     * @api {POST} HOST/api/do/image/url Download Image from URL
+     * @apiVersion 1.0.0
+     * @apiName DownloadClassImage
+     * @apiDescription Downloads the image from a given URL and upload to iSkwela's DO public space
+     * @apiGroup File Download
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String} download_url URL of image to download
+     *
+     * @apiSuccess {String} url the URL of image in DO space
+     *
+     */
+
+     public function imageUrlDownloadUpload(Request $request)
+     {
+        $request->validate([
+            'download_url' => 'string|required'
+        ]);
+
+        // get the file info
+        $info = pathinfo($request->download_url);
+
+        // store the image locally
+        $contents = file_get_contents($request->download_url);
+        $file = sprintf("%s/%s", storage_path(),$info['basename']);
+        file_put_contents($file, $contents);
+
+        // generate the file object
+        $uploaded_file = new UploadedFile($file, $info['basename']);
+
+        // copy to DO space
+        $path = $this->uploadToPublicSpace($uploaded_file);
+
+        // remove the file locally to free space
+        unlink($file);
+
+        return response()->json(['url' => $this->getFilePublicUrl($path)]);
+     }
 }

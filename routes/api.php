@@ -254,4 +254,8 @@ Route::middleware('jwt')->group(function () {
     Route::get('/comment/{id}', 'Api\\CommentController@show');
     Route::delete('/comment/remove/{id}', 'Api\\CommentController@remove');
     Route::post('/comment/save', 'Api\\CommentController@save');
+
+
+    Route::post('/do/image/url', 'Api\\FileController@imageUrlDownloadUpload');
+
 });
