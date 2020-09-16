@@ -3496,6 +3496,63 @@
   },
   {
     "type": "POST",
+    "url": "HOST/api/do/image/url",
+    "title": "Download Image from URL",
+    "version": "1.0.0",
+    "name": "DownloadImageURL",
+    "description": "<p>Downloads the image from a given URL and upload to iSkwela's DO public space</p>",
+    "group": "File_Download",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "download_url",
+            "description": "<p>URL of image to download</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>the URL of image in DO space</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"url\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/2HcfRWiuJHcKKWKms44q4w4zvVvhEwDWaUALju0A.jpeg\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Download",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
     "url": "HOST/api/download/class/lesson-plan/:id",
     "title": "Lesson Plan",
     "version": "1.0.0",

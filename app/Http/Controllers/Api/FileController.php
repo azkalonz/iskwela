@@ -702,7 +702,7 @@ class FileController extends Controller
      *
      * @api {POST} HOST/api/do/image/url Download Image from URL
      * @apiVersion 1.0.0
-     * @apiName DownloadClassImage
+     * @apiName DownloadImageURL
      * @apiDescription Downloads the image from a given URL and upload to iSkwela's DO public space
      * @apiGroup File Download
      *
@@ -712,6 +712,11 @@ class FileController extends Controller
      *
      * @apiSuccess {String} url the URL of image in DO space
      *
+    * @apiSuccessExample {json} Sample Response
+        {
+            "url": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/2HcfRWiuJHcKKWKms44q4w4zvVvhEwDWaUALju0A.jpeg"
+        }
+    *
      */
 
      public function imageUrlDownloadUpload(Request $request)
