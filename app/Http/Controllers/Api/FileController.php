@@ -30,7 +30,11 @@ class FileController extends Controller
         'mpga', // mp3
         'wav',
         'ppt',
-        'pptx'
+        'pptx',
+        'mp4',
+        'mkv',
+        'avi',
+        'wmv'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
