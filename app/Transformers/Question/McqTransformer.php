@@ -17,6 +17,13 @@ class McqTransformer extends BaseQuestionDataTransformer
     {
         $result = parent::transform($question);
         $result['choices'] = $this->transformChoices($question);
+
+        if(array_key_exists('student_answer', $question->toArray())) {
+            $result['student_answer'] = [
+                'is_correct' => $question->is_correct,
+                'answer' => $question->student_answer
+            ];
+        }
         
         return $result;
     }
