@@ -34,7 +34,8 @@ class FileController extends Controller
         'mp4',
         'mkv',
         'avi',
-        'wmv'
+        'wmv',
+        'mov'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
