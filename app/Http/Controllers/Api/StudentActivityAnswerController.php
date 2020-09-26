@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Transformers\StudentActivityGatewayTransformer;
+use App\Transformers\ScoreReportViewTransformer;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -14,6 +15,7 @@ use League\Fractal\Serializer\ArraySerializer;
 
 use App\Gateways\StudentActivityGateway;
 use App\Models\StudentActivity;
+use App\Models\ScoreReportRecordView;
 
 class StudentActivityAnswerController extends Controller
 {
@@ -311,6 +313,142 @@ class StudentActivityAnswerController extends Controller
 		$fractal = fractal()->item($sac_gw, new StudentActivityGatewayTransformer);
 
         return response()->json($fractal->toArray());
-	}
+    }
+    
+
+	/**
+     * Get Activity Answers
+     *
+     * @api {post} <HOST>/api/assignment/answer/submit Submit Assignment Questionnaire (answers)
+     * @apiVersion 1.0.0
+     * @apiName SubmitAssignment
+     * @apiDescription Allows submission of assignment answer
+     * @apiGroup Assignments: Questionnaire
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} activity_id the assignment ID
+     * @apiParam {Number} subject_id the subject ID
+     * @apiParam {DateTime} start_time the time when the student starts the assignment
+     * @apiParam {DateTime} end_time the time when the student finishes the assignment
+     * @apiParam {Array} questionnaires the array of questionnaires with answers
+     * @apiParam {Number} questionnaires.questionnaire_id the ID of questionnaire
+     * @apiParam {Array} questionnaires.answers answer details and remarks
+     * @apiParam {Number} questionnaires.answers.question_id the question ID
+     * @apiParam {Number} questionnaires.answers.status <i>PLACEHOLDER <br><br> 0: first try, 1: retried, 2:skip</i>
+     * @apiParam {Boolean} questionnaires.answers.is_correct marks if the answer is wrong/correct
+     * @apiParam {String} questionnaires.answers.answer the actual answer string
+     *
+     * @apiSuccess {Number} id the assignment ID
+     * @apiSuccess {Number} score the actual score of student
+     * @apiSuccess {Double} score_percentage the student's score percentage
+     * @apiSuccess {Number} perfect the total score of the assignment
+     * @apiSuccess {Number} duration student's time in answerting the assignment
+     * @apiSuccess {Array} questionnaires details of students's answers
+     * @apiSuccess {Number} questionnaires.id the questionnaire ID
+     * @apiSuccess {Number} questionnaires.activity_record_id record ID of this attempt
+     * @apiSuccess {Array} questionnaires.answers answer details and remarks
+     * @apiSuccess {Number} questionnaires.answers.id record ID of this answer
+     * @apiSuccess {Number} questionnaires.answers.question_id the question which this answer is for
+     * @apiSuccess {Number} questionnaires.answers.status <i>PLACEHOLDER</i>
+     * @apiSuccess {Number} questionnaires.answers.is_correct answer remark
+     * @apiSuccess {String} questionnaires.answers.answer the actual answer string
+     * 
+     * @apiSuccessExample {json} Sample Response
+        {
+            "id": 24,
+            "score": 7,
+            "score_percentage": 0.58,
+            "pefect_score": 12,
+            "duration": 1500,
+            "questionnaires": [
+                {
+                    "questionnaire_id": 5,
+                    "activity_record_id": 39,
+                    "answers": [
+                        {
+                            "id": 77,
+                            "question_id": 9,
+                            "status": 0,
+                            "is_correct": 1,
+                            "answer": "test 3"
+                        },
+                        {
+                            "id": 78,
+                            "question_id": 10,
+                            "status": 0,
+                            "is_correct": 1,
+                            "answer": "test 4"
+                        }
+                    ]
+                },
+                {
+                    "questionnaire_id": 6,
+                    "activity_record_id": 40,
+                    "answers": [
+                        {
+                            "id": 79,
+                            "question_id": 11,
+                            "status": 0,
+                            "is_correct": 1,
+                            "answer": "test 5"
+                        },
+                        {
+                            "id": 80,
+                            "question_id": 12,
+                            "status": 0,
+                            "is_correct": 0,
+                            "answer": "test 6"
+                        }
+                    ]
+                }
+            ]
+        }
+     * 
+     */
+    public function getStudentScores(Request $request)
+    {
+        $this->validate($request, [
+			'activity_id' => 'required|integer'
+		]);
+        $scores = ScoreReportRecordView::whereActivityId($request->activity_id)->get();
+        $fractal = fractal()->collection($scores, new ScoreReportViewTransformer);
+        return response()->json($fractal->toArray());
+    }
+
+    public function getAttempts(Request $request)
+    {
+        $this->validate($request, [
+            'activity_id' => 'required|integer',
+            'student_id' => 'required|integer'
+        ]);
+
+        $activity = StudentActivity::selectRaw(
+                "
+                student_activities.id as activity_id,
+                student_activity_records.user_id,
+                student_activity_records.batch as attempt_id,
+                sum(student_activity_records.score) as achieved_score,
+                student_activities.perfect_score,
+                max(student_activity_records.created_at) as taken_at
+                "
+            )
+            ->where('student_activities.id', '=' ,$request->activity_id)
+            ->studentRecords($request->student_id)
+            ->groupBy([
+                'student_activities.id',
+                'student_activity_records.batch',
+                'student_activities.perfect_score',
+                'student_activity_records.user_id'
+            ])
+            ->get();
+
+            return response()->json($activity->toArray());
+    }
+
+    public function showAttempt(Request $request)
+    {
+
+    }
 
 }

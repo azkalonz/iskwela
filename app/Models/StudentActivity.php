@@ -58,4 +58,12 @@ class StudentActivity extends Model
             ->where('student_activity_submission.user_id', '=', $user_id);
         });
     }
+
+    public function scopeStudentRecords($builder, $user_id)
+    {
+        return $builder->join('student_activity_records', function($join) use ($user_id) {
+            $join->on('student_activity_records.activity_id', '=', 'student_activities.id')
+            ->where('student_activity_records.user_id', '=', $user_id);
+        });
+    }
 }
