@@ -47,6 +47,7 @@ class AssignmentAnswerController extends Controller
                 "id": 3,
                 "assignment_id": 6,
                 "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "answer_text": "Answer Text Sample",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",
@@ -83,6 +84,7 @@ class AssignmentAnswerController extends Controller
                 "id": 3,
                 "assignment_id": 6,
                 "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "answer_text": "Answer Text Sample",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",
@@ -125,6 +127,7 @@ class AssignmentAnswerController extends Controller
                 "id": 3,
                 "assignment_id": 6,
                 "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "answer_text": "Answer Text Sample",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",
@@ -167,6 +170,7 @@ class AssignmentAnswerController extends Controller
                 "id": 3,
                 "assignment_id": 6,
                 "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "answer_text": "Answer Text Sample",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",
@@ -203,6 +207,7 @@ class AssignmentAnswerController extends Controller
                 "id": 3,
                 "assignment_id": 6,
                 "answer_media": "http://api.schoolhub.local:8080/api/download/activity/answer/3",
+                "answer_text": "Answer Text Sample",
                 "student": {
                     "id": 1,
                     "first_name": "jayson",

@@ -170,6 +170,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 
@@ -197,6 +198,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 
@@ -224,6 +226,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 

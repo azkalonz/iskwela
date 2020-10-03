@@ -792,7 +792,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -846,6 +846,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }
@@ -7722,7 +7729,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -7828,7 +7835,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -7882,6 +7889,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }
@@ -13817,7 +13831,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -13923,7 +13937,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -13977,6 +13991,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }
