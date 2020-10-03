@@ -242,27 +242,44 @@ class FileController extends Controller
     public function assignmentAnswer(Request $request, $activity_type)
     {
         $request->validate([
-            'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
-            'assignment_id' => 'integer'
+            'file' => 'required_without:answer_text|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
+            'assignment_id' => 'integer',
+            'answer_text' => 'required_without:file'
         ]);
 
         $seatwork = Assignment::whereId($request->assignment_id)->whereActivityType($activity_type)->firstOrFail();
 
-        $response = $this->upload($request->file);
-
         $user = Auth::user();
-        if($response['success']) {
+
+        $success = false;
+        if($request->file){
+            $response = $this->upload($request->file);
+            
+            $success = $response['success'];
+
+            if($response['success']) {
+                $activity_answer = new \App\Models\AssignmentAnswer();
+                $activity_answer->assignment_id = $request->assignment_id;
+                $activity_answer->student_id = $user->getKey();
+                $activity_answer->answer_text = $request->answer_text;
+                $activity_answer->answer_media = $response['file'];
+                $activity_answer->save();
+            }
+            else {
+                return response('Unable to upload file', 500);
+            }
+        }else{
+
             $activity_answer = new \App\Models\AssignmentAnswer();
             $activity_answer->assignment_id = $request->assignment_id;
             $activity_answer->student_id = $user->getKey();
-            $activity_answer->answer_media = $response['file'];
+            $activity_answer->answer_text = $request->answer_text;
             $activity_answer->save();
-        }
-        else {
-            return response('Unable to upload file', 500);
+
+            $success = true;
         }
 
-        return response()->json(['success' => $response['success']]);
+        return response()->json(['success' => $success]);
     }
 
     /**
