@@ -1741,8 +1741,9 @@ class StudentActivityController extends Controller
 
 			$all = true;
 
-			$student_activities->whereCreatedBy($user->getKey());
-			$published_by = $user->getKey();
+			//$student_activities->whereCreatedBy($user->getKey());
+			//$published_by = $user->getKey();
+			$published_by = null;
 		}
 		else if ($user->user_type == 'a') {
 			$this->validate($request, [
@@ -1751,7 +1752,8 @@ class StudentActivityController extends Controller
 				'teacher_id' => 'integer|required'
 			]);
 			$all = true;
-			$published_by = $request->teacher_id;
+			//$published_by = $request->teacher_id;
+			$published_by = null;
 		}
 		else {
 			$this->validate($request, [
