@@ -792,7 +792,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -846,6 +846,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }
@@ -3477,6 +3484,63 @@
           }
         ]
       }
+    },
+    "filename": "app/Http/Controllers/Api/FileController.php",
+    "groupTitle": "File_Download",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "HOST/api/do/image/url",
+    "title": "Download Image from URL",
+    "version": "1.0.0",
+    "name": "DownloadImageURL",
+    "description": "<p>Downloads the image from a given URL and upload to iSkwela's DO public space</p>",
+    "group": "File_Download",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "download_url",
+            "description": "<p>URL of image to download</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>the URL of image in DO space</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "{\n    \"url\": \"https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/2HcfRWiuJHcKKWKms44q4w4zvVvhEwDWaUALju0A.jpeg\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "filename": "app/Http/Controllers/Api/FileController.php",
     "groupTitle": "File_Download",
@@ -7665,7 +7729,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -7771,7 +7835,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -7825,6 +7889,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }
@@ -11710,6 +11781,225 @@
     }
   },
   {
+    "type": "get",
+    "url": "<HOST>/api/activity/attempt/show",
+    "title": "Get the student's answer details",
+    "version": "1.0.0",
+    "name": "StudentAnswerDetails",
+    "description": "<p>Returns the student's answers</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "attempt_id",
+            "description": "<p>the ID of submission/attempt</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the activity_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "instruction",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "duration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "questionnaires",
+            "description": "<p>refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "questionnaires.questions.student_answer",
+            "description": "<p>the student's answer; Under the &quot;question&quot; object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "questionnaires.questions.student_answer.is_correct",
+            "description": "<p>1: student answered correctly, 2: student answered wrongly</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaires.questions.student_answer.answer",
+            "description": "<p>the student's answer</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "\t\t{\n\t\t\t\"id\": 17,\n\t\t\t\"title\": \"quiz2 - written\",\n\t\t\t\"instruction\": \"answer this\",\n\t\t\t\"duration\": 60,\n\t\t\t\"questionnaires\": [\n\t\t\t\t{\n\t\t\t\t\t\"id\": 2,\n\t\t\t\t\t\"title\": \"Questionnaire 1\",\n\t\t\t\t\t\"intro\": \"this is a quiz to answer\",\n\t\t\t\t\t\"subject_id\": 1,\n\t\t\t\t\t\"school_published\": 0,\n\t\t\t\t\t\"school_published_date\": null,\n\t\t\t\t\t\"author\": {\n\t\t\t\t\t\t\"id\": 8,\n\t\t\t\t\t\t\"first_name\": \"teacher tom\",\n\t\t\t\t\t\t\"last_name\": \"cruz\"\n\t\t\t\t\t},\n\t\t\t\t\t\"questions\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 3,\n\t\t\t\t\t\t\t\"question\": \"test\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q1-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 1,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"d\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"e\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t],\n                            \"student_answer\": {\n                                \"is_correct\": 1,\n                                \"answer\": \"test 3\"\n                            }\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"id\": 4,\n\t\t\t\t\t\t\t\"question\": \"test2\",\n\t\t\t\t\t\t\t\"question_type\": \"mcq\",\n\t\t\t\t\t\t\t\"media_url\": \"http://sample-media.com/q2-quiz1\",\n\t\t\t\t\t\t\t\"weight\": 5,\n\t\t\t\t\t\t\t\"choices\": [\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"a\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 0\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"b\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\"option\": \"c\",\n\t\t\t\t\t\t\t\t\t\"is_correct\": 1\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t],\n                            \"student_answer\": {\n                                \"is_correct\": 1,\n                                \"answer\": \"test 4\"\n                            }\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/activity/attempts",
+    "title": "List of Activity Attempts",
+    "version": "1.0.0",
+    "name": "StudentAttemptsList",
+    "description": "<p>Returns the list of submissions/attempts of the student of the given activity ID</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the activity ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>the student ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>the student ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "attempt_id",
+            "description": "<p>ID of submission/attempt</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the total score of the activity</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "achieved_score",
+            "description": "<p>the student's score</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "achieved_score_percent",
+            "description": "<p>student's score in percentage</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "DateTime",
+            "optional": false,
+            "field": "taken_at",
+            "description": "<p>the time of submission</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"activity_id\": 34,\n        \"student_id\": 1,\n        \"attempt_id\": \"16010883475f6eab5beda037.17196012\",\n        \"achieved_score\": \"11\",\n        \"perfect_score\": \"25\",\n        \"achieved_score_percent\": 0.44,\n        \"taken_at\": \"2020-09-26 10:45:48\"\n    },\n    {\n        \"activity_id\": 34,\n        \"student_id\": 1,\n        \"attempt_id\": \"16010924155f6ebb3f99c1b1.79708317\",\n        \"achieved_score\": \"15\",\n        \"perfect_score\": \"25\",\n        \"achieved_score_percent\": 0.6,\n        \"taken_at\": \"2020-09-26 11:53:36\"\n    }\n    {},\n    {}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "POST",
     "url": "HOST/students/improvement",
     "title": "Student Improvements",
@@ -11898,6 +12188,112 @@
     },
     "filename": "app/Http/Controllers/Api/AttendanceController.php",
     "groupTitle": "Reports"
+  },
+  {
+    "type": "post",
+    "url": "<HOST>/api/activity/scores",
+    "title": "Get Students Scores of the activity",
+    "version": "1.0.0",
+    "name": "studentActivityScores",
+    "description": "<p>Returns the scores of the students of the given activity ID</p>",
+    "group": "Reports",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the activity ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "activity_id",
+            "description": "<p>the activity ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "student_id",
+            "description": "<p>the student ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "first_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "last_name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "perfect_score",
+            "description": "<p>the total score of the activity</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "achieved_score",
+            "description": "<p>the student's score</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "achieved_score_percent",
+            "description": "<p>student's score in percentage</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "attempts",
+            "description": "<p>number of submissions/takes from students</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sample Response",
+          "content": "[\n    {\n        \"activity_id\": 34,\n        \"student_id\": 5,\n        \"first_name\": \"jacque\",\n        \"last_name\": \"amaya\",\n        \"perfect_score\": 25,\n        \"achieved_score\": 0,\n        \"achieved_score_percent\": 0,\n        \"attempts\": 0\n    },\n    {\n        \"activity_id\": 34,\n        \"student_id\": 4,\n        \"first_name\": \"davy\",\n        \"last_name\": \"castillo\",\n        \"perfect_score\": 25,\n        \"achieved_score\": 0,\n        \"achieved_score_percent\": 0,\n        \"attempts\": 0\n    },\n    {},\n    {}\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Http/Controllers/Api/StudentActivityAnswerController.php",
+    "groupTitle": "Reports",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>A JWT Token, e.g. &quot;Bearer {token}&quot;</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "post",
@@ -13435,7 +13831,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -13541,7 +13937,7 @@
       "examples": [
         {
           "title": "Sample Response",
-          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"assignment_id\": 6,\n        \"answer_media\": \"http://api.schoolhub.local:8080/api/download/activity/answer/3\",\n        \"answer_text\": \"Answer Text Sample\",\n        \"student\": {\n            \"id\": 1,\n            \"first_name\": \"jayson\",\n            \"last_name\": \"barino\"\n        }\n    }\n]",
           "type": "json"
         }
       ]
@@ -13595,6 +13991,13 @@
             "optional": false,
             "field": "assignment_id",
             "description": "<p>the activity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "answer_text",
+            "description": "<p>free text answer</p>"
           }
         ]
       }

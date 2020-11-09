@@ -9,9 +9,9 @@ class QuestionTransformer extends TransformerAbstract
 {
     public function transform(\App\Models\Question $question)
     {
-		switch ($question->question_type) {
-            case Question::TYPE_MCQ:
-			default:
+        switch ($question->question_type) {
+              case Question::TYPE_MCQ:
+			        default:
                 return (new McqTransformer)->transform($question);
         }
 	}

@@ -9,6 +9,8 @@ use App\Http\Traits\File;
 use App\Models\UserPreference;
 use App\Models\Classes;
 use App\Models\Assignment;
+use Illuminate\Http\UploadedFile;
+
 use Storage;
 use Auth;
 
@@ -28,7 +30,12 @@ class FileController extends Controller
         'mpga', // mp3
         'wav',
         'ppt',
-        'pptx'
+        'pptx',
+        'mp4',
+        'mkv',
+        'avi',
+        'wmv',
+        'mov'
     ];
 	
 	const SUPPORTED_IMAGE_TYPES = [
@@ -163,6 +170,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 
@@ -190,6 +198,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 
@@ -217,6 +226,7 @@ class FileController extends Controller
     * @apiUse JWTHeader
     * @apiParam {File=*.jpeg,*.bmp,*.png,*.gif, *.pdf, *.doc,*.txt} file The file to be uploaded
     * @apiParam {Number} assignment_id the activity id
+    * @apiParam {String} answer_text free text answer
     *
     * @apiSuccess {String=true,false} success
     * 
@@ -235,27 +245,44 @@ class FileController extends Controller
     public function assignmentAnswer(Request $request, $activity_type)
     {
         $request->validate([
-            'file' => 'required|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
-            'assignment_id' => 'integer'
+            'file' => 'required_without:answer_text|file|mimes:' . implode(',', self::SUPPORTED_TYPES),
+            'assignment_id' => 'integer',
+            'answer_text' => 'required_without:file'
         ]);
 
         $seatwork = Assignment::whereId($request->assignment_id)->whereActivityType($activity_type)->firstOrFail();
 
-        $response = $this->upload($request->file);
-
         $user = Auth::user();
-        if($response['success']) {
+
+        $success = false;
+        if($request->file){
+            $response = $this->upload($request->file);
+            
+            $success = $response['success'];
+
+            if($response['success']) {
+                $activity_answer = new \App\Models\AssignmentAnswer();
+                $activity_answer->assignment_id = $request->assignment_id;
+                $activity_answer->student_id = $user->getKey();
+                $activity_answer->answer_text = $request->answer_text;
+                $activity_answer->answer_media = $response['file'];
+                $activity_answer->save();
+            }
+            else {
+                return response('Unable to upload file', 500);
+            }
+        }else{
+
             $activity_answer = new \App\Models\AssignmentAnswer();
             $activity_answer->assignment_id = $request->assignment_id;
             $activity_answer->student_id = $user->getKey();
-            $activity_answer->answer_media = $response['file'];
+            $activity_answer->answer_text = $request->answer_text;
             $activity_answer->save();
-        }
-        else {
-            return response('Unable to upload file', 500);
+
+            $success = true;
         }
 
-        return response()->json(['success' => $response['success']]);
+        return response()->json(['success' => $success]);
     }
 
     /**
@@ -694,4 +721,52 @@ class FileController extends Controller
      * @apiDefine JWTHeader
      * @apiHeader {String} Authorization A JWT Token, e.g. "Bearer {token}"
      */
+
+    /**
+     * Downloads the image from a given URL and upload to DO public space
+     *
+     * @api {POST} HOST/api/do/image/url Download Image from URL
+     * @apiVersion 1.0.0
+     * @apiName DownloadImageURL
+     * @apiDescription Downloads the image from a given URL and upload to iSkwela's DO public space
+     * @apiGroup File Download
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String} download_url URL of image to download
+     *
+     * @apiSuccess {String} url the URL of image in DO space
+     *
+    * @apiSuccessExample {json} Sample Response
+        {
+            "url": "https://iskwela.sgp1.digitaloceanspaces.com/SCHOOL01/public/2HcfRWiuJHcKKWKms44q4w4zvVvhEwDWaUALju0A.jpeg"
+        }
+    *
+     */
+
+     public function imageUrlDownloadUpload(Request $request)
+     {
+        $request->validate([
+            'download_url' => 'string|required'
+        ]);
+
+        // get the file info
+        $info = pathinfo($request->download_url);
+
+        // store the image locally
+        $contents = file_get_contents($request->download_url);
+        $file = sprintf("%s/%s", storage_path(),$info['basename']);
+        file_put_contents($file, $contents);
+
+        // generate the file object
+        $uploaded_file = new UploadedFile($file, $info['basename']);
+
+        // copy to DO space
+        $path = $this->uploadToPublicSpace($uploaded_file);
+
+        // remove the file locally to free space
+        unlink($file);
+
+        return response()->json(['url' => $this->getFilePublicUrl($path)]);
+     }
 }

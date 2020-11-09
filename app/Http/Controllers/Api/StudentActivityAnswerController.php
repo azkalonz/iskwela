@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Transformers\StudentActivityGatewayTransformer;
+use App\Transformers\ScoreReportViewTransformer;
+use App\Transformers\StudentActivityTransformer;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -14,6 +16,7 @@ use League\Fractal\Serializer\ArraySerializer;
 
 use App\Gateways\StudentActivityGateway;
 use App\Models\StudentActivity;
+use App\Models\ScoreReportRecordView;
 
 class StudentActivityAnswerController extends Controller
 {
@@ -311,6 +314,297 @@ class StudentActivityAnswerController extends Controller
 		$fractal = fractal()->item($sac_gw, new StudentActivityGatewayTransformer);
 
         return response()->json($fractal->toArray());
-	}
+    }
+    
+
+	/**
+     * Get Student scores of the given activity
+     *
+     * @api {post} <HOST>/api/activity/scores Get Students Scores of the activity
+     * @apiVersion 1.0.0
+     * @apiName studentActivityScores
+     * @apiDescription Returns the scores of the students of the given activity ID
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} activity_id the activity ID
+     *
+     * @apiSuccess {Number} activity_id the activity ID
+     * @apiSuccess {Number} student_id the student ID
+     * @apiSuccess {String} first_name
+     * @apiSuccess {String} last_name
+     * @apiSuccess {Number} perfect_score the total score of the activity
+     * @apiSuccess {Number} achieved_score the student's score
+     * @apiSuccess {Double} achieved_score_percent student's score in percentage
+     * @apiSuccess {Number} attempts number of submissions/takes from students
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "activity_id": 34,
+                "student_id": 5,
+                "first_name": "jacque",
+                "last_name": "amaya",
+                "perfect_score": 25,
+                "achieved_score": 0,
+                "achieved_score_percent": 0,
+                "attempts": 0
+            },
+            {
+                "activity_id": 34,
+                "student_id": 4,
+                "first_name": "davy",
+                "last_name": "castillo",
+                "perfect_score": 25,
+                "achieved_score": 0,
+                "achieved_score_percent": 0,
+                "attempts": 0
+            },
+            {},
+            {}
+        ]
+     * 
+     */
+    public function getStudentScores(Request $request)
+    {
+        $this->validate($request, [
+			'activity_id' => 'required|integer'
+		]);
+        $scores = ScoreReportRecordView::whereActivityId($request->activity_id)->get();
+        $fractal = fractal()->collection($scores, new ScoreReportViewTransformer);
+        return response()->json($fractal->toArray());
+    }
+
+
+	/**
+     * Get list of submissions of the activity
+     *
+     * @api {post} <HOST>/api/activity/attempts List of Activity Attempts
+     * @apiVersion 1.0.0
+     * @apiName StudentAttemptsList
+     * @apiDescription Returns the list of submissions/attempts of the student of the given activity ID
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {Number} activity_id the activity ID
+     * @apiParam {Number} student_id the student ID
+     *
+     * @apiSuccess {Number} activity_id the activity ID
+     * @apiSuccess {Number} student_id the student ID
+     * @apiSuccess {String} attempt_id ID of submission/attempt
+     * @apiSuccess {Number} perfect_score the total score of the activity
+     * @apiSuccess {Number} achieved_score the student's score
+     * @apiSuccess {Double} achieved_score_percent student's score in percentage
+     * @apiSuccess {DateTime} taken_at the time of submission
+     * @apiSuccessExample {json} Sample Response
+        [
+            {
+                "activity_id": 34,
+                "student_id": 1,
+                "attempt_id": "16010883475f6eab5beda037.17196012",
+                "achieved_score": "11",
+                "perfect_score": "25",
+                "achieved_score_percent": 0.44,
+                "taken_at": "2020-09-26 10:45:48"
+            },
+            {
+                "activity_id": 34,
+                "student_id": 1,
+                "attempt_id": "16010924155f6ebb3f99c1b1.79708317",
+                "achieved_score": "15",
+                "perfect_score": "25",
+                "achieved_score_percent": 0.6,
+                "taken_at": "2020-09-26 11:53:36"
+            }
+            {},
+            {}
+        ]
+     * 
+     */
+    public function getAttempts(Request $request)
+    {
+        $this->validate($request, [
+            'activity_id' => 'required|integer',
+            'student_id' => 'required|integer'
+        ]);
+
+        $activity = StudentActivity::selectRaw(
+                "
+                student_activities.id as activity_id,
+                student_activity_records.user_id as student_id,
+                student_activity_records.batch as attempt_id,
+                sum(student_activity_records.score) as achieved_score,
+                student_activities.perfect_score,
+                (sum(student_activity_records.score)/student_activities.perfect_score) as achieved_score_percent,
+                max(student_activity_records.created_at) as taken_at
+                "
+            )
+            ->where('student_activities.id', '=' ,$request->activity_id)
+            ->studentRecords($request->student_id)
+            ->groupBy([
+                'student_activities.id',
+                'student_activity_records.batch',
+                'student_activities.perfect_score',
+                'student_activity_records.user_id'
+            ])
+            ->get();
+
+            return response()->json($activity->toArray());
+    }
+
+	/**
+     * Get the attempt details
+     *
+     * @api {get} <HOST>/api/activity/attempt/show Get the student's answer details
+     * @apiVersion 1.0.0
+     * @apiName StudentAnswerDetails
+     * @apiDescription Returns the student's answers
+     * @apiGroup Reports
+     *
+     * @apiUse JWTHeader
+     *
+     * @apiParam {String} attempt_id the ID of submission/attempt
+     * @apiParam {Number} activity_id the activity_id
+	 * 
+     * @apiSuccess {Number} id the activity ID
+     * @apiSuccess {String} title
+     * @apiSuccess {String} instruction
+     * @apiSuccess {Number} duration
+     * @apiSuccess {Array} questionnaires refer to <a href='#api-Questionnaire-QuestionnaireDetail'><font color='blue'><HOST>/api/questionnaire/:id</font></a> for the questionnaire details
+     * @apiSuccess {Object} questionnaires.questions.student_answer the student's answer; Under the "question" object
+     * @apiSuccess {Number} questionnaires.questions.student_answer.is_correct 1: student answered correctly, 2: student answered wrongly
+     * @apiSuccess {String} questionnaires.questions.student_answer.answer the student's answer
+     * 
+     * @apiSuccessExample {json} Sample Response
+		{
+			"id": 17,
+			"title": "quiz2 - written",
+			"instruction": "answer this",
+			"duration": 60,
+			"questionnaires": [
+				{
+					"id": 2,
+					"title": "Questionnaire 1",
+					"intro": "this is a quiz to answer",
+					"subject_id": 1,
+					"school_published": 0,
+					"school_published_date": null,
+					"author": {
+						"id": 8,
+						"first_name": "teacher tom",
+						"last_name": "cruz"
+					},
+					"questions": [
+						{
+							"id": 3,
+							"question": "test",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q1-quiz1",
+							"weight": 1,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 1
+								},
+								{
+									"option": "b",
+									"is_correct": 0
+								},
+								{
+									"option": "c",
+									"is_correct": 0
+								},
+								{
+									"option": "d",
+									"is_correct": 0
+								},
+								{
+									"option": "e",
+									"is_correct": 0
+								}
+							],
+                            "student_answer": {
+                                "is_correct": 1,
+                                "answer": "test 3"
+                            }
+						},
+						{
+							"id": 4,
+							"question": "test2",
+							"question_type": "mcq",
+							"media_url": "http://sample-media.com/q2-quiz1",
+							"weight": 5,
+							"choices": [
+								{
+									"option": "a",
+									"is_correct": 0
+								},
+								{
+									"option": "b",
+									"is_correct": 1
+								},
+								{
+									"option": "c",
+									"is_correct": 1
+								}
+							],
+                            "student_answer": {
+                                "is_correct": 1,
+                                "answer": "test 4"
+                            }
+						}
+					]
+				}
+			]
+		}
+     * 
+     * 
+     */
+    public function showAttempt(Request $request)
+    {
+        $this->validate($request, [
+            'activity_id' => 'required|integer',
+            'attempt_id' => 'required'
+        ]);
+        $a = StudentActivity::with([
+            'questionnaires',
+            'questionnaires.questions' => function($query) use ($request) {
+                $query->selectRaw('
+                questions.*,
+                student_answers_v.is_correct,
+                student_answers_v.answer as student_answer
+            ');
+                $query->leftJoin('student_answers_v', function($join) use ($request) {
+                    $join->on('student_answers_v.question_id', '=', 'questions.id')
+                    ->where('student_answers_v.batch', '=', $request->attempt_id);
+                });
+            }   
+        ])->whereId($request->activity_id)
+        ->first();
+
+        $fractal = fractal()->item($a, new StudentActivityTransformer);
+        $fractal->includeQuestionnaires();
+
+        $not_needed = [
+            'activity_availability_status',
+            'subject',
+            'published',
+            'submission_status',
+            'submission_date',
+            'category'
+        ];
+
+        return response()->json($this->unsetFields($not_needed, $fractal->toArray()));
+    }
+
+    private function unsetFields(Array $fields, Array $arr)
+    {
+        foreach($fields as $f) {
+            unset($arr[$f]);
+        }
+
+        return $arr;
+    }
 
 }

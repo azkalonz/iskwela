@@ -254,4 +254,12 @@ Route::middleware('jwt')->group(function () {
     Route::get('/comment/{id}', 'Api\\CommentController@show');
     Route::delete('/comment/remove/{id}', 'Api\\CommentController@remove');
     Route::post('/comment/save', 'Api\\CommentController@save');
+
+
+    Route::post('/do/image/url', 'Api\\FileController@imageUrlDownloadUpload');
+
+    Route::get('/activity/scores', 'Api\\StudentActivityAnswerController@getStudentScores');
+    Route::get('/activity/attempts', 'Api\\StudentActivityAnswerController@getAttempts');
+    Route::get('/activity/attempt/show', 'Api\\StudentActivityAnswerController@showAttempt');
+
 });
