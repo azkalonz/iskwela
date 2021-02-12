@@ -19,6 +19,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v2
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
     - name: Create storage directories
       run: mkdir -p storage/framework/{sessions,views,cache} && chmod -R 777 storage/framework
     - name: Copy .env
