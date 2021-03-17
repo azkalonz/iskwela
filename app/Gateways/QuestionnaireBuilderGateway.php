@@ -37,7 +37,7 @@ class QuestionnaireBuilderGateway
         }
 
         $this->questionnaire->title = $params['title'];
-        $this->questionnaire->instruction = $params['intro'];
+        $this->questionnaire->instruction = isset($params['intro']) ? $params['intro'] : "";
         $this->questionnaire->created_by = $this->user->id;
         $this->questionnaire->school_id = $this->user->school_id;
         $this->questionnaire->subject_id = $params['subject_id'];
