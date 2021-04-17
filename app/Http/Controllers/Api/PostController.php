@@ -180,7 +180,10 @@ class PostController extends Controller
      * @apiParam {String=class,school} itemable_type Itemable type to refer the ID
      * @apiParam {Number} id ID of an item
      * @apiParam {String=comments} [include] if specified, includes the comments in response data
+     * @apiParam {Number} [limit] Count of forms to return. Default: 6
+     * @apiParam {Number} [page] Page of list to return.
      *
+     * @apiSuccess {Number} total_count The total number of results (unfiltered)
      * @apiSuccess {Array} posts list of Posts
      * @apiSuccess {Number} posts.id Post ID
      * @apiSuccess {Text} posts.body content of the post
@@ -203,7 +206,9 @@ class PostController extends Controller
      * @apiSuccess {String} comments.added_by.profile_picture avatar of the owner
      * 
      * @apiSuccessExample {json} Sample Response
-        [
+    {
+        "total_count": 46,
+        "posts": [
             {
                 "id": 8,
                 "body": "I know?' said Alice, 'a great girl like you,' (she might well say this), 'to go on crying in this way! Stop this moment, I tell you!' But she waited for a few yards off. The Cat only grinned when it.",
@@ -269,24 +274,30 @@ class PostController extends Controller
                 ]
             }
         ]
+    }
      *
      * 
      * 
      */
-    public function getPostsOfItemable(string $itemable_type, int $itemable_id)
+    public function getPostsOfItemable(Request $request, string $itemable_type, int $itemable_id)
     {
-        $response = null;
+        $request->validate([
+            'limit' => 'integer'
+        ]);
+
         $posts = Post::where([
             'itemable_type' => $itemable_type,
             'itemable_id' => $itemable_id
-        ]);
+        ])->paginate($request->input('limit', 6));
 
         if($posts) {
-            $fractal = fractal()->collection($posts->get(), new PostTransformer);
-            $response = $fractal->toArray();
+            $fractal = fractal()->collection($posts, new PostTransformer);
         }
 
-        return response()->json($response);
+        return response()->json([
+            'total_count' => $posts->total(),
+            'posts' => $fractal->toArray()
+        ]);
     }
 
     /**
