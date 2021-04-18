@@ -288,7 +288,9 @@ class PostController extends Controller
         $posts = Post::where([
             'itemable_type' => $itemable_type,
             'itemable_id' => $itemable_id
-        ])->paginate($request->input('limit', 6));
+        ])
+        ->orderBy('created_at', 'desc')
+        ->paginate($request->input('limit', 6));
 
         if($posts) {
             $fractal = fractal()->collection($posts, new PostTransformer);
