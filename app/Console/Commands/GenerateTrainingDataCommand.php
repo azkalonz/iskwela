@@ -106,7 +106,8 @@ class GenerateTrainingDataCommand extends Command
             'name' => strtoupper($prefix)." Training Section"
         ],[
             'name'    => strtoupper($prefix)." Training Section",
-            'year_id'   => $year->id
+            'year_id'   => $year->id,
+            'school_id' => $target_school->id
         ]);
         $this->info("SECTION ".$section->name);
 
