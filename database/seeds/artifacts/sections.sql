@@ -1,4 +1,4 @@
-insert into `sections` (`id`, `name`, `year_id`, `school_id `) values
+insert into `sections` (`id`, `name`, `year_id`, `school_id`) values
 ('1','Rose','1', 1),
 ('2','Tulips','1', 1),
 ('3','Apple','2', 1),
